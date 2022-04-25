@@ -10,6 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Room8">
         <activity
+            android:name=".homePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".messageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".openAppActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
