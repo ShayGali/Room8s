@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/ShayGali/Room8/issues"
   },
-  "homepage": "https://github.com/ShayGali/Room8#readme"
+  "homepage": "https://github.com/ShayGali/Room8#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
 }
