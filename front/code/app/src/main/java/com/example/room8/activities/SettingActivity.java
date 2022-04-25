@@ -1,13 +1,16 @@
-package com.example.room8;
+package com.example.room8.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
-public class OpenAppActivity extends AppCompatActivity {
+import com.example.room8.R;
+
+public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_open_app);
+        setContentView(R.layout.activity_setting);
     }
 }

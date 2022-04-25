@@ -1,8 +1,10 @@
-package com.example.room8;
+package com.example.room8.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.room8.R;
 
 public class TasksActivity extends AppCompatActivity {
 

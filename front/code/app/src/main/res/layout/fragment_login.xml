@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.open_app_fragments.LoginFragment"
+    android:orientation="horizontal">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/go_to_forget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go_to_forget" />
+
+    <Button
+        android:id="@+id/go_to_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go_to_register" />
+
+</LinearLayout>
