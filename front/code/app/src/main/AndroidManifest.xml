@@ -10,19 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Room8">
         <activity
-            android:name=".homePageActivity"
+            android:name=".MessageActivity"
             android:exported="false" />
         <activity
-            android:name=".settingActivity"
+            android:name=".TasksActivity"
             android:exported="false" />
         <activity
-            android:name=".messageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".profileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".openAppActivity"
+            android:name=".WalletActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
