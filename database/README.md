@@ -1,3 +1,5 @@
 # Database diagram
 
-![diagram](database diagram.png)
+<img src="database diagram.png"
+     alt="database diagram"
+     style="float: left; margin-right: 10px;" />
