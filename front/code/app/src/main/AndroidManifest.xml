@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Room8">
         <activity
+            android:name=".MessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TasksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WalletActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
