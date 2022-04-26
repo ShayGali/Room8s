@@ -40,8 +40,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <EditText
-        android:id="@+id/login_password_editText"
+        android:id="@+id/login_email_EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_password_EditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlSymmetry"
+        android:autofillHints="emailAddress" />
+
+    <EditText
+        android:id="@+id/login_password_EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -54,23 +72,10 @@
         app:layout_constraintBottom_toTopOf="@+id/login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        android:autofillHints="password" />
 
-    <EditText
-        android:id="@+id/login_email_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_password_editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="RtlSymmetry" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

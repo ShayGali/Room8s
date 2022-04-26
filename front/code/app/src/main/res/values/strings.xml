@@ -7,4 +7,5 @@
     <string name="login">login</string>
     <string name="register">register</string>
     <string name="forget_password">forget password</string>
+    <string name="username">username</string>
 </resources>
