@@ -15,17 +15,14 @@ public class FakeService implements DatabaseService {
     }
 
     @Override
-    public boolean login(String email, String password) {
-        Optional<User> optionalUser = demoUsers.stream()
-                .filter(
-                        user -> email.equals(user.getEmail())
-                )
-                .findFirst();
+    public String login(String email, String encryptPassword) {
+        // TODO : make post method to the server with the cardinals and return the token from the header if success;
+        // TODO : If the login fails (status code 401), we will return null
 
-        return optionalUser
-                .map(
-                        user -> user.getPassword().equals(password)
-                ).orElse(false);
+        if (email.equals("a@a.com") && encryptPassword.equals("123"))
+            return "demo-token";
 
+        return null;
     }
+
 }

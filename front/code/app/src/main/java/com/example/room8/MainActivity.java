@@ -30,12 +30,34 @@ public class MainActivity extends AppCompatActivity {
         return sp.getString(JWT_TOKEN, null) == null;
     }
 
+
     // get a string token and save it to the SharedPreferences
     public void saveJwtToken(String token) {
         SharedPreferences sp = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putString(JWT_TOKEN, token);
         ed.apply();
+    }
+
+
+    // get the Jwt token from the database, save it to the SharedPreferences
+    // if the login failed the we will return false
+    public boolean login(String email, String password) {
+
+        // TODO : hash the password
+        String encryptPassword = encryptPassword(password);
+        String token = databaseService.login(email, encryptPassword);
+        if (token == null)
+            return false;
+
+        saveJwtToken(token);
+
+        return true;
+    }
+
+    private String encryptPassword(String password){
+        //TODO: implement the function
+        return password;
     }
 
 }

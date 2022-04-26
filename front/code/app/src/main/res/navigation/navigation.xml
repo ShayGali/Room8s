@@ -17,9 +17,6 @@
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_homePageUserWithoutApartmentFragment"
-            app:destination="@id/homePageUserWithoutApartmentFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
     </fragment>

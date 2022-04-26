@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
 
 /**
@@ -64,17 +67,45 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        Button forgetPassword = view.findViewById(R.id.go_to_forgot_password_btn);
-        Button register = view.findViewById(R.id.go_to_register_btn);
 
-        forgetPassword.setOnClickListener(new View.OnClickListener() {
+        //TODO: check if the user is already login
+
+        MainActivity activity = (MainActivity) getActivity();
+        assert activity != null;
+
+        Button loginButton = view.findViewById(R.id.login_btn);
+        Button forgetPasswordButton = view.findViewById(R.id.go_to_forgot_password_btn);
+        Button registerButton = view.findViewById(R.id.go_to_register_btn);
+
+        EditText emailInput = view.findViewById(R.id.login_email_EditText);
+        EditText passwordInput = view.findViewById(R.id.login_password_EditText);
+
+
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                if(activity.login(email,password)){
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
+                }else {
+                    Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
+        forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment);
             }
         });
 
-        register.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
