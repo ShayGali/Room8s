@@ -64,8 +64,8 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        Button forgetPassword = view.findViewById(R.id.go_to_forget);
-        Button register = view.findViewById(R.id.go_to_register);
+        Button forgetPassword = view.findViewById(R.id.go_to_forgot_password_btn);
+        Button register = view.findViewById(R.id.go_to_register_btn);
 
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
