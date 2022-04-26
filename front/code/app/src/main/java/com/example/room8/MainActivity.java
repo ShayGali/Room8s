@@ -8,17 +8,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.room8.R;
+import com.example.room8.database.DatabaseService;
+import com.example.room8.database.FakeService;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";
-
+    public DatabaseService databaseService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        databaseService = new FakeService();
     }
 
     // check if we have a token in the SharedPreferences
