@@ -65,9 +65,9 @@ public class HomePageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-        if (((MainActivity) requireActivity()).checkIfJwtTokenExists()) {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
-        }
+//        if (((MainActivity) requireActivity()).checkIfJwtTokenExists()) {
+//            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
+//        }
         return view;
     }
 }

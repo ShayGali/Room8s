@@ -4,19 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2285" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/logo.xml" value="0.1175" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/logo_black_text.xml" value="0.1175" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_message.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_wallet.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_forget_password.xml" value="0.176" />
-        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_forgot_password.xml" value="0.4" />
-        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_home_page.xml" value="0.1213768115942029" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_forgot_password.xml" value="0.2" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_home_page.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_message_.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_register.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_setting.xml" value="0.1" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_settings.xml" value="0.15579710144927536" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_wallet.xml" value="0.1" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/message_received.xml" value="0.4" />
-        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/message_sent.xml" value="0.2" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/message_sent.xml" value="0.4" />
       </map>
     </option>
   </component>
