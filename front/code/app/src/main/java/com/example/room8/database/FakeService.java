@@ -8,10 +8,12 @@ import java.util.Optional;
 
 public class FakeService implements DatabaseService {
 
-    final List<User> demoUsers = new ArrayList<>();
+    private final List<User> demoUsers = new ArrayList<>();
+    private String token;
 
     public FakeService() {
         demoUsers.add(new User("a@a.com", "123"));
+        token = null;
     }
 
     @Override
@@ -24,5 +26,17 @@ public class FakeService implements DatabaseService {
 
         return null;
     }
+
+    @Override
+    public User getUserData() {
+        //TODO: fetch data of the user from the database
+        return null;
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 
 }
