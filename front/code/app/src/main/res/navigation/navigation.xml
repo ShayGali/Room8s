@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/open_app_nav"
-    app:startDestination="@id/message_Fragment">
+    app:startDestination="@id/forgetPasswordFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -39,7 +39,7 @@
         android:id="@+id/forgetPasswordFragment"
         android:name="com.example.room8.fragments.open_app_fragments.ForgetPasswordFragment"
         android:label="fragment_forget_password"
-        tools:layout="@layout/fragment_forget_password" >
+        tools:layout="@layout/fragment_forgot_password" >
         <action
             android:id="@+id/action_forgetPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
