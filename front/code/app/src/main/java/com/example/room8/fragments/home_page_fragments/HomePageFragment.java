@@ -68,6 +68,31 @@ public class HomePageFragment extends Fragment {
 //        if (((MainActivity) requireActivity()).checkIfJwtTokenExists()) {
 //            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
 //        }
+
+        View profileBtn = view.findViewById(R.id.go_to_profile_btn);
+        View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
+        View messagesBtn = view.findViewById(R.id.go_to_messages_btn);
+        View walletBtn = view.findViewById(R.id.go_to_wallet_btn);
+
+        profileBtn.setOnClickListener(v ->{
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
+        });
+
+        tasksBtn.setOnClickListener(v ->{
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_tasksFragment);
+        });
+
+        messagesBtn.setOnClickListener(v ->{
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment);
+        });
+
+        walletBtn.setOnClickListener(v ->{
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
+        });
+
+
+
+
         return view;
     }
 }

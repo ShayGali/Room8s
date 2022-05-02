@@ -104,7 +104,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/go_to_tasks_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -118,13 +118,13 @@
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tasks_btn"
-            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintBottom_toTopOf="@+id/go_to_wallet_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
             app:layout_constraintTop_toBottomOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/go_to_profile_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
@@ -137,13 +137,13 @@
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/profile_btn"
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintBottom_toTopOf="@+id/go_to_messages_btn"
+            app:layout_constraintEnd_toStartOf="@+id/go_to_tasks_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/go_to_messages_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
@@ -155,12 +155,12 @@
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/messages_btn"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintEnd_toStartOf="@+id/go_to_wallet_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/go_to_profile_btn" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/go_to_wallet_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -173,8 +173,8 @@
             android:scaleType="fitCenter"
             android:src="@drawable/wallet_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"
+            app:layout_constraintTop_toBottomOf="@+id/go_to_tasks_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

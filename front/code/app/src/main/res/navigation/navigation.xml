@@ -77,9 +77,6 @@
             android:id="@+id/action_homePageFragment_to_message_Fragment"
             app:destination="@id/message_Fragment" />
         <action
-            android:id="@+id/action_homePageFragment_to_profileFragment2"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_homePageFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
