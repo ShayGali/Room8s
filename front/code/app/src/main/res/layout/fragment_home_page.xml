@@ -113,8 +113,9 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:clickable="true"
-            android:maxWidth="120dp"
+            android:contentDescription="Go to tasks screen button"
 
+            android:maxWidth="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tasks_btn"
@@ -133,6 +134,7 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:clickable="true"
+            android:contentDescription="Go to profile screen button"
             android:maxWidth="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
@@ -151,7 +153,9 @@
             android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
             android:clickable="true"
+            android:contentDescription="Go to chat screen button"
             android:maxWidth="120dp"
+
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/messages_btn"
@@ -168,6 +172,8 @@
             android:layout_marginEnd="75dp"
             android:adjustViewBounds="true"
             android:clickable="true"
+
+            android:contentDescription="Go to wallet screen button"
             android:maxWidth="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"

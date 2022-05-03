@@ -74,23 +74,22 @@ public class HomePageFragment extends Fragment {
         View messagesBtn = view.findViewById(R.id.go_to_messages_btn);
         View walletBtn = view.findViewById(R.id.go_to_wallet_btn);
 
-        profileBtn.setOnClickListener(v ->{
+        // navigate to other fragments
+        profileBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
         });
 
-        tasksBtn.setOnClickListener(v ->{
+        tasksBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_tasksFragment);
         });
 
-        messagesBtn.setOnClickListener(v ->{
+        messagesBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment);
         });
 
-        walletBtn.setOnClickListener(v ->{
+        walletBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
         });
-
-
 
 
         return view;
