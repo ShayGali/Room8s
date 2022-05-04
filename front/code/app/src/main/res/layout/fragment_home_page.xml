@@ -10,20 +10,25 @@
         android:id="@+id/logo"
         android:layout_width="109dp"
         android:layout_height="93dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:contentDescription="app logo"
         android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/apartment_detail_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="app logo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/apartment_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/layout_border_style"
+        app:layout_constraintBottom_toTopOf="@+id/btn_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo">
@@ -83,6 +88,7 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <View
         android:id="@+id/hr_view"
         android:layout_width="match_parent"
@@ -90,17 +96,20 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="5dp"
         android:background="#BABABA"
+        app:layout_constraintBottom_toTopOf="@+id/app_data_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_layout" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/hr_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/apartment_detail_layout">
 
 
@@ -189,8 +198,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/layout_border_style"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hr_view">

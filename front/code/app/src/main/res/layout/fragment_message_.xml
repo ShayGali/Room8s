@@ -24,7 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/enter_message_EditText"
-        android:layout_below="@id/apartment_name_TextView" />
+        android:layout_below="@id/apartment_name_TextView"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/layout_border_style"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp" />
 
     <EditText
         android:id="@+id/enter_message_EditText"
@@ -51,7 +57,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="5dp"
 
-        />
+        android:contentDescription="Send message button" />
 
 
 </RelativeLayout>
