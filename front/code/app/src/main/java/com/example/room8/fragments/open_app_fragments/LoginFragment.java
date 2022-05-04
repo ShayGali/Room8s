@@ -81,36 +81,26 @@ public class LoginFragment extends Fragment {
         EditText passwordInput = view.findViewById(R.id.login_password_EditText);
 
 
+        loginButton.setOnClickListener(v -> {
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-                if(activity.login(email,password)){
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
-                }else {
-                    Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
-                }
+            String email = emailInput.getText().toString();
+            String password = passwordInput.getText().toString();
+            if (activity.login(email, password)) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
+            } else {
+                Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
+        forgetPasswordButton.setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
+        );
 
-        forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment);
-            }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        registerButton.setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment)
+        );
         return view;
     }
 }
