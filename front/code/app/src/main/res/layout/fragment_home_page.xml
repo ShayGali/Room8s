@@ -4,31 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#323232"
     tools:context=".fragments.home_page_fragments.HomePageFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.023094688" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="0dp"
+        android:layout_width="128dp"
         android:layout_height="110dp"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:contentDescription="@string/logo"
         android:src="@drawable/logo_dark_mode"
         app:layout_constraintBottom_toTopOf="@+id/apartment_detail_layout"
-        app:layout_constraintDimensionRatio="w,1.16:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <LinearLayout
         android:id="@+id/apartment_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/layout_border_style"
+
+        android:baselineAligned="false"
         app:layout_constraintBottom_toTopOf="@+id/btn_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +45,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -48,7 +61,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Apartment Name" />
+                android:padding="3dp"
+                android:text="@string/apartment_name" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -58,13 +72,19 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Apartment Num" />
+                android:padding="3dp"
+                android:text="@string/apartment_number" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -75,7 +95,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Number Of Roommates" />
+                android:padding="3dp"
+                android:text="@string/number_of_roommates" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -85,7 +106,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="TextView" />
+                android:padding="3dp"
+                android:text="@string/textview" />
         </LinearLayout>
     </LinearLayout>
 
@@ -94,10 +116,8 @@
         android:id="@+id/hr_view"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#BABABA"
         app:layout_constraintBottom_toTopOf="@+id/app_data_layout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,6 +128,10 @@
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/hr_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,79 +140,88 @@
 
         <ImageView
             android:id="@+id/go_to_tasks_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="110dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="75dp"
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="Go to tasks screen button"
+            android:contentDescription="@string/go_to_tasks_screen"
 
             android:maxWidth="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tasks_btn"
             app:layout_constraintBottom_toTopOf="@+id/go_to_wallet_btn"
+            app:layout_constraintDimensionRatio="w,1.15:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
             app:layout_constraintTop_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/go_to_profile_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="0dp"
+            android:layout_height="110dp"
             android:layout_marginStart="75dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="Go to profile screen button"
-            android:maxWidth="120dp"
-            android:maxHeight="150dp"
+            android:contentDescription="@string/go_to_profile_screen"
             android:scaleType="fitCenter"
             android:src="@drawable/profile_btn"
             app:layout_constraintBottom_toTopOf="@+id/go_to_messages_btn"
+            app:layout_constraintDimensionRatio="w,1.15:1"
             app:layout_constraintEnd_toStartOf="@+id/go_to_tasks_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/go_to_messages_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="0dp"
+            android:layout_height="110dp"
             android:layout_marginStart="75dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="Go to chat screen button"
+            android:contentDescription="@string/go_to_chat_screen"
             android:maxWidth="120dp"
 
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/messages_btn"
+            app:layout_constraintDimensionRatio="w,1.15:1"
             app:layout_constraintEnd_toStartOf="@+id/go_to_wallet_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/go_to_profile_btn" />
 
         <ImageView
             android:id="@+id/go_to_wallet_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="0dp"
+            android:layout_height="110dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="75dp"
             android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
 
-            android:contentDescription="Go to wallet screen button"
+            android:contentDescription="@string/go_to_wallet_screen"
             android:maxWidth="120dp"
             android:maxHeight="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/wallet_btn"
+            app:layout_constraintDimensionRatio="w,1.15:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"
             app:layout_constraintTop_toBottomOf="@+id/go_to_tasks_btn" />
@@ -198,11 +231,11 @@
         android:id="@+id/app_data_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/layout_border_style"
+        android:baselineAligned="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +244,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -222,7 +260,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Next Task" />
+                android:padding="3dp"
+                android:text="@string/next_task" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -232,13 +271,19 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Total Expenses" />
+                android:padding="3dp"
+                android:text="@string/total_expenses" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -249,7 +294,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Owed" />
+                android:padding="3dp"
+                android:text="@string/owed" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -259,7 +305,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="Next Event" />
+                android:padding="3dp"
+                android:text="@string/next_event" />
         </LinearLayout>
     </LinearLayout>
 
