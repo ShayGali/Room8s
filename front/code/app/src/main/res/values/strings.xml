@@ -28,4 +28,6 @@
     <string name="go_to_login">Go to login</string>
     <string name="menu">menu</string>
     <string name="add_task">add task</string>
+    <string name="send_message">Send message</string>
+    <string name="enter_message">Enter Message</string>
 </resources>
