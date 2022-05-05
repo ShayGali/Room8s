@@ -13,22 +13,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="184dp"
-            android:layout_height="97dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="164dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/logo"
             android:src="@drawable/logo_dark_mode"
+            app:layout_constraintBottom_toTopOf="@+id/login_email_EditText"
+            app:layout_constraintDimensionRatio="w,1.16:1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/logo" />
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <EditText
             android:id="@+id/login_email_EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="10dp"
             android:autofillHints="emailAddress"
             android:backgroundTint="@color/edit_text_under_line"
             android:ems="10"
@@ -39,15 +52,15 @@
             android:paddingEnd="5dp"
             app:layout_constraintBottom_toTopOf="@+id/login_password_EditText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
             tools:ignore="RtlSymmetry,TextContrastCheck" />
 
         <EditText
             android:id="@+id/login_password_EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="20dp"
             android:autofillHints="password"
             android:backgroundTint="@color/edit_text_under_line"
             android:ems="10"
@@ -57,44 +70,50 @@
             android:paddingStart="10dp"
             android:paddingEnd="5dp"
             android:textColorHint="#9E9E9E"
-            app:layout_constraintBottom_toTopOf="@+id/login_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_email_EditText"
             tools:ignore="RtlSymmetry" />
 
         <ImageView
             android:id="@+id/login_btn"
-            android:layout_width="98dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="40dp"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginBottom="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:contentDescription="@string/login"
             android:src="@drawable/login_btn"
             app:layout_constraintBottom_toTopOf="@+id/go_to_register_btn"
+            app:layout_constraintDimensionRatio="w,2.87:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@string/login" />
+            app:layout_constraintTop_toBottomOf="@+id/login_password_EditText" />
 
         <ImageView
             android:id="@+id/go_to_register_btn"
-            android:layout_width="98dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:contentDescription="@string/sign_in"
             android:src="@drawable/sign_up_btn"
             app:layout_constraintBottom_toTopOf="@+id/go_to_forgot_password_btn"
+            app:layout_constraintDimensionRatio="w,2.87:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@string/sign_in" />
+            app:layout_constraintTop_toBottomOf="@+id/login_btn"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/go_to_forgot_password_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="150dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:minHeight="48dp"
@@ -102,8 +121,8 @@
             android:text="@string/forget_password"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/go_to_register_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

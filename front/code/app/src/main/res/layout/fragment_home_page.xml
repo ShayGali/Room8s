@@ -8,13 +8,14 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="109dp"
-        android:layout_height="93dp"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:contentDescription="app logo"
-        android:src="@drawable/logo"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo_dark_mode"
         app:layout_constraintBottom_toTopOf="@+id/apartment_detail_layout"
+        app:layout_constraintDimensionRatio="w,1.16:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

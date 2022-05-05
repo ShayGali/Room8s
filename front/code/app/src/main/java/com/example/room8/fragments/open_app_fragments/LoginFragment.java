@@ -73,9 +73,9 @@ public class LoginFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
 
-        Button loginButton = view.findViewById(R.id.login_btn);
-        Button forgetPasswordButton = view.findViewById(R.id.go_to_forgot_password_btn);
-        Button registerButton = view.findViewById(R.id.go_to_register_btn);
+        View loginButton = view.findViewById(R.id.login_btn);
+        View forgetPasswordButton = view.findViewById(R.id.go_to_forgot_password_btn);
+        View registerButton = view.findViewById(R.id.go_to_register_btn);
 
         EditText emailInput = view.findViewById(R.id.login_email_EditText);
         EditText passwordInput = view.findViewById(R.id.login_password_EditText);
