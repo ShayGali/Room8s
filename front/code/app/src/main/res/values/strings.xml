@@ -27,4 +27,5 @@
     <string name="apartment_name">Apartment Name</string>
     <string name="go_to_login">Go to login</string>
     <string name="menu">menu</string>
+    <string name="add_task">add task</string>
 </resources>

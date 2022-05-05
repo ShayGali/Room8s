@@ -8,16 +8,27 @@
     android:layoutDirection="ltr"
     >
 
+    <ImageView
+        android:id="@+id/menu_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/menu"
+        android:src="@drawable/menu_btn" />
+
     <TextView
         android:id="@+id/apartment_name_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/menu_btn"
         android:gravity="center"
-        android:text="apartment name"
-        android:textSize="36sp"
         android:padding="5dp"
-        />
+        android:text="apartment name"
+        android:textSize="36sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_RecyclerView"
@@ -38,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="19dp"
         android:layout_marginEnd="3dp"
+        android:layout_marginBottom="19dp"
         android:layout_toStartOf="@id/send_btn"
         android:hint="enter message"
         android:minHeight="48dp"
@@ -50,14 +61,14 @@
         android:id="@+id/send_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/ic_baseline_send_24"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="Send message button"
 
-        android:contentDescription="Send message button" />
+        android:src="@drawable/ic_baseline_send_24" />
 
 
 </RelativeLayout>
