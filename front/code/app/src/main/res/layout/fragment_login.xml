@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".fragments.open_app_fragments.LoginFragment"
-    android:fillViewport="true">
+    tools:context=".fragments.open_app_fragments.LoginFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -102,7 +103,7 @@
             android:layout_marginBottom="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="@string/sign_in"
+            android:contentDescription="@string/sign_up"
             android:src="@drawable/sign_up_btn"
             app:layout_constraintBottom_toTopOf="@+id/go_to_forgot_password_btn"
             app:layout_constraintDimensionRatio="w,2.87:1"
