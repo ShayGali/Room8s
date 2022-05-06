@@ -94,7 +94,7 @@ public class LoginFragment extends Fragment {
         });
 
 
-        forgetPasswordButton.setOnClickListener(x ->
+        forgetPasswordButton.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         );
 
