@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.home_page_fragments.HomePageUserWithoutApartmentFragment">
 
     <ImageView
@@ -17,55 +17,71 @@
         android:src="@drawable/menu_btn"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="109dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="app logo"
-        android:src="@drawable/logo"
+        android:layout_width="0dp"
+        android:layout_height="164dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo_dark_mode"
+        app:layout_constraintDimensionRatio="w,1.16:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ImageView
         android:id="@+id/go_to_profile_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="111dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="160dp"
         android:layout_marginEnd="20dp"
         android:adjustViewBounds="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="Go to profile screen button"
+        android:contentDescription="@string/go_to_profile_screen"
         android:maxWidth="120dp"
+
         android:maxHeight="150dp"
         android:scaleType="fitCenter"
         android:src="@drawable/profile_btn"
+        app:layout_constraintDimensionRatio="w,1.15:1"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="111dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="160dp"
         android:layout_marginEnd="60dp"
         android:adjustViewBounds="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+
         android:clickable="true"
-        android:contentDescription="create apartment button"
+        android:contentDescription="@string/create_apartment"
         android:maxWidth="120dp"
         android:maxHeight="150dp"
         android:scaleType="fitCenter"
         android:src="@drawable/create_apartment_btn"
+        app:layout_constraintDimensionRatio="w,1.15:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.023094688"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
