@@ -7,15 +7,15 @@
 
     <ImageView
         android:id="@+id/menu_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentEnd="true"
-
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:contentDescription="@string/menu"
+        android:padding="7dp"
         android:src="@drawable/menu_btn" />
 
 

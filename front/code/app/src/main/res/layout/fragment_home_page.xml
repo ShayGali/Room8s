@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#323232"
+    android:clipToPadding="true"
     tools:context=".fragments.home_page_fragments.HomePageFragment">
 
     <ImageView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -19,7 +20,11 @@
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:cropToPadding="true"
+        android:padding="7dp"
+        android:scaleType="centerInside"
+        />
 
 
     <androidx.constraintlayout.widget.Guideline
