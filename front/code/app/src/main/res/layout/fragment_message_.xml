@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:layoutDirection="ltr"
     tools:context=".fragments.message_fragments.Message_Fragment">
 
@@ -37,7 +38,7 @@
         android:layout_below="@id/apartment_name_TextView"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/layout_border_style"
         android:paddingStart="2dp"
         android:paddingEnd="2dp" />
