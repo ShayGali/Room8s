@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1325" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/button.xml" value="0.114" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/buttun_border_style.xml" value="0.1" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.1325" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2285" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/layout_border_style.xml" value="0.114" />
@@ -26,7 +27,7 @@
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_register.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_setting.xml" value="0.1" />
-        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_settings.xml" value="0.15579710144927536" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_sgin_in.xml" value="0.18127404873877725" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_sgin_up.xml" value="0.2" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_sign_up.xml" value="0.264" />
