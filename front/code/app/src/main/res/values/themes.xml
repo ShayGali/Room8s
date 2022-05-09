@@ -13,10 +13,20 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-
+        <item name="android:actionMenuTextColor">@color/btn_color</item>
         <item name="android:textColor">@color/white</item>
 
+        <item name="android:itemBackground">@color/item_background</item>
+
+        <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
         <item name="android:editTextColor">@color/white</item>
         <item name="android:textColorHint">@color/hint_text</item>
     </style>
+
+
+    <style name="MyDropDownListView" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/border_color</item>
+    </style>
+
 </resources>

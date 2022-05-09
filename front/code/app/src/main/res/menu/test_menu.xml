@@ -4,11 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <item android:title="Item1"
+    <item
         android:id="@+id/item1"
-        />
+        android:title="Item1" />
     <item android:title="Item2"
         android:id="@+id/item2"
+        app:showAsAction="never"
 
         />
 </menu>
