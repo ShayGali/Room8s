@@ -14,7 +14,7 @@ import com.example.room8.database.FakeService;
 public class MainActivity extends AppCompatActivity {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
-    public static final String JWT_TOKEN = "jwt token";
+    public static final String JWT_TOKEN = "jwt token2";
     public DatabaseService databaseService;
 
     @Override
