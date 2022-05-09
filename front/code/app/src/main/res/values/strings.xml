@@ -41,4 +41,9 @@
     <string name="total_expenses_txt_view">Total Expenses</string>
     <string name="dept_txt_view">Dept</string>
     <string name="deserve_txt_view">Deserve</string>
+    <string name="edit_btn_txt">Edit</string>
+    <string name="profile_set_name_txt">Name</string>
+    <string name="profile_set_password_txt">Password</string>
+    <string name="profile_set_phone_number_txt">Phone Number</string>
+    <string name="profile_set_email_txt">Email</string>
 </resources>
