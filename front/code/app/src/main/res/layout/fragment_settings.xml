@@ -16,8 +16,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:contentDescription="@string/menu"
-        android:src="@drawable/menu_btn"
         android:padding="10dp"
+        android:src="@drawable/menu_btn"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,81 +35,120 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <TextView
-        android:id="@+id/profile_edit_btn"
-        android:layout_width="175dp"
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_border_style"
-        android:gravity="center"
-        android:text="Profile Edit"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/invite_friend_btn"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintVertical_chainStyle="spread">
 
-    <TextView
-        android:id="@+id/invite_friend_btn"
-        android:layout_width="175dp"
+        <TextView
+            android:id="@+id/profile_edit_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/profile_edit"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_border_style"
-        android:gravity="center"
-        android:text="Invite Friend"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tell_us_btn"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_edit_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
 
-    <TextView
-        android:id="@+id/tell_us_btn"
-        android:layout_width="175dp"
+        <TextView
+            android:id="@+id/invite_friend_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/invite_friend"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_border_style"
-        android:gravity="center"
-        android:text="Tell Us"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/leave_room_btn"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/invite_friend_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
-    <TextView
-        android:id="@+id/leave_room_btn"
-        android:layout_width="175dp"
+        <TextView
+            android:id="@+id/tell_us_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/tell_us"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout6"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_border_style"
-        android:gravity="center"
-        android:text="Leave Room"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/log_out_btn"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout7"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tell_us_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout3">
 
-    <TextView
-        android:id="@+id/log_out_btn"
-        android:layout_width="175dp"
+        <TextView
+            android:id="@+id/leave_room_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/leave_room"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout7"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="70dp"
-        android:background="@drawable/button_border_style"
-        android:gravity="center"
-        android:text="Log Out"
-        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leave_room_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout6">
+
+        <TextView
+            android:id="@+id/log_out_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/log_out"
+            android:textSize="24sp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
