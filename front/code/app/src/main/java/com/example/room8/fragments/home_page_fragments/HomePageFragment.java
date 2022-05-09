@@ -1,5 +1,6 @@
 package com.example.room8.fragments.home_page_fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,8 +9,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
-import com.example.room8.MainActivity;
 import com.example.room8.R;
 
 /**
@@ -18,6 +20,9 @@ import com.example.room8.R;
  * create an instance of this fragment.
  */
 public class HomePageFragment extends Fragment {
+
+    View menuBtn;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +64,7 @@ public class HomePageFragment extends Fragment {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,6 +79,30 @@ public class HomePageFragment extends Fragment {
         View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
         View messagesBtn = view.findViewById(R.id.go_to_messages_btn);
         View walletBtn = view.findViewById(R.id.go_to_wallet_btn);
+//        try {
+//            Thread.sleep(15000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        menuBtn = view.findViewById(R.id.menu_btn);
+        menuBtn.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.test_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.item2:
+                        Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
 
         // navigate to other fragments
         profileBtn.setOnClickListener(v -> {

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.example.room8.R;
 import com.example.room8.adapters.MessagesAdapter;
@@ -20,6 +22,9 @@ import com.example.room8.model.Message;
  * create an instance of this fragment.
  */
 public class MessageFragment extends Fragment {
+
+    View menuBtn;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,6 +79,26 @@ public class MessageFragment extends Fragment {
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         addMessages();
+
+        menuBtn = view.findViewById(R.id.menu_btn);
+        menuBtn.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.test_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.item2:
+                        Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
         return view;
     }
 

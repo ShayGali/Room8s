@@ -9,6 +9,7 @@
     tools:context=".fragments.home_page_fragments.HomePageFragment">
 
     <ImageView
+        android:id="@+id/menu_btn"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
