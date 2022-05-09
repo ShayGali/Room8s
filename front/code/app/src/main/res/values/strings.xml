@@ -38,4 +38,7 @@
     <string name="leave_room">Leave Room</string>
     <string name="log_out">Log Out</string>
     <string name="Wallet_HL">Wallet</string>
+    <string name="total_expenses_txt_view">Total Expenses</string>
+    <string name="dept_txt_view">Dept</string>
+    <string name="deserve_txt_view">Deserve</string>
 </resources>
