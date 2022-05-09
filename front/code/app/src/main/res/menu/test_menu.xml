@@ -5,8 +5,9 @@
     >
 
     <item
-        android:id="@+id/item1"
-        android:title="Item1" />
+        android:id="@+id/settings"
+        android:title="@string/settings" />
+
     <item android:title="Item2"
         android:id="@+id/item2"
         app:showAsAction="never"

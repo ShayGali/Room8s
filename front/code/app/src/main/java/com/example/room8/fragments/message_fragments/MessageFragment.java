@@ -87,7 +87,7 @@ public class MessageFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
 
                 switch (item.getItemId()) {
-                    case R.id.item1:
+                    case R.id.settings:
                         Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.item2:

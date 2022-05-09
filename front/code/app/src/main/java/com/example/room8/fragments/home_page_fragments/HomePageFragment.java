@@ -91,8 +91,8 @@ public class HomePageFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
 
                 switch (item.getItemId()) {
-                    case R.id.item1:
-                        Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
+                    case R.id.settings:
+                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_settingsFragment);
                         return true;
                     case R.id.item2:
                         Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
