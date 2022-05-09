@@ -38,5 +38,10 @@ public class FakeService implements DatabaseService {
         this.token = token;
     }
 
+    @Override
+    public String register(String username, String email, String password) {
+        return null;
+    }
+
 
 }

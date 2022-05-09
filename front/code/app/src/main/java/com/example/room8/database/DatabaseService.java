@@ -9,4 +9,6 @@ public interface DatabaseService {
     User getUserData();
 
     void setToken(String token);
+
+    String register(String username, String email, String password);
 }

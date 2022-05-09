@@ -2,7 +2,7 @@
   "name": "Room8s",
   "version": "1.0.0",
   "description": "Room8 project server",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/ShayGali/Room8#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.15"
   }
 }
