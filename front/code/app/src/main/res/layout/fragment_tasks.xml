@@ -16,7 +16,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:contentDescription="@string/menu"
-        android:padding="7dp"
+        android:padding="10dp"
         android:src="@drawable/menu_btn" />
 
 

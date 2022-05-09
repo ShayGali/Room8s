@@ -16,10 +16,10 @@ import com.example.room8.model.Message;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Message_Fragment#newInstance} factory method to
+ * Use the {@link MessageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Message_Fragment extends Fragment {
+public class MessageFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,7 +33,7 @@ public class Message_Fragment extends Fragment {
 
     MessagesAdapter messageAdapter;
 
-    public Message_Fragment() {
+    public MessageFragment() {
         // Required empty public constructor
     }
 
@@ -46,8 +46,8 @@ public class Message_Fragment extends Fragment {
      * @return A new instance of fragment message_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Message_Fragment newInstance(String param1, String param2) {
-        Message_Fragment fragment = new Message_Fragment();
+    public static MessageFragment newInstance(String param1, String param2) {
+        MessageFragment fragment = new MessageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,7 +68,7 @@ public class Message_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_message_, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.messages_RecyclerView);
         messageAdapter = new MessagesAdapter(getLayoutInflater());
         recyclerView.setAdapter(messageAdapter);
