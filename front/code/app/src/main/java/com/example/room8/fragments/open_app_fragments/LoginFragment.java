@@ -85,26 +85,27 @@ public class LoginFragment extends Fragment {
 
 
         loginButton.setOnClickListener(v -> {
-
-            String email = emailInput.getText().toString();
-            String password = passwordInput.getText().toString();
-            if (activity.login(email, password)) {
-                try {
-                    String s = PasswordHandler.encryptPassword("123");
-                    System.out.println(s);
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
-            } else {
-                Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
-
-            }
+                activity.simple();
+//            String email = emailInput.getText().toString();
+//            String password = passwordInput.getText().toString();
+//            if (activity.login(email, password)) {
+//                try {
+//                    String s = PasswordHandler.encryptPassword("123");
+//                    System.out.println(s);
+//                } catch (NoSuchAlgorithmException e) {
+//                    e.printStackTrace();
+//                }
+////                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
+//            } else {
+//                Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
+//
+//            }
         });
 
 
         forgetPasswordButton.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
+                activity.simple2()
+//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         );
 
         registerButton.setOnClickListener(v ->

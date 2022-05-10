@@ -66,4 +66,21 @@ public class MainActivity extends AppCompatActivity {
 
         databaseService.register(username,email,password);
     }
+    String str = null;
+    public void simple(){
+        str = databaseService.simpleReq();
+        if (str == null) {
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+
+        }else
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
+    public void  simple2(){
+        if (str == null) {
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+
+        }else
+            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
 }

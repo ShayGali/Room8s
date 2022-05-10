@@ -10,7 +10,7 @@ public interface DatabaseService {
 
     void setToken(String token);
 
-    void register(String username, String email, String password);
+    String register(String username, String email, String password);
 
     String simpleReq();
 }
