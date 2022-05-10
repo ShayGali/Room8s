@@ -8,7 +8,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
 
 /**
@@ -67,15 +69,25 @@ public class SignUpFragment extends Fragment {
         View submitBtn = view.findViewById(R.id.submit_register_btn);
         View goToLoginBtn = view.findViewById(R.id.go_to_login_from_sginup_btn);
 
+        EditText usernameEditText = view.findViewById(R.id.register_username_EditText);
+        EditText emailEditText = view.findViewById(R.id.register_email_EditText);
+        EditText passwordEditText = view.findViewById(R.id.register_password_EditText);
         submitBtn.setOnClickListener(v -> {
                     //TODO: make register function
-                    Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homePageFragment);
+                    MainActivity activity = (MainActivity)getActivity();
+                    String username = usernameEditText.getText().toString();
+                    String email = emailEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    activity.register(username,email,password);
+//                    Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homePageFragment);
                 }
         );
 
         goToLoginBtn.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_loginFragment)
         );
+
+
         return view;
     }
 }

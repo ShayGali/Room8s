@@ -20,7 +20,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Server Side");
+  res.status(404).send({ msg: "Server Side" });
 });
 
 app.all("/*", (req, res) => {

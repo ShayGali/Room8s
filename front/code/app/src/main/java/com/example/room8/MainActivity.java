@@ -1,15 +1,15 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.room8.R;
 import com.example.room8.database.DatabaseService;
-import com.example.room8.database.FakeService;
+import com.example.room8.database.NodeService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseService = new FakeService();
+        databaseService = new NodeService();
     }
 
     // check if we have a token in the SharedPreferences
@@ -62,4 +62,8 @@ public class MainActivity extends AppCompatActivity {
         return password;
     }
 
+    public void register(String username, String email, String password) {
+
+        databaseService.register(username,email,password);
+    }
 }

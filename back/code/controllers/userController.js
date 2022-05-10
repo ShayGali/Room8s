@@ -1,19 +1,24 @@
 const userService = require("../service/userService");
 const SHA256 = require("crypto-js/sha256");
+const bcrypt = require("bcrypt");
 
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    const hashPassword = SHA256(password).toString();
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
+
     const result = await userService.register({
       username,
       email,
       password: hashPassword,
     });
     if (result.errorMsg !== undefined) {
-      return res.status(400).json(result);
+      return res.status(409).json(result);
     }
-    return res.status(201).json({ msg: "success", databaseChanges: result });
+    return res
+      .status(201)
+      .json({ msg: "success", jwtToken: "TODO", databaseChanges: result });
   } catch (err) {
     next(err);
   }
@@ -28,12 +33,12 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const hashPassword = SHA256(password).toString();
+
     const findUser = await userService.findByEmail(email);
     if (!findUser) {
       return res.status(401).json({ msg: "Invalid email" });
     }
-    if (findUser.user_password === hashPassword) {
+    if (await bcrypt.compare(password, findUser.user_password)) {
       return res.status(200).json({
         msg: "success",
         data: {
