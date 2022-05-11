@@ -5,7 +5,7 @@ USE Room8s;
 
 CREATE TABLE apartments(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-apartment_name NVARCHAR(100),
+apartment_name NVARCHAR(100) DEFAULT 1,
 number_of_people TINYINT
 );
 

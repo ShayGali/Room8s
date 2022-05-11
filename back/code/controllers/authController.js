@@ -84,5 +84,5 @@ async function generateToken(userId) {
 }
 
 exports.hello = async (req, res, next) => {
-  return res.send({ msg: "hello" });
+  return res.send({ msg: "hello", token: req.tokenData });
 };

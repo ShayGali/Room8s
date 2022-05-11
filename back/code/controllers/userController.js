@@ -11,6 +11,7 @@ exports.findUserApartment = async (req, res, next) => {
 
   try {
     const result = await userService.findUserApartment(userId);
+
     if (!result) {
       return res
         .status(200)
@@ -23,4 +24,15 @@ exports.findUserApartment = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+//TODO: check rules
+exports.findById = async (req, res, next) => {
+  const { userId } = req.body;
+  const result = await userService.findById(userId);
+  if (!result) {
+    return res.status(404).send({ msg: "User not found" });
+  }
+  delete result["user_password"];
+  return res.send({ msg: "success", result });
 };

@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
+app.use("/apartments", require("./routes/apartmentRoute"));
 
 // Global Error handler
 app.use((err, req, res, next) => {
@@ -29,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 app.all("/*", (req, res) => {
-  res.status(404).json({ message: "Page not found" });
+  res.status(404).json({ message: "Path not found" });
 });
 
 app.listen(PORT, () => console.log(`Listening in port ${PORT}`));
