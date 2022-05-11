@@ -13,6 +13,16 @@ exports.getData = async (apartmentsId) => {
   return apartment[0];
 };
 
+// create a new apartment
+/**
+ * crete new apartment and return the id of the apartment
+ * it change two tables:
+ *    apartments -> add the new apartment
+ *    user_in_apartment -> create the relationship between the user and his apartment
+ * @param {number} userId
+ * @param {string} apartmentName
+ * @returns new apartment id
+ */
 exports.createApartment = async (userId, apartmentName) => {
   const createApartmentQuery = `
     INSERT INTO ${apartmentsTable} (
@@ -34,6 +44,15 @@ exports.createApartment = async (userId, apartmentName) => {
   return apartmentsId;
 };
 
+/**
+ * add new user to exists apartment
+ * it change two tables:
+ *   apartments -> add the new apartment
+ *   user_in_apartment -> create the relationship between the user and his apartment
+ * @param {number} apartmentsId
+ * @param {number} newUserId
+ * @returns
+ */
 exports.addUserToApartment = async (apartmentsId, newUserId) => {
   const createRelationQuery = `
 INSERT INTO ${apartmentsUserTable} (
@@ -51,4 +70,8 @@ INSERT INTO ${apartmentsUserTable} (
     `;
   result = await db.execute(updateNumberOfPeopleQuery, [apartmentsId]);
   return result;
+};
+
+exports.removeUserFromApartment = () => {
+  // TODO: check if the num of people is equal to 0
 };

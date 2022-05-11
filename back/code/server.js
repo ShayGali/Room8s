@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+// in the start because we use the middleware in our routes so we want that it will be included there
 module.exports = {
   authenticateToken,
 };
@@ -29,12 +30,20 @@ app.get("/", (req, res) => {
   res.status(404).send({ msg: "Server Side" });
 });
 
+// Global 404 Error handler
 app.all("/*", (req, res) => {
-  res.status(404).json({ message: "Path not found" });
+  res.status(404).json({ message: `${req.originalUrl} not found` });
 });
 
 app.listen(PORT, () => console.log(`Listening in port ${PORT}`));
 
+/** Global middleware function to validate JWT token
+ * will return:
+ * 401 if token not send
+ * 403 if the token is invalid
+ * if the token is valid we add to the req the token data
+ * add go to the next() function
+ */
 function authenticateToken(req, res, next) {
   const JWT = require("jsonwebtoken");
   const token = req.header("x-auth-token");
@@ -42,6 +51,6 @@ function authenticateToken(req, res, next) {
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, tokenData) => {
     if (err) return res.status(403).send({ msg: "Invalid token" });
     req.tokenData = tokenData;
-    next(); // move to the request
+    next(); // move to the function
   });
 }

@@ -27,12 +27,21 @@ exports.findUserApartment = async (req, res, next) => {
 };
 
 //TODO: check rules
+/**
+ * get user id from the request body,
+ * and return the data of the user with out his password
+ */
 exports.findById = async (req, res, next) => {
-  const { userId } = req.body;
-  const result = await userService.findById(userId);
-  if (!result) {
-    return res.status(404).send({ msg: "User not found" });
+  try {
+    const { userId } = req.body;
+    const result = await userService.findById(userId);
+    if (!result) {
+      return res.status(404).send({ msg: "User not found" });
+    }
+
+    delete result["user_password"]; // for remove the password field from the object
+    return res.send({ msg: "success", result });
+  } catch (err) {
+    next(err);
   }
-  delete result["user_password"];
-  return res.send({ msg: "success", result });
 };

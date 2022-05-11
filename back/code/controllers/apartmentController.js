@@ -3,6 +3,10 @@ require("dotenv").config();
 const apartmentService = require("../service/apartmentService");
 const userService = require("../service/userService");
 
+/**
+ * get the data of the apartment of the user
+ * if the dont have apartment it will return message
+ */
 exports.getApartmentData = async (req, res, next) => {
   const { userId } = req.tokenData;
   try {
@@ -22,6 +26,11 @@ exports.getApartmentData = async (req, res, next) => {
   }
 };
 
+/**
+ * create new apartment for the user that send the request
+ * if the user already in apartment it send message
+ * else it will return success message with the new apartment id
+ */
 exports.createApartment = async (req, res, next) => {
   const { userId } = req.tokenData;
 
@@ -36,6 +45,19 @@ exports.createApartment = async (req, res, next) => {
   }
 };
 
+/**
+ * add new user to the apartment of the user that send the request
+ *
+ * we check:
+ *  if the sender dont send the new user id, we will return 400
+ *  if we dont find the new user we will return 200 with message
+ *  if the user that send the request is not in a apartment
+ *  if the new user that we try to add is already in apartment
+ *
+ * else we will return 201
+ */
+
+// TODO: only admin user can add new users
 exports.addUserToApartment = async (req, res, next) => {
   const { userId } = req.tokenData;
 
@@ -68,11 +90,9 @@ exports.addUserToApartment = async (req, res, next) => {
       newUserId
     );
     if (result)
-      return res
-        .status(201)
-        .send({
-          msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
-        });
+      return res.status(201).send({
+        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
+      });
   } catch (err) {
     next(err);
   }
