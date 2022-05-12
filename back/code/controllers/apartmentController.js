@@ -97,3 +97,14 @@ exports.addUserToApartment = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.removeUserFromApartment = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const result = await apartmentService.removeUserFromApartment(11, 15);
+    res.send(result);
+  } catch (err) {
+    next(err);
+  }
+};

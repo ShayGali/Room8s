@@ -65,13 +65,41 @@ INSERT INTO ${apartmentsUserTable} (
 
   const updateNumberOfPeopleQuery = `
     UPDATE ${apartmentsTable}
-    SET number_of_people = number_of_people+1
+    SET number_of_people = number_of_people + 1
     WHERE ID = ?;
     `;
   result = await db.execute(updateNumberOfPeopleQuery, [apartmentsId]);
   return result;
 };
 
-exports.removeUserFromApartment = () => {
+exports.removeUserFromApartment = async (apartmentsId, userId) => {
   // TODO: check if the num of people is equal to 0
+  // const deleteRelationQuery = `
+  // DELETE FROM ${apartmentsUserTable}
+  // WHERE user_ID = ? AND apartment_ID = ?;
+  // `;
+
+  // let result = await db.execute(deleteRelationQuery, [userId, apartmentsId]);
+  // if (!result) return undefined;
+
+  // const updateNumberOfPeopleQuery = `
+  //   UPDATE ${apartmentsTable}
+  //   SET number_of_people = number_of_people - 1
+  //   WHERE ID = ?;
+  //   `;
+  // result = await db.execute(updateNumberOfPeopleQuery, [apartmentsId]);
+
+  const checkNumOfPeopleQuery = `
+  SELECT number_of_people FROM ${apartmentsTable}
+  WHERE ID = ? ;
+  `;
+
+  const [numberOfPeople, _] = await db.execute(checkNumOfPeopleQuery, [
+    apartmentsId,
+  ]);
+  if (numberOfPeople[0].number_of_people > 0)
+    return numberOfPeople[0].number_of_people;
+  return deleteApartment(apartmentId);
 };
+
+exports.deleteApartment = async (apartmentId) => {};

@@ -20,4 +20,9 @@ router.post(
   apartmentController.addUserToApartment
 );
 
+router.delete(
+  "/removeUserFromApartment",
+  apartmentController.removeUserFromApartment
+);
+
 module.exports = router;

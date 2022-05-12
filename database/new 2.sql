@@ -5,27 +5,28 @@ USE Room8s;
 
 CREATE TABLE apartments(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-apartment_name NVARCHAR(100) DEFAULT 1,
-number_of_people TINYINT
+apartment_name NVARCHAR(100) NOT NULL,
+number_of_people INT DEFAULT 1
 );
 
 
 CREATE TABLE user_level(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-level_name NVARCHAR(100)
+level_name NVARCHAR(100) NOT NULL UNIQUE
 );
 
 
-CREATE TABLE Users(
+CREATE TABLE users
+(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-user_name NVARCHAR(100),
-email NVARCHAR(100),
-user_level INT,
-user_password NVARCHAR(256),
-monthly_payment DOUBLE,
+user_name NVARCHAR(100) NOT NULL,
+email NVARCHAR(100) NOT NULL UNIQUE,
+user_level INT DEFAULT 1, -- default to basic user
+user_password NVARCHAR(256) NOT NULL,
+monthly_payment DOUBLE DEFAULT 0, 
 profile_icon_path NVARCHAR(254),
 
-FOREIGN KEY (user_level) REFERENCES user_level(ID)
+FOREIGN KEY (user_level) REFERENCES user_level(ID) ON DELETE SET NULL
 );
 
 
@@ -34,63 +35,66 @@ ID INT AUTO_INCREMENT PRIMARY KEY,
 apartment_ID INT,
 user_ID INT,
 
-FOREIGN KEY (apartment_ID) REFERENCES apartments(ID),
-FOREIGN KEY (user_ID) REFERENCES Users(ID)
+FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE,
+FOREIGN KEY (user_ID) REFERENCES users (ID) ON DELETE CASCADE,
+
+CONSTRAINT user_apartment UNIQUE (apartment_ID, user_ID)
 );
 
 
 CREATE TABLE task_type(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-task_type NVARCHAR(100),
-icon_path NVARCHAR(254)
+task_type NVARCHAR(100) NOT NULL UNIQUE,
+icon_path NVARCHAR(254) UNIQUE
 );
 
 
 
 CREATE TABLE tasks(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-apartment_ID INT,
-creator_ID INT,
-task_type INT,
+apartment_ID INT NOT NULL,
+creator_ID INT NOT NULL,
+task_type INT DEFAULT 1, -- default to general task
 create_time DATETIME,
 expiration_date DATETIME,
 title NVARCHAR(100),
 note NVARCHAR(100),
 
-FOREIGN KEY (apartment_ID) REFERENCES apartments(ID),
-FOREIGN KEY (creator_ID) REFERENCES Users(ID),
+FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE,
+FOREIGN KEY (creator_ID) REFERENCES users (ID) ,
 FOREIGN KEY (task_type) REFERENCES task_type(ID)
 );
 
 
 CREATE TABLE tasks_per_user(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-task_ID INT,
-user_ID INT,
-FOREIGN KEY (task_ID) REFERENCES tasks(ID),
-FOREIGN KEY (user_ID) REFERENCES Users(ID)
+task_ID INT NOT NULL,
+user_ID INT NOT NULL,
+FOREIGN KEY (task_ID) REFERENCES tasks(ID) ON DELETE CASCADE,
+FOREIGN KEY (user_ID) REFERENCES users (ID)
 );
 
 
 
 CREATE TABLE expense_type(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-expense_type NVARCHAR(100)
+expense_type NVARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE Expenses(
+CREATE TABLE expenses
+(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-apartment_ID INT,
-title NVARCHAR(100),
-expense_type INT,
-UserThatUploadID INT,
+apartment_ID INT NOT NULL,
+UserThatUploadID INT NOT NULL,
+title NVARCHAR(100) NOT NULL,
+expense_type INT DEFAULT 1, -- default to general expense
 payment_date DATE,
 amount DOUBLE,
 upload_date DATETIME, -- when it's uploaded
 note NVARCHAR(100),
 
-FOREIGN KEY (apartment_ID) REFERENCES apartments(ID),
-FOREIGN KEY (UserThatUploadID) REFERENCES Users(ID),
+FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE,
+FOREIGN KEY (UserThatUploadID) REFERENCES users (ID),
 FOREIGN KEY (expense_type) REFERENCES expense_type(ID)
 );
 
@@ -102,19 +106,19 @@ user_id INT,
 amount_that_paid DOUBLE,
 pay_timestamp DATE,
 
-FOREIGN KEY(user_id)REFERENCES Users(ID),
-FOREIGN KEY(expense_ID) REFERENCES Expenses(ID)
+FOREIGN KEY(user_id)REFERENCES users(ID),
+FOREIGN KEY(expense_ID) REFERENCES expenses (ID)
 );
 
 CREATE TABLE messaging(
 ID INT AUTO_INCREMENT PRIMARY KEY,
-apartment_ID INT,
-sender_ID INT,
-msg_data TEXT,
+apartment_ID INT NOT NULL,
+sender_ID INT NOT NULL,
+msg_data TEXT NOT NULL,
 send_time DATETIME,
 
-FOREIGN KEY (apartment_ID) REFERENCES apartments(ID),
-FOREIGN KEY (sender_ID) REFERENCES Users (ID)
+FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE ,
+FOREIGN KEY (sender_ID) REFERENCES users (ID)
 );
 
 
