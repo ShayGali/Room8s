@@ -4,7 +4,6 @@ require("dotenv").config();
 module.exports = {
   authenticateToken,
 };
-
 const express = require("express");
 
 const app = express();
@@ -27,6 +26,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
+  console.log(req);
   res.status(404).send({ msg: "Server Side" });
 });
 

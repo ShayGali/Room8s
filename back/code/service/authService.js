@@ -27,12 +27,3 @@ exports.register = async (user) => {
   ]);
   return newUser;
 };
-
-exports.findByEmail = async (email) => {
-  const query = `
-    SELECT * FROM ${usersTable}
-    WHERE email = '${email}'
-    `;
-  const [user, _] = await db.execute(query);
-  return user[0];
-};

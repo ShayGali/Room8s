@@ -45,3 +45,21 @@ exports.findById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.findByEmail = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ msg: "email no send" });
+  }
+  try {
+    const result = await userService.findByEmail(email);
+    if (!result) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    return res.status(200).json({ user: result });
+  } catch (err) {
+    next(err);
+  }
+};

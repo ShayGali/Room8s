@@ -13,7 +13,7 @@ router
   .route("/data")
   .get(authenticateToken, apartmentController.getApartmentData);
 
-//TODO: add middleware to check the user role to be an admin
+//TODO: add middleware to check the user role to be an apartment_owner
 router.post(
   "/addUser",
   authenticateToken,

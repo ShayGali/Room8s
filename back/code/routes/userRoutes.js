@@ -11,4 +11,6 @@ const { authenticateToken } = require("../server");
 
 router.get("/apartmentId", authenticateToken, userController.findUserApartment);
 router.get("/findById", authenticateToken, userController.findById);
+router.route("/findByEmail").get(userController.findByEmail); //TODO: check roll admin
+
 module.exports = router;

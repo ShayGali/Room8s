@@ -32,3 +32,12 @@ exports.checkIfUserInApartment = async (userId) => {
   const result = await this.findUserApartment(userId);
   return result !== undefined;
 };
+
+exports.findByEmail = async (email) => {
+  const query = `
+    SELECT * FROM ${usersTable}
+    WHERE email = '${email}'
+    `;
+  const [user, _] = await db.execute(query);
+  return user[0];
+};
