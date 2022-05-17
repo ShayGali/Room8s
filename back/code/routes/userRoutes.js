@@ -7,7 +7,7 @@ const router = express.Router();
 
 const userController = require("../controllers/userController");
 
-const { authenticateToken } = require("../server");
+const { authenticateToken } = require("../middleware/auth");
 
 router.get("/apartmentId", authenticateToken, userController.findUserApartment);
 router.get("/findById", authenticateToken, userController.findById);

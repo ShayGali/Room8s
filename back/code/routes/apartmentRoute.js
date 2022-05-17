@@ -5,7 +5,7 @@ const router = express.Router();
 
 const apartmentController = require("../controllers/apartmentController");
 
-const { authenticateToken } = require("../server");
+const { authenticateToken } = require("../middleware/auth");
 
 router.post("/create", authenticateToken, apartmentController.createApartment);
 
