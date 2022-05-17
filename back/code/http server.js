@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/  ", require("./routes/authRoutes"));
+app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/apartments", require("./routes/apartmentRoute"));
 
@@ -19,7 +19,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(404).send({ msg: "Server Side" });
+  res.status(200).send({ msg: "Server Side" });
 });
 
 // Global 404 Error handler
