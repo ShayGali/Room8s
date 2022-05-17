@@ -2,12 +2,10 @@ const express = require("express");
 
 const app = express();
 
-// in the start because we use the middleware in our routes so we want that it will be included there
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", require("./routes/authRoutes"));
+app.use("/  ", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/apartments", require("./routes/apartmentRoute"));
 
