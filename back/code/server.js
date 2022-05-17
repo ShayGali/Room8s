@@ -1,13 +1,12 @@
-require("dotenv").config();
+const express = require("express");
+
+const app = express();
 
 // in the start because we use the middleware in our routes so we want that it will be included there
 module.exports = {
   authenticateToken,
+  app,
 };
-const express = require("express");
-
-const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +25,6 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  console.log(req);
   res.status(404).send({ msg: "Server Side" });
 });
 
@@ -34,8 +32,6 @@ app.get("/", (req, res) => {
 app.all("/*", (req, res) => {
   res.status(404).json({ message: `${req.originalUrl} not found` });
 });
-
-app.listen(PORT, () => console.log(`Listening in port ${PORT}`));
 
 /** Global middleware function to validate JWT token
  * will return:
