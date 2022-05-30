@@ -1,5 +1,6 @@
 package com.example.room8.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room8.R;
 import com.example.room8.model.Message;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_MESSAGE_RECEIVED = 1;
 
     private LayoutInflater inflater;
-    private List<Message> messages;
+    private List<JSONObject> messages;
 
 
     public MessagesAdapter(LayoutInflater inflater) {
@@ -50,16 +52,24 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Message m = messages.get(position);
-        if (messages.get(position).getName().equals("Yossi")) {
-            SentMessageHolder sentMessageHolder = (SentMessageHolder) holder;
-            sentMessageHolder.messageContent.setText(m.getTxt());
 
-        } else {
-            ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
-            receivedMessageHolder.messageContent.setText(m.getTxt());
-            receivedMessageHolder.senderName.setText(m.getName());
-            receivedMessageHolder.senderImg.setImageResource(R.drawable.ic_launcher_foreground);
+        JSONObject message = messages.get(position);
+        try {
+            if (message.getBoolean("isSent")){
+                if (message.has("message")) {
+                    SentMessageHolder sentMessageHolder = (SentMessageHolder) holder;
+                    sentMessageHolder.messageContent.setText(message.getString("message"));
+                }
+            }else {
+                if (message.has("message")) {
+                    ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
+                    receivedMessageHolder.messageContent.setText(message.getString("message"));
+                    receivedMessageHolder.senderName.setText(message.getString("name"));
+                    receivedMessageHolder.senderImg.setImageResource(R.drawable.ic_launcher_foreground);
+                }
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
         }
     }
 
@@ -70,14 +80,24 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (messages.get(position).getName().equals("Yossi"))
-            return TYPE_MESSAGE_SENT;
-        return TYPE_MESSAGE_RECEIVED;
+        JSONObject message = messages.get(position);
+        try {
+            if (message.getBoolean("isSent")) {
+                if (message.has("message"))
+                    return TYPE_MESSAGE_SENT;
+            } else {
+                if (message.has("message"))
+                    return TYPE_MESSAGE_RECEIVED;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
-    public void addMessage(Message message){
-        messages.add(message);
-
+    public void addMessage(JSONObject jsonObject){
+        messages.add(jsonObject);
+        notifyDataSetChanged();
     }
 
 

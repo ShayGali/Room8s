@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.room8.R;
 import com.example.room8.adapters.MessagesAdapter;
+import com.example.room8.database.ChatHandler;
 import com.example.room8.model.Message;
 
 /**
@@ -78,7 +79,10 @@ public class MessageFragment extends Fragment {
         messageAdapter = new MessagesAdapter(getLayoutInflater());
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        addMessages();
+
+        // TODO: change the name to the user name
+        ChatHandler chatHandler = new ChatHandler(getActivity(), "yossi", view.findViewById(R.id.enter_message_EditText), view.findViewById(R.id.send_btn), recyclerView, messageAdapter);
+        chatHandler.initializeSocketConnection();
 
         menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
@@ -102,17 +106,4 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-    private void addMessages() {
-
-        messageAdapter.addMessage(new Message("Yossi", "oisafofsjiosfasfo", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Yossi", "aw3reasfafasdf", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Davud", "Continual delighted as elsewhere am convinced unfeeling. Introduced stimulated attachment no by projection. ", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Yossi", "oisafofsjiosfasfo", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Davud", "oisafofsjiosfasfo", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Davud", "In friendship diminution instrument so. Son sure paid door with say them. Two among sir sorry men court. Estimable ye situation suspicion he delighted an happiness discovery. Fact are size cold why had part. If believing or sweetness otherwise in we forfeited. Tolerably an unwilling arranging of determine. Beyond rather sooner so if up wishes or.", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Yossi", "hey", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Davud", "oisafofsjiosfasfo", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Yossi", "125", "Jone 10", "10:35"));
-        messageAdapter.addMessage(new Message("Davud", "oisafofsjiosfasfo", "Jone 10", "10:35"));
-    }
 }

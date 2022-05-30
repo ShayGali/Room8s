@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
 async function generateToken(data) {
   const token = await JWT.sign(
     {
-      data,
+      ...data,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "365d" }

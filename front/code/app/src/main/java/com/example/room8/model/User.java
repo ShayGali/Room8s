@@ -1,23 +1,27 @@
 package com.example.room8.model;
 
-public class User {
+public final class User {
+    private static User user;
+
     private Integer id;
     private String email;
     private String password;
-//    private Roll roll;
 //    private double monthlyPayment;
 //    private String profileIconPath;
 
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(Integer id, String email, String password) {
+    private User(Integer id, String email, String password, double monthlyPayment, String profileIconPath) {
         this.id = id;
         this.email = email;
         this.password = password;
+//        this.monthlyPayment = monthlyPayment;
+//        this.profileIconPath = profileIconPath;
+    }
+
+    public static User getInstance() {
+        if (user == null) {
+            user = new User(null, null, null, 0, "");
+        }
+        return user;
     }
 
     public Integer getId() {
