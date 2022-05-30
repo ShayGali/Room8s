@@ -1,8 +1,10 @@
 const db = require("../config/db");
 const usersTable = "users";
 
+const userService = require("./userService");
+
 exports.login = async (email, password) => {
-  let checkUserExists = await this.findByEmail(email);
+  let checkUserExists = await userService.findByEmail(email);
   if (!checkUserExists) {
     return { errorMsg: "Email not found" };
   }
@@ -10,7 +12,7 @@ exports.login = async (email, password) => {
 };
 
 exports.register = async (user) => {
-  let checkUserExists = await this.findByEmail(user.email);
+  let checkUserExists = await userService.findByEmail(user.email);
   if (checkUserExists !== undefined) {
     return { errorMsg: "Email is already registered" };
   }

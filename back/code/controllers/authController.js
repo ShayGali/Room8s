@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const authService = require("../service/authService");
+const userService = require("../service/userService");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 
@@ -21,6 +22,7 @@ exports.register = async (req, res, next) => {
 
     jwtToken = await generateToken({
       userId: result.insertId,
+      apartmentId: null,
     });
     return res
       .status(201)
@@ -40,14 +42,19 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const findUser = await authService.findByEmail(email);
+    const findUser = await userService.findByEmail(email);
     if (!findUser) {
       return res.status(401).json({ msg: "Invalid email" }); //TODO: change the msg
     }
     if (!(await bcrypt.compare(password, findUser.user_password))) {
       return res.status(401).json({ msg: "Invalid password" });
     }
-    const jwtToken = await generateToken(findUser.ID);
+
+    const apartmentId = await userService.findUserApartment(findUser.ID);
+    const jwtToken = await generateToken({
+      userId: findUser.ID,
+      apartmentId: apartmentId !== undefined ? apartmentId.apartmentId : null,
+    });
     return res.status(200).json({
       msg: "success",
       jwtToken,
@@ -57,10 +64,10 @@ exports.login = async (req, res, next) => {
   }
 };
 
-async function generateToken(userId) {
+async function generateToken(data) {
   const token = await JWT.sign(
     {
-      userId,
+      data,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "365d" }

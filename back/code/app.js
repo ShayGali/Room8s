@@ -2,13 +2,25 @@ const SocketServer = require("websocket").server;
 const { app } = require("./http server");
 
 const server = require("http").createServer(app);
-const webSocketServer = new SocketServer({ httpServer: server });
 
+const { authenticateToken } = require("./middleware/auth");
+const { findUserApartment } = require("./service/userService");
+const webSocketServer = new SocketServer({
+  httpServer: server,
+  path: "/messages",
+});
+
+// let connections = {};
 let connections = [];
 
-webSocketServer.on("request", (req) => {
+webSocketServer.on("request", async (req) => {
+  const token = authenticateToken(req.httpRequest.headers["x-auth-token"]);
+  if (!token) {
+    console.log("reject connection - token invalid");
+    req.reject(401, "invalid token");
+    return;
+  }
   const connection = req.accept();
-
   console.log(`New connection`);
   connections.push(connection);
 

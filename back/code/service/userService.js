@@ -2,6 +2,7 @@ const db = require("../config/db");
 const usersTable = "users";
 
 exports.findUserApartment = async (userID) => {
+  if (userID === undefined) return;
   const query = `
   select apartment_ID as apartmentId
   from user_in_apartment
