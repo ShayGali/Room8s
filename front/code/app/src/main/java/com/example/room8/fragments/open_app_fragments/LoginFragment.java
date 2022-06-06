@@ -85,8 +85,7 @@ public class LoginFragment extends Fragment {
 
 
         forgetPasswordButton.setOnClickListener(v ->
-                        activity.simple2()
-//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         );
 
         registerButton.setOnClickListener(v ->

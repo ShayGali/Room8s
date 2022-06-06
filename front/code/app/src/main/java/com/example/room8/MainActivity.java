@@ -29,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         databaseService = new NodeService();
 
-        if (!isNetworkConnected()){
-            Toast.makeText(this, "You dont have network connection", Toast.LENGTH_SHORT).show();
-        }if( !isServerUp()){
-            
+        if (!isNetworkConnected()) {//TODO - לשלוח אותו למסך יעודי
+            Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
         }
-        
+        if (!isServerUp()) { // TODO - לשלוח אותו למסך יעודי
+            Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     private boolean isServerUp() {
@@ -42,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
-    
+
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -76,22 +78,4 @@ public class MainActivity extends AppCompatActivity {
         databaseService.register(username, email, password);
     }
 
-    String str = null;
-
-    public void simple() {
-        str = databaseService.simpleReq();
-        if (str == null) {
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-
-        } else
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
-
-    public void simple2() {
-        if (str == null) {
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-
-        } else
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
 }
