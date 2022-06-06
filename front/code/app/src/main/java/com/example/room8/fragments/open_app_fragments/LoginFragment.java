@@ -8,15 +8,10 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
-import com.example.room8.database.PasswordHandler;
-
-import java.security.NoSuchAlgorithmException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,26 +80,12 @@ public class LoginFragment extends Fragment {
 
 
         loginButton.setOnClickListener(v -> {
-                activity.simple();
-//            String email = emailInput.getText().toString();
-//            String password = passwordInput.getText().toString();
-//            if (activity.login(email, password)) {
-//                try {
-//                    String s = PasswordHandler.encryptPassword("123");
-//                    System.out.println(s);
-//                } catch (NoSuchAlgorithmException e) {
-//                    e.printStackTrace();
-//                }
-////                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
-//            } else {
-//                Toast.makeText(activity, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
-//
-//            }
+            activity.login();
         });
 
 
         forgetPasswordButton.setOnClickListener(v ->
-                activity.simple2()
+                        activity.simple2()
 //                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         );
 

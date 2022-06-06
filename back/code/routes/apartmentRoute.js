@@ -5,18 +5,22 @@ const router = express.Router();
 
 const apartmentController = require("../controllers/apartmentController");
 
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateTokenFromRequest } = require("../middleware/auth");
 
-router.post("/create", authenticateToken, apartmentController.createApartment);
+router.post(
+  "/create",
+  authenticateTokenFromRequest,
+  apartmentController.createApartment
+);
 
 router
   .route("/data")
-  .get(authenticateToken, apartmentController.getApartmentData);
+  .get(authenticateTokenFromRequest, apartmentController.getApartmentData);
 
 //TODO: add middleware to check the user role to be an apartment_owner
 router.post(
   "/addUser",
-  authenticateToken,
+  authenticateTokenFromRequest,
   apartmentController.addUserToApartment
 );
 

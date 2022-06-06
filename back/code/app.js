@@ -1,20 +1,19 @@
 const SocketServer = require("websocket").server;
-const { app } = require("./http server");
+const app = require("./rest control");
 
 const server = require("http").createServer(app);
 
 const { authenticateToken } = require("./middleware/auth");
-const { findUserApartment } = require("./service/userService");
 const webSocketServer = new SocketServer({
   httpServer: server,
   path: "/messages",
 });
 
-// let connections = {};
 let connections = {};
 
 webSocketServer.on("request", async (req) => {
   const token = authenticateToken(req.httpRequest.headers["x-auth-token"]);
+
   if (!token) {
     console.log("reject connection - token invalid");
     req.reject(401, "invalid token");
@@ -42,10 +41,16 @@ webSocketServer.on("request", async (req) => {
   });
 
   connection.on("close", (resCode, desc) => {
-    console.log("connection closed");
-    connections[token.apartmentId] = connections[token.apartmentId].filter(
+    console.log(`connection closed. resCode:${resCode}, description: ${desc}`);
+
+    currentApartmentConnections = connections[token.apartmentId];
+
+    currentApartmentConnections = currentApartmentConnections.filter(
       (element) => element !== connection
     );
+    if (currentApartmentConnections.length == 0) {
+      delete connections[token.apartmentId];
+    }
   });
 });
 

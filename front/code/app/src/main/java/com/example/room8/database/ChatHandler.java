@@ -65,6 +65,7 @@ public class ChatHandler implements TextWatcher {
                 .addHeader("x-auth-token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImFwYXJ0bWVudElkIjoxLCJpYXQiOjE2NTM4OTU5OTYsImV4cCI6MTY4NTQzMTk5Nn0.3_J8E0g-3QD2Ho3zeE7NwHyCORHV3PjqpHW2Js2HdfA")
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
+
     }
 
     @Override

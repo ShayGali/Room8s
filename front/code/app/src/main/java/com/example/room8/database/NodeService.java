@@ -1,7 +1,5 @@
 package com.example.room8.database;
 
-import android.os.AsyncTask;
-
 import androidx.annotation.NonNull;
 
 import com.example.room8.model.User;
@@ -20,9 +18,9 @@ import okhttp3.Response;
 public class NodeService implements DatabaseService {
 
     OkHttpClient client = new OkHttpClient();
-    private static final String SEVER_ADDRESS = "http://10.113.4.225:";
+    private static final String SEVER_ADDRESS = "http://10.9.10.110:";
     private static final int PORT = 3000;
-    private static final String URL = SEVER_ADDRESS + PORT;
+    public static final String SERVER_BASE_URL = SEVER_ADDRESS + PORT;
 
 
     @Override
@@ -43,7 +41,7 @@ public class NodeService implements DatabaseService {
     @Override
     public String register(String username, String email, String password) {
 
-        String requestUrl = URL + "/users/register";
+        String requestUrl = SERVER_BASE_URL + "/users/register";
         RequestBody formBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)
