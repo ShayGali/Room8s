@@ -19,7 +19,7 @@ import com.example.room8.R;
  */
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
-    Button menuBtn;
+    View menuBtn;
 
 
     // TODO: Rename parameter arguments, choose names that match

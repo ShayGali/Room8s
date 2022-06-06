@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_signupFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_homePageUserWithoutApartmentFragment"
+            app:destination="@id/homePageUserWithoutApartmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"

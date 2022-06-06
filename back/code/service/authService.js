@@ -3,14 +3,6 @@ const usersTable = "users";
 
 const userService = require("./userService");
 
-exports.login = async (email, password) => {
-  let checkUserExists = await userService.findByEmail(email);
-  if (!checkUserExists) {
-    return { errorMsg: "Email not found" };
-  }
-  return checkUserExists;
-};
-
 exports.register = async (user) => {
   let checkUserExists = await userService.findByEmail(user.email);
   if (checkUserExists !== undefined) {

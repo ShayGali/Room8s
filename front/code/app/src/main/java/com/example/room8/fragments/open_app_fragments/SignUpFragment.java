@@ -13,6 +13,8 @@ import android.widget.EditText;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 
+import java.lang.ref.WeakReference;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SignUpFragment#newInstance} factory method to
@@ -72,19 +74,17 @@ public class SignUpFragment extends Fragment {
         EditText usernameEditText = view.findViewById(R.id.register_username_EditText);
         EditText emailEditText = view.findViewById(R.id.register_email_EditText);
         EditText passwordEditText = view.findViewById(R.id.register_password_EditText);
+
         submitBtn.setOnClickListener(v -> {
                     //TODO: make register function
                     MainActivity activity = (MainActivity)getActivity();
-                    String username = usernameEditText.getText().toString();
-                    String email = emailEditText.getText().toString();
-                    String password = passwordEditText.getText().toString();
-                    activity.register(username,email,password);
-//                    Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homePageFragment);
+                    activity.register(new WeakReference<>(usernameEditText),new WeakReference<>(emailEditText),new WeakReference<>(passwordEditText));
                 }
         );
 
-        goToLoginBtn.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_loginFragment)
+        goToLoginBtn.setOnClickListener(v -> {
+                    Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_loginFragment);
+                }
         );
 
 

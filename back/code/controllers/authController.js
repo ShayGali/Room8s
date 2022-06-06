@@ -11,13 +11,18 @@ exports.register = async (req, res, next) => {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
+    let checkUserExists = await userService.findByEmail(email);
+    if (checkUserExists !== undefined) {
+      return res.status(409).json({ msg: result.errorMsg });
+    }
+
     const result = await authService.register({
       username,
       email,
       password: hashPassword,
     });
     if (result.errorMsg !== undefined) {
-      return res.status(409).json(result);
+      return res.status(409).json({ msg: result.errorMsg });
     }
 
     jwtToken = await generateToken({

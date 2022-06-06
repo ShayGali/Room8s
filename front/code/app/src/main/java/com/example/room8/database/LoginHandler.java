@@ -65,7 +65,6 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
             activity.get().showToast("Try again later");
             return;
         }
-        System.out.println(responseJson.toString());
         if (responseJson.has("jwtToken")) {
             String token = null;
             try {

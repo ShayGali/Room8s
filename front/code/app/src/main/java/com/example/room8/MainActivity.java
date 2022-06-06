@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.room8.database.DatabaseService;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
+import com.example.room8.database.RegisterHandler;
 
 import java.lang.ref.WeakReference;
 
@@ -40,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isServerUp() {
-        return false;
+        return true;
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null;
+//        return cm.getActiveNetworkInfo() != null;
+        return true;
     }
 
     public void showToast(String msg) {
@@ -56,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(R.id.action_loginFragment_to_homePageFragment);
     }
 
+    public void goToHomePageWithOutApartment() {
+        Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment);
+    }
+
     // check if we have a token in the SharedPreferences
     public boolean checkIfJwtTokenExists() {
         SharedPreferences sp = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
@@ -64,18 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     // get the Jwt token from the database, save it to the SharedPreferences
-    // if the login failed the we will return false
-    public void login() {
-        WeakReference<TextView> emailTextViewWeakReference = new WeakReference<>(findViewById(R.id.login_email_EditText));
-        WeakReference<TextView> passwordTextViewWeakReference = new WeakReference<>(findViewById(R.id.login_password_EditText));
+    public void login(WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
-        LoginHandler loginHandler = new LoginHandler(mainActivityWeakReference, emailTextViewWeakReference, passwordTextViewWeakReference);
-        loginHandler.execute();
+        new LoginHandler(mainActivityWeakReference, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
 
-    public void register(String username, String email, String password) {
-
-        databaseService.register(username, email, password);
+    public void register(WeakReference<TextView> userNameTextView,WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference){
+        WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
+        new RegisterHandler(mainActivityWeakReference, userNameTextView,emailTextViewWeakReference,passwordTextViewWeakReference).execute();
     }
+
+
 
 }

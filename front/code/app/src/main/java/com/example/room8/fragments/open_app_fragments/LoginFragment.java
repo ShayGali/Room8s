@@ -13,6 +13,8 @@ import android.widget.EditText;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 
+import java.lang.ref.WeakReference;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
@@ -80,7 +82,7 @@ public class LoginFragment extends Fragment {
 
 
         loginButton.setOnClickListener(v -> {
-            activity.login();
+            activity.login(new WeakReference<>(emailInput), new WeakReference<>(passwordInput));
         });
 
 
