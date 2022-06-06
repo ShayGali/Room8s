@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/drawable/layout_border_style.xml" value="0.137" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_expenses.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_forgot_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_home_page.xml" value="0.264" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_message.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_wallet.xml" value="0.176" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/single_expense_layout.xml" value="0.4" />
+        <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/single_task_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1325" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/button.xml" value="0.114" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/buttun_border_style.xml" value="0.1" />
