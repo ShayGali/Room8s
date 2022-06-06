@@ -3,13 +3,14 @@ package com.example.room8;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.room8.R;
 import com.example.room8.database.DatabaseService;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
@@ -27,8 +28,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         databaseService = new NodeService();
+
+        if (!isNetworkConnected()){
+            Toast.makeText(this, "You dont have network connection", Toast.LENGTH_SHORT).show();
+        }if( !isServerUp()){
+            
+        }
+        
     }
 
+    private boolean isServerUp() {
+        return false;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+    
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

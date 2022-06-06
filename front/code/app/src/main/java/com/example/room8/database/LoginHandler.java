@@ -37,8 +37,7 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
-        String requestUrl = NodeService.SERVER_BASE_URL + "/auth/login";
-
+        String requestUrl = NodeService.HTTP_URL + "/auth/login";
         RequestBody formBody = new FormBody.Builder()
                 .add("email", emailTextView.get().getText().toString())
                 .add("password", passwordTextView.get().getText().toString())

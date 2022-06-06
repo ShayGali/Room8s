@@ -18,9 +18,11 @@ import okhttp3.Response;
 public class NodeService implements DatabaseService {
 
     OkHttpClient client = new OkHttpClient();
-    private static final String SEVER_ADDRESS = "http://10.9.10.110:";
+    private static final String SEVER_ADDRESS = "10.9.10.110:";
     private static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SEVER_ADDRESS + PORT;
+    public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
+
 
 
     @Override
@@ -41,7 +43,7 @@ public class NodeService implements DatabaseService {
     @Override
     public String register(String username, String email, String password) {
 
-        String requestUrl = SERVER_BASE_URL + "/users/register";
+        String requestUrl = HTTP_URL + "/users/register";
         RequestBody formBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)

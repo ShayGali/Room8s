@@ -35,10 +35,8 @@ public class ChatHandler implements TextWatcher {
     private String name; // the name of the user
 
     private WebSocket webSocket; // the socket
-    private static final int SERVER_PORT = 3000;
-    private static final String SERVER_URL = "10.9.11.51";
     private static final String PATH = "/messages";
-    private static final String SERVER_PATH = "ws://" + SERVER_URL + ":" + SERVER_PORT + PATH; // the url of the server  //demo echo socket - ws://echo.websocket.org
+    private static final String SERVER_PATH = "ws://" + NodeService.SERVER_BASE_URL + PATH; // the url of the server  //demo echo socket - ws://echo.websocket.org
 
 
     Activity activity;
