@@ -39,7 +39,6 @@
         android:id="@+id/frameLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
@@ -60,33 +59,9 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
-
-        <TextView
-            android:id="@+id/invite_friend_btn"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
-            android:gravity="center"
-            android:text="@string/invite_friend"
-            android:textSize="24sp" />
-    </FrameLayout>
-
-    <FrameLayout
         android:id="@+id/frameLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout6"
@@ -109,7 +84,6 @@
         android:id="@+id/frameLayout6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout7"
@@ -129,17 +103,60 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+
+        <TextView
+            android:id="@+id/invite_friend_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/invite_friend"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/frameLayout7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout6">
+
+        <TextView
+            android:id="@+id/delete_user_btn"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border_style"
+            android:gravity="center"
+            android:text="@string/delete_user"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout7">
 
         <TextView
             android:id="@+id/log_out_btn"
