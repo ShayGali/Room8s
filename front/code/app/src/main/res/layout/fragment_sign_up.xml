@@ -110,7 +110,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@string/go_to_login"
-            android:src="@drawable/sign_up_btn"
+            android:src="@drawable/sign_in_btn"
             app:layout_constraintDimensionRatio="w,2.87:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
