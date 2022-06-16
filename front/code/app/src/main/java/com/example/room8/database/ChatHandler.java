@@ -115,11 +115,10 @@ public class ChatHandler implements TextWatcher {
             activity.runOnUiThread(() -> {
                 try {
                     JSONObject jsonObject = new JSONObject(text);
-                    jsonObject.put("isSent", false);
-
+//                    System.out.println(jsonObject);
                     messageAdapter.addMessage(jsonObject);
-
-                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+//
+//                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

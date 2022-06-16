@@ -46,8 +46,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 view = inflater.inflate(R.layout.message_received, parent, false);
                 return new ReceivedMessageHolder(view);
         }
-
-        return null;
+        view = inflater.inflate(R.layout.message_received, parent, false);
+        return new ReceivedMessageHolder(view);
     }
 
     @Override
@@ -95,6 +95,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return -1;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void addMessage(JSONObject jsonObject){
         messages.add(jsonObject);
         notifyDataSetChanged();

@@ -18,8 +18,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ msg: "Something went wrong" });
 });
 
-app.get("/", (req, res) => {
-  res.status(200).send({ msg: "Server Side" });
+app.get("/", async (req, res) => {
+  res.status(200).send({ msg: "server side" });
 });
 
 app.all("/isAlive", (req, res) => {
@@ -28,7 +28,9 @@ app.all("/isAlive", (req, res) => {
 
 // Global 404 Error handler
 app.all("/*", (req, res) => {
-  res.status(404).json({ msg: `${req.originalUrl} not found` });
+  res
+    .status(404)
+    .json({ msg: `${req.method} on ${req.originalUrl} not found` });
 });
 
 module.exports = app;

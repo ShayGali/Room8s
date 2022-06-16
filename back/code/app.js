@@ -1,10 +1,12 @@
+require("dotenv").config();
+
 const SocketServer = require("websocket").server;
 const app = require("./rest control");
 
 const server = require("http").createServer(app);
 
 const { authenticateToken } = require("./middleware/auth");
-const { saveMessageToDB } = require("./service/messagingService");
+const messagingService = require("./service/messagingService");
 const webSocketServer = new SocketServer({
   httpServer: server,
   path: "/messages",
@@ -34,14 +36,28 @@ webSocketServer.on("request", async (req) => {
   } else {
     connections[token.apartmentId] = [connection];
   }
+  (await messagingService.getMessages(token.apartmentId, token.userId)).forEach(
+    (msg) => {
+      console.log(JSON.stringify(msg));
+      connection.sendUTF(JSON.stringify(msg));
+    }
+  );
 
   connection.on("message", (msg) => {
     connections[token.apartmentId].forEach((element) => {
-      msg = JSON.parse(msg.utf8Data);
+      messageWithTime = JSON.parse(msg.utf8Data);
       let timestamp = new Date().toISOString().slice(0, 19).replace("T", " ");
-      msg.timestamp = timestamp;
-      saveMessageToDB(token.apartmentId, token.userId, msg.message, timestamp);
-      if (element !== connection) element.sendUTF(msg.utf8Data);
+      messageWithTime.timestamp = timestamp;
+      messagingService.saveMessageToDB(
+        token.apartmentId,
+        token.userId,
+        messageWithTime.message,
+        timestamp
+      );
+
+      if (element !== connection) {
+        element.sendUTF(JSON.stringify(messageWithTime));
+      }
     });
   });
 
