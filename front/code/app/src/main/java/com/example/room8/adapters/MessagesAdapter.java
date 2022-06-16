@@ -11,12 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
-import com.example.room8.model.Message;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +23,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_MESSAGE_SENT = 0;
     private static final int TYPE_MESSAGE_RECEIVED = 1;
 
-    private LayoutInflater inflater;
-    private List<JSONObject> messages;
+    private final LayoutInflater inflater;
+    private final List<JSONObject> messages;
 
 
     public MessagesAdapter(LayoutInflater inflater) {
@@ -56,13 +54,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         JSONObject message = messages.get(position);
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
             if (message.getBoolean("isSent")){
                 if (message.has("message")) {
                     SentMessageHolder sentMessageHolder = (SentMessageHolder) holder;
                     sentMessageHolder.messageContent.setText(message.getString("message"));
-                    sentMessageHolder.messageTime.setText(message.getString("timestamp"));
-                    System.out.println(message.getString("timestamp"));
+                    sentMessageHolder.messageDate.setText(message.getString("date"));
+                    sentMessageHolder.messageTime.setText(message.getString("time"));
                 }
             }else {
                 if (message.has("message")) {

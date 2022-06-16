@@ -26,6 +26,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -50,7 +53,7 @@ public class ChatHandler implements TextWatcher {
     private MessagesAdapter messageAdapter; // the recyclerView adapter
 
 
-    public ChatHandler(Activity activity,String name, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
+    public ChatHandler(Activity activity, String name, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
         this.activity = activity;
         this.name = name;
         this.messageEdit = messageEdit;
@@ -58,12 +61,13 @@ public class ChatHandler implements TextWatcher {
         this.recyclerView = recyclerView;
         this.messageAdapter = messageAdapter;
     }
+
     public void initializeSocketConnection() {
-        String jwtToken = activity.getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN,null);
+        String jwtToken = activity.getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN, null);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
                 .url(SERVER_PATH)
-                .addHeader("x-auth-token",jwtToken)
+                .addHeader("x-auth-token", jwtToken)
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
 
@@ -142,6 +146,9 @@ public class ChatHandler implements TextWatcher {
                 jsonObject.put("user_name", name);
                 jsonObject.put("message", messageEdit.getText().toString());
                 jsonObject.put("isSent", true);
+                jsonObject.put("date", LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                jsonObject.put("time", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
 
                 webSocket.send(jsonObject.toString());
 
