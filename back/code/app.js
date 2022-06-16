@@ -4,6 +4,7 @@ const app = require("./rest control");
 const server = require("http").createServer(app);
 
 const { authenticateToken } = require("./middleware/auth");
+const { saveMessageToDB } = require("./service/messagingService");
 const webSocketServer = new SocketServer({
   httpServer: server,
   path: "/messages",
@@ -36,6 +37,10 @@ webSocketServer.on("request", async (req) => {
 
   connection.on("message", (msg) => {
     connections[token.apartmentId].forEach((element) => {
+      msg = JSON.parse(msg.utf8Data);
+      let timestamp = new Date().toISOString().slice(0, 19).replace("T", " ");
+      msg.timestamp = timestamp;
+      saveMessageToDB(token.apartmentId, token.userId, msg.message, timestamp);
       if (element !== connection) element.sendUTF(msg.utf8Data);
     });
   });

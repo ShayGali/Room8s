@@ -59,7 +59,7 @@ public class ChatHandler implements TextWatcher {
     public void initializeSocketConnection() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
-                .url(SERVER_PATH)
+                .url(SERVER_PATH) // TODO: get JWT
                 .addHeader("x-auth-token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImFwYXJ0bWVudElkIjoxLCJpYXQiOjE2NTM4OTU5OTYsImV4cCI6MTY4NTQzMTk5Nn0.3_J8E0g-3QD2Ho3zeE7NwHyCORHV3PjqpHW2Js2HdfA")
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
