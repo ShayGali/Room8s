@@ -8,6 +8,9 @@ const JWT = require("jsonwebtoken");
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
+    if (!username || !email || !password) {
+      return res.status(400).json({ msg: "Send all data" });
+    }
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 

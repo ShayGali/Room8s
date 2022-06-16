@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
+import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,12 +49,9 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
                 .url(requestUrl)
                 .post(formBody)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             return new JSONObject(Objects.requireNonNull(response.body()).string());
-
-
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }

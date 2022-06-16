@@ -15,6 +15,7 @@ import com.example.room8.database.DatabaseService;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
+import com.example.room8.dialogs.LoadingAlert;
 
 import java.lang.ref.WeakReference;
 
@@ -24,30 +25,53 @@ public class MainActivity extends AppCompatActivity {
     public static final String JWT_TOKEN = "jwt token";
     public DatabaseService databaseService;
 
+    LoadingAlert loadingAlert = new LoadingAlert(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         databaseService = new NodeService();
+        loadingAlert.startLoadingDialog();
 
-        if (!isNetworkConnected()) {//TODO - לשלוח אותו למסך יעודי
+        if (!isNetworkAvailable()) {//TODO - לשלוח אותו למסך יעודי
             Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
         }
-        if (!isServerUp()) { // TODO - לשלוח אותו למסך יעודי
-            Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
-
-        }
-
+        new Thread(() -> {
+            if (isServerUp()) { // TODO - לשלוח אותו למסך יעודי
+                runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
+            } else {
+                runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
+            }
+            loadingAlert.dismissDialog();
+        }).start();
     }
 
     private boolean isServerUp() {
-        return true;
+        return databaseService.isServerUp();
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        return cm.getActiveNetworkInfo() != null;
-        return true;
+    public void func() {
+        new Thread(() -> {
+            if (isServerUp()) { // TODO - לשלוח אותו למסך יעודי
+                runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
+            } else {
+                runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
+            }
+            loadingAlert.dismissDialog();
+        }).start();
+    }
+
+    /**
+     * Detect whether there is an Internet connection available
+     *
+     * @return whether there is an Internet connection available
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void showToast(String msg) {
@@ -75,11 +99,10 @@ public class MainActivity extends AppCompatActivity {
         new LoginHandler(mainActivityWeakReference, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
 
-    public void register(WeakReference<TextView> userNameTextView,WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference){
+    public void register(WeakReference<TextView> userNameTextView, WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
-        new RegisterHandler(mainActivityWeakReference, userNameTextView,emailTextViewWeakReference,passwordTextViewWeakReference).execute();
+        new RegisterHandler(mainActivityWeakReference, userNameTextView, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
-
 
 
 }

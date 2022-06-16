@@ -47,4 +47,5 @@
     <string name="profile_set_phone_number_txt">Phone Number</string>
     <string name="profile_set_email_txt">Email</string>
     <string name="delete_user">Delete User</string>
+    <string name="loading">Loading...</string>
 </resources>

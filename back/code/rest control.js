@@ -22,6 +22,10 @@ app.get("/", (req, res) => {
   res.status(200).send({ msg: "Server Side" });
 });
 
+app.all("/isAlive", (req, res) => {
+  res.status(200).send({ msg: "Server Alive" });
+});
+
 // Global 404 Error handler
 app.all("/*", (req, res) => {
   res.status(404).json({ msg: `${req.originalUrl} not found` });
