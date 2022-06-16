@@ -1,6 +1,7 @@
 package com.example.room8.database;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room8.MainActivity;
 import com.example.room8.adapters.MessagesAdapter;
 
 import org.json.JSONException;
@@ -57,10 +59,11 @@ public class ChatHandler implements TextWatcher {
         this.messageAdapter = messageAdapter;
     }
     public void initializeSocketConnection() {
+        String jwtToken = activity.getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN,null);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
-                .url(SERVER_PATH) // TODO: get JWT
-                .addHeader("x-auth-token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImFwYXJ0bWVudElkIjoxLCJpYXQiOjE2NTM4OTU5OTYsImV4cCI6MTY4NTQzMTk5Nn0.3_J8E0g-3QD2Ho3zeE7NwHyCORHV3PjqpHW2Js2HdfA")
+                .url(SERVER_PATH)
+                .addHeader("x-auth-token",jwtToken)
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
 
@@ -115,10 +118,8 @@ public class ChatHandler implements TextWatcher {
             activity.runOnUiThread(() -> {
                 try {
                     JSONObject jsonObject = new JSONObject(text);
-//                    System.out.println(jsonObject);
                     messageAdapter.addMessage(jsonObject);
-//
-//                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,7 +139,7 @@ public class ChatHandler implements TextWatcher {
         sendBtn.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("name", name);
+                jsonObject.put("user_name", name);
                 jsonObject.put("message", messageEdit.getText().toString());
                 jsonObject.put("isSent", true);
 

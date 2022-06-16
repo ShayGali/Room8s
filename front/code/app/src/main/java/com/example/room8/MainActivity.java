@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     // get the Jwt token from the database, save it to the SharedPreferences
     public void login(WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);

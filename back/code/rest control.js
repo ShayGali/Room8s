@@ -1,4 +1,5 @@
 const express = require("express");
+const { getMessages } = require("./service/messagingService");
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", async (req, res) => {
-  res.status(200).send({ msg: "server side" });
+  let a = await getMessages(1, 7);
+  res.status(200).send({ a });
 });
 
 app.all("/isAlive", (req, res) => {

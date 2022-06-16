@@ -38,7 +38,6 @@ webSocketServer.on("request", async (req) => {
   }
   (await messagingService.getMessages(token.apartmentId, token.userId)).forEach(
     (msg) => {
-      console.log(JSON.stringify(msg));
       connection.sendUTF(JSON.stringify(msg));
     }
   );
@@ -48,15 +47,17 @@ webSocketServer.on("request", async (req) => {
       messageWithTime = JSON.parse(msg.utf8Data);
       let timestamp = new Date().toISOString().slice(0, 19).replace("T", " ");
       messageWithTime.timestamp = timestamp;
-      messagingService.saveMessageToDB(
-        token.apartmentId,
-        token.userId,
-        messageWithTime.message,
-        timestamp
-      );
 
       if (element !== connection) {
+        messageWithTime.isSent = false;
         element.sendUTF(JSON.stringify(messageWithTime));
+      } else {
+        messagingService.saveMessageToDB(
+          token.apartmentId,
+          token.userId,
+          messageWithTime.message,
+          timestamp
+        );
       }
     });
   });

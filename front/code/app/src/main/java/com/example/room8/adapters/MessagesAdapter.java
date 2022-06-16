@@ -16,6 +16,7 @@ import com.example.room8.model.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,16 +56,19 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         JSONObject message = messages.get(position);
         try {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
             if (message.getBoolean("isSent")){
                 if (message.has("message")) {
                     SentMessageHolder sentMessageHolder = (SentMessageHolder) holder;
                     sentMessageHolder.messageContent.setText(message.getString("message"));
+                    sentMessageHolder.messageTime.setText(message.getString("timestamp"));
+                    System.out.println(message.getString("timestamp"));
                 }
             }else {
                 if (message.has("message")) {
                     ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
                     receivedMessageHolder.messageContent.setText(message.getString("message"));
-                    receivedMessageHolder.senderName.setText(message.getString("name"));
+                    receivedMessageHolder.senderName.setText(message.getString("user_name"));
                     receivedMessageHolder.senderImg.setImageResource(R.drawable.ic_launcher_foreground);
                 }
             }
