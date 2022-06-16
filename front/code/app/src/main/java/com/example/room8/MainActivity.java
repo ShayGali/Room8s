@@ -1,9 +1,12 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";
     public DatabaseService databaseService;
-
     LoadingAlert loadingAlert = new LoadingAlert(this);
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isNetworkAvailable()) {//TODO - לשלוח אותו למסך יעודי
             Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause","You don't have network connection"));
+
         }
         new Thread(() -> {
             if (isServerUp()) { // TODO - לשלוח אותו למסך יעודי
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
+                startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause","Server is down"));
             }
             loadingAlert.dismissDialog();
         }).start();
+
     }
 
     private boolean isServerUp() {
