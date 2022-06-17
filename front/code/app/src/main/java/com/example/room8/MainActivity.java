@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseService = new NodeService();
+        databaseService = new NodeService(this);
         loadingAlert.startLoadingDialog();
 
         // check if the user have internet connection
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
-                if (checkIfJwtTokenExists()) { //TODO
-
+                if (checkIfJwtTokenExists()) { //TODO refresh token
+                    goToHomePage();
                 }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
@@ -90,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean checkIfJwtTokenExists() {
         SharedPreferences sp = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
         return sp.getString(JWT_TOKEN, null) == null;
+    }
+
+    public String getJwtFromSharedPreference() {
+        return getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE)
+                .getString(MainActivity.JWT_TOKEN, null);
     }
 
 

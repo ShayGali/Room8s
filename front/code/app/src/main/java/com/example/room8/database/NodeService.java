@@ -1,10 +1,21 @@
 package com.example.room8.database;
 
+import androidx.annotation.NonNull;
+
+import com.example.room8.MainActivity;
 import com.example.room8.model.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class NodeService {
 
@@ -13,9 +24,16 @@ public class NodeService {
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
+    public static final String USERS_PATH = "/users";
+
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
 
+    MainActivity activity;
+
+    public NodeService(MainActivity activity) {
+        this.activity = activity;
+    }
 
     public boolean isServerUp() {
         OkHttpClient client = new OkHttpClient();
@@ -29,6 +47,50 @@ public class NodeService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private void getUserData() {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/getData")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .get()
+                .build();
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("fetch data failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("responseBody is null");
+                    System.err.println("fetch data went wrong");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+                        User.parseFromJson(new JSONObject(stringBody));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
     }
 
 

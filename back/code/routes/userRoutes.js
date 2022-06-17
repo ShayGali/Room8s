@@ -5,10 +5,16 @@ const router = express.Router();
 
 const userController = require("../controllers/userController");
 
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateTokenFromRequest } = require("../middleware/auth");
 
-router.get("/apartmentId", userController.findUserApartment);
-router.get("/findById", authenticateToken, userController.findById);
-router.route("/findByEmail").get(userController.findByEmail); //TODO: check roll admin
+router.get(
+  "/apartmentId",
+  authenticateTokenFromRequest,
+  userController.findUserApartment
+);
+router.get("/findById", authenticateTokenFromRequest, userController.findById);
+router
+  .route("/findByEmail")
+  .get(authenticateTokenFromRequest, userController.findByEmail); //TODO: check roll admin
 
 module.exports = router;

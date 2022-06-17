@@ -7,6 +7,7 @@ const JWT = require("jsonwebtoken");
  * add go to the next() function
  */
 exports.authenticateTokenFromRequest = (req, res, next) => {
+  console.log("1");
   const token = req.header("x-auth-token");
   if (!token) return res.status(401).send({ msg: "Send token" }); // TODO: make better error message
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, tokenData) => {
@@ -17,6 +18,8 @@ exports.authenticateTokenFromRequest = (req, res, next) => {
 };
 
 exports.authenticateToken = (token) => {
+  console.log("2");
+
   if (!token) return;
   return JWT.verify(
     token,

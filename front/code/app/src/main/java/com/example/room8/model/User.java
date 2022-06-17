@@ -1,35 +1,64 @@
 package com.example.room8.model;
 
+import org.json.JSONObject;
+
 public final class User {
     private static User user;
 
-    private Integer id;
-    private String email;
-    private String password;
-//    private double monthlyPayment;
-//    private String profileIconPath;
-
-    private User(Integer id, String email, String password, double monthlyPayment, String profileIconPath) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-//        this.monthlyPayment = monthlyPayment;
-//        this.profileIconPath = profileIconPath;
-    }
-
     public static User getInstance() {
         if (user == null) {
-            user = new User(null, null, null, 0, "");
+            user = new User();
         }
         return user;
     }
+    public static User getUser() {
+        return user;
+    }
 
-    public Integer getId() {
+    public static void setUser(User user) {
+        User.user = user;
+    }
+
+    public static void parseFromJson(JSONObject userAsJson){
+
+    }
+
+    private int id;
+    private String userName;
+    private String email;
+    private int userLevel;
+
+    private double monthlyPayment;
+    private int profileIconId;
+
+    public User(int id, String userName, String email, int userLevel, double monthlyPayment, int profileIconId) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.userLevel = userLevel;
+        this.monthlyPayment = monthlyPayment;
+        this.profileIconId = profileIconId;
+    }
+
+    public User() {
+    }
+
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -40,11 +69,27 @@ public final class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public int getUserLevel() {
+        return userLevel;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserLevel(int userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public double getMonthlyPayment() {
+        return monthlyPayment;
+    }
+
+    public void setMonthlyPayment(double monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+    }
+
+    public int getProfileIconId() {
+        return profileIconId;
+    }
+
+    public void setProfileIconId(int profileIconId) {
+        this.profileIconId = profileIconId;
     }
 }

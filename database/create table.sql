@@ -24,7 +24,7 @@ email NVARCHAR(100) NOT NULL UNIQUE,
 user_level INT DEFAULT 1, -- default to basic user
 user_password NVARCHAR(256) NOT NULL,
 monthly_payment DOUBLE DEFAULT 0, 
-profile_icon_path NVARCHAR(254),
+profile_icon_id NVARCHAR INT,
 
 FOREIGN KEY (user_level) REFERENCES user_level(ID) ON DELETE SET NULL
 );

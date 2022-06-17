@@ -7,6 +7,7 @@ const userService = require("../service/userService");
  * if the user nut in an apartment, the apartment id will be null
  */
 exports.findUserApartment = async (req, res, next) => {
+  console.log("here");
   const { userId } = req.tokenData;
 
   try {
@@ -32,6 +33,7 @@ exports.findUserApartment = async (req, res, next) => {
  * and return the data of the user with out his password
  */
 exports.findById = async (req, res, next) => {
+  console.log("here");
   try {
     const { userId } = req.body;
     const result = await userService.findById(userId);
