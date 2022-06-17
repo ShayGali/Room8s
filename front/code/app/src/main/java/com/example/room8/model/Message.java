@@ -71,7 +71,7 @@ public class Message {
      *
      * @param jsonMessage message in json format
      * @throws JSONException  get the keys from the json object
-     * @throws ParseException parse the
+     * @throws ParseException parse the date
      */
     public Message(JSONObject jsonMessage) throws JSONException, ParseException {
         if (jsonMessage.has(USER_NAME_KEY))

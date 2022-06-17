@@ -28,8 +28,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final LayoutInflater inflater;
     private final List<Message> messages;
 
-    private String lastDate;
-
     public MessagesAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
         messages = new ArrayList<>();
@@ -56,21 +54,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
         AbstractMessageHolder messageHolder = (AbstractMessageHolder) holder;
-        if (lastDate == null)
-            lastDate = Message.DATE_FORMAT.format(message.getDate());
-        else {
-            String messageDate = Message.DATE_FORMAT.format(message.getDate());
-            System.out.println("prev - " + lastDate);
-            System.out.println("now - " + messageDate);
-            if (!lastDate.equals(messageDate)) {
-                System.out.println("if");
-                lastDate = messageDate;
-                messageHolder.messageDate.setText(message.getDateFormat());
-            }else {
-                System.out.println("else");
-                messageHolder.messageDate.setVisibility(View.INVISIBLE);
-            }
-        }
+        messageHolder.messageDate.setText(message.getDateFormat());
 
         messageHolder.messageContent.setText(message.getMsgContent());
         messageHolder.messageTime.setText(message.getTimeFormat());
@@ -87,6 +71,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return messages.size();
     }
 
+    /**
+     * get the type of the view in the position
+     *
+     * @param position the position in the list
+     * @return int number that represent the view type <br>
+     * return {@value TYPE_MESSAGE_SENT} -> for sent message<br>
+     * return {@value TYPE_MESSAGE_RECEIVED} -> for received message<br>
+     */
     @Override
     public int getItemViewType(int position) {
         Message message = messages.get(position);
@@ -95,12 +87,23 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else return TYPE_MESSAGE_RECEIVED;
     }
 
+    /**
+     * add a message for the list of messages
+     *
+     * @param jsonObject json object, and convert it to Message object
+     * @throws JSONException  get the keys from the json object
+     * @throws ParseException parse the date
+     */
     @SuppressLint("NotifyDataSetChanged")
     public void addMessage(JSONObject jsonObject) throws JSONException, ParseException {
-        messages.add(new Message(jsonObject));
-        notifyDataSetChanged();
+        this.addMessage(new Message(jsonObject));
     }
 
+    /**
+     * get a message and add it to the list
+     *
+     * @param message message object
+     */
     @SuppressLint("NotifyDataSetChanged")
     public void addMessage(Message message) {
         messages.add(message);
@@ -108,6 +111,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
+    /**
+     * This class is an abstract class that represent the common fields of messages view holder
+     */
     private static abstract class AbstractMessageHolder extends RecyclerView.ViewHolder {
         TextView messageContent;
         TextView messageDate;

@@ -1,7 +1,6 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.room8.database.DatabaseService;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String JWT_TOKEN = "jwt token";
 
 
-    public DatabaseService databaseService;
+    public NodeService databaseService;
 
     LoadingAlert loadingAlert = new LoadingAlert(this);
 

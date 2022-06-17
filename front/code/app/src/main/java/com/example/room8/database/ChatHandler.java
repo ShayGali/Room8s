@@ -1,9 +1,6 @@
 package com.example.room8.database;
 
-import android.app.Activity;
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,23 +24,23 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class ChatHandler implements TextWatcher {
+public class ChatHandler {
 
     private WebSocket webSocket; // the socket
     private static final String PATH = "/messages";
-    private static final String SERVER_PATH = "ws://" + NodeService.SERVER_BASE_URL + PATH; // the url of the server  //demo echo socket - ws://echo.websocket.org
+    private static final String SERVER_PATH = "ws://" + NodeService.SERVER_BASE_URL + PATH; // the url of the server
 
 
-    Activity activity;
+    MainActivity activity;
 
-    private EditText messageEdit;  // the message input
-    private View sendBtn; // the btn of sending message and image
+    private final EditText messageEdit;  // the message input
+    private final View sendBtn; // the btn of sending message and image
 
-    private RecyclerView recyclerView; // the recyclerView of the messages
-    private MessagesAdapter messageAdapter; // the recyclerView adapter
+    private final RecyclerView recyclerView; // the recyclerView of the messages
+    private final MessagesAdapter messageAdapter; // the recyclerView adapter
 
 
-    public ChatHandler(Activity activity, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
+    public ChatHandler(MainActivity activity, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
         this.activity = activity;
         this.messageEdit = messageEdit;
         this.sendBtn = sendBtn;
@@ -51,41 +48,25 @@ public class ChatHandler implements TextWatcher {
         this.messageAdapter = messageAdapter;
     }
 
+    /**
+     * initialize the socket connection for the messaging
+     */
     public void initializeSocketConnection() {
+        // get the jwt token from the shared preferences
         String jwtToken = activity.getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN, null);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
                 .url(SERVER_PATH)
-                .addHeader("x-auth-token", jwtToken)
+                .addHeader(NodeService.TOKEN_HEADER_KEY, jwtToken)
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    // check if the message edit text have text, if true we set the btn to be sent and not the image picker
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (s.toString().trim().isEmpty())
-            resetMessageEdit();
     }
 
     /**
      * reset the btn and the messageEdit to default
      */
     private void resetMessageEdit() {
-        messageEdit.removeTextChangedListener(this);
         messageEdit.setText("");
-        messageEdit.addTextChangedListener(this);
     }
 
     /**
@@ -126,25 +107,14 @@ public class ChatHandler implements TextWatcher {
      * initialize the component on the activity
      */
     private void initializeView() {
-
-        messageEdit.addTextChangedListener(this); // add listener to text changes
-
         sendBtn.setOnClickListener(v -> {
             //TODO - GET THE USER NAME AND ICON
-            Message message = new Message("test123", messageEdit.getText().toString(),new Date(), 0, true);
+            Message message = new Message("test123", messageEdit.getText().toString(), new Date(), 0, true);
             webSocket.send(message.toStringJsonFormat());
-            //            try {
-//                webSocket.send(message.parseToJson().toString());
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
             messageAdapter.addMessage(message);
             recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
-
             resetMessageEdit();
         });
-
     }
 
 }

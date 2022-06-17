@@ -23,6 +23,11 @@ import okhttp3.Response;
 
 public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
 
+    private static final String USERNAME_KEY = "username";
+    private static final String EMAIL_KEY = "email";
+    private static final String PASSWORD_KEY = "password";
+    private static final String REQUEST_URL = NodeService.HTTP_URL + "/auth/register";
+
     WeakReference<MainActivity> activity;
     WeakReference<TextView> userNameTextView;
     WeakReference<TextView> emailTextView;
@@ -38,15 +43,14 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(Void... voids) {
         OkHttpClient client = new OkHttpClient();
-        String requestUrl = NodeService.HTTP_URL + "/auth/register";
         RequestBody formBody = new FormBody.Builder()
-                .add("username", userNameTextView.get().getText().toString())
-                .add("email", emailTextView.get().getText().toString())
-                .add("password", passwordTextView.get().getText().toString())
+                .add(USERNAME_KEY, userNameTextView.get().getText().toString())
+                .add(EMAIL_KEY, emailTextView.get().getText().toString())
+                .add(PASSWORD_KEY, passwordTextView.get().getText().toString())
                 .build();
 
         Request request = new Request.Builder()
-                .url(requestUrl)
+                .url(REQUEST_URL)
                 .post(formBody)
                 .build();
         try {
@@ -64,10 +68,10 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
             activity.get().showToast("Try again later");
             return;
         }
-        if (responseJson.has("jwtToken")) {
+        if (responseJson.has(NodeService.TOKEN_BODY_KEY)) {
             String token = null;
             try {
-                token = responseJson.getString("jwtToken");
+                token = responseJson.getString(NodeService.TOKEN_BODY_KEY);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
