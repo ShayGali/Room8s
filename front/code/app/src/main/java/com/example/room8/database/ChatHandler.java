@@ -2,33 +2,24 @@ package com.example.room8.database;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.adapters.MessagesAdapter;
+import com.example.room8.model.Message;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,7 +28,6 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class ChatHandler implements TextWatcher {
-    private String name; // the name of the user
 
     private WebSocket webSocket; // the socket
     private static final String PATH = "/messages";
@@ -53,9 +43,8 @@ public class ChatHandler implements TextWatcher {
     private MessagesAdapter messageAdapter; // the recyclerView adapter
 
 
-    public ChatHandler(Activity activity, String name, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
+    public ChatHandler(Activity activity, EditText messageEdit, View sendBtn, RecyclerView recyclerView, MessagesAdapter messageAdapter) {
         this.activity = activity;
-        this.name = name;
         this.messageEdit = messageEdit;
         this.sendBtn = sendBtn;
         this.recyclerView = recyclerView;
@@ -124,7 +113,7 @@ public class ChatHandler implements TextWatcher {
                     JSONObject jsonObject = new JSONObject(text);
                     messageAdapter.addMessage(jsonObject);
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
-                } catch (JSONException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
             });
@@ -141,24 +130,19 @@ public class ChatHandler implements TextWatcher {
         messageEdit.addTextChangedListener(this); // add listener to text changes
 
         sendBtn.setOnClickListener(v -> {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("user_name", name);
-                jsonObject.put("message", messageEdit.getText().toString());
-                jsonObject.put("isSent", true);
-                jsonObject.put("date", LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-                jsonObject.put("time", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            //TODO - GET THE USER NAME AND ICON
+            Message message = new Message("test123", messageEdit.getText().toString(),new Date(), 0, true);
+            webSocket.send(message.toStringJsonFormat());
+            //            try {
+//                webSocket.send(message.parseToJson().toString());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 
+            messageAdapter.addMessage(message);
+            recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
 
-                webSocket.send(jsonObject.toString());
-
-                messageAdapter.addMessage(jsonObject);
-                recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
-
-                resetMessageEdit();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            resetMessageEdit();
         });
 
     }

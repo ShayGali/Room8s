@@ -49,4 +49,7 @@
     <string name="delete_user">Delete User</string>
     <string name="loading">Loading...</string>
     <string name="you_dont_have_connection">You Dont Have Connection</string>
+    <string name="user_name">user name</string>
+    <string name="message">message</string>
+    <string name="user_icon">User Icon</string>
 </resources>

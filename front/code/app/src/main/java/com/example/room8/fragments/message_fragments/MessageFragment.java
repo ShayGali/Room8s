@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.room8.R;
 import com.example.room8.adapters.MessagesAdapter;
 import com.example.room8.database.ChatHandler;
-import com.example.room8.model.Message;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +80,7 @@ public class MessageFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         // TODO: change the name to the user name
-        ChatHandler chatHandler = new ChatHandler(getActivity(), "yossi", view.findViewById(R.id.enter_message_EditText), view.findViewById(R.id.send_btn), recyclerView, messageAdapter);
+        ChatHandler chatHandler = new ChatHandler(getActivity(), view.findViewById(R.id.enter_message_EditText), view.findViewById(R.id.send_btn), recyclerView, messageAdapter);
         chatHandler.initializeSocketConnection();
 
         menuBtn = view.findViewById(R.id.menu_btn);

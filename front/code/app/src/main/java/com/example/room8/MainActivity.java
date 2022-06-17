@@ -26,8 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";
+
+
     public DatabaseService databaseService;
+
     LoadingAlert loadingAlert = new LoadingAlert(this);
+
 
     @SuppressLint("ResourceType")
     @Override
@@ -37,37 +41,28 @@ public class MainActivity extends AppCompatActivity {
         databaseService = new NodeService();
         loadingAlert.startLoadingDialog();
 
-        if (!isNetworkAvailable()) {//TODO - לשלוח אותו למסך יעודי
+        // check if the user have internet connection
+        if (!isNetworkAvailable()) {
             Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause","You don't have network connection"));
-
+            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", "You don't have network connection"));
         }
+
+        // check if the user have connection to the server
         new Thread(() -> {
-            if (isServerUp()) { // TODO - לשלוח אותו למסך יעודי
+            if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
+                if (checkIfJwtTokenExists()) { //TODO
+
+                }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
-                startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause","Server is down"));
+                startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", "Server is down"));
             }
             loadingAlert.dismissDialog();
         }).start();
 
     }
 
-    private boolean isServerUp() {
-        return databaseService.isServerUp();
-    }
-
-    public void func() {
-        new Thread(() -> {
-            if (isServerUp()) { // TODO - לשלוח אותו למסך יעודי
-                runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
-            } else {
-                runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
-            }
-            loadingAlert.dismissDialog();
-        }).start();
-    }
 
     /**
      * Detect whether there is an Internet connection available
@@ -100,13 +95,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * makes a login attempt
+     *
+     * @param emailTextViewWeakReference    weak reference for the email input
+     * @param passwordTextViewWeakReference weak reference for the password input
+     */
     // get the Jwt token from the database, save it to the SharedPreferences
     public void login(WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
         new LoginHandler(mainActivityWeakReference, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
 
+    /**
+     * makes a register attempt
+     *
+     * @param userNameTextView              weak reference for the username input
+     * @param emailTextViewWeakReference    weak reference for the email input
+     * @param passwordTextViewWeakReference weak reference for the password input
+     */
     public void register(WeakReference<TextView> userNameTextView, WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
         new RegisterHandler(mainActivityWeakReference, userNameTextView, emailTextViewWeakReference, passwordTextViewWeakReference).execute();

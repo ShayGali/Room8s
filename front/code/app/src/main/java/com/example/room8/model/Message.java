@@ -1,47 +1,181 @@
 package com.example.room8.model;
 
+import android.annotation.SuppressLint;
+
+import com.example.room8.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
+/**
+ * This class represent a message for the chat
+ */
 public class Message {
-    String name;
-    String txt;
-    String date;
-    String time;
+    // formatters for the date and time
+    @SuppressLint("SimpleDateFormat") // for parse date time from the server
+    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @SuppressLint("SimpleDateFormat") // for format date object to time string
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    @SuppressLint("SimpleDateFormat") // for format date object to date string
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
-    public Message(String name, String txt, String date, String time) {
-        this.name = name;
-        this.txt = txt;
+    static { // for initial the timezone
+        DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+        DATE_FORMAT.setTimeZone(TimeZone.getDefault());
+        TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+    }
+
+    // the keys of the json object
+    public static final String USER_NAME_KEY = "user_name";
+    public static final String MESSAGE_CONTENT_KEY = "message";
+    public static final String DATE_KEY = "timestamp";
+    public static final String ICON_ID_KEY = "profile_icon_id";
+    public static final String IS_SENT_KEY = "isSent";
+
+    String userName;
+    String msgContent;
+    Date date;
+    int iconID; // the ID of the img in the drawable dir
+    boolean isSent;
+
+    public Message(String userName, String msgContent, int iconID, boolean isSent) {
+        this.userName = userName;
+        this.msgContent = msgContent;
+        this.iconID = iconID;
+        this.isSent = isSent;
+    }
+
+    public Message(String userName, String msgContent, Date date, int iconID, boolean isSent) {
+        this.userName = userName;
+        this.msgContent = msgContent;
         this.date = date;
-        this.time = time;
+        this.iconID = iconID;
+        this.isSent = isSent;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Make message object from json object. <br>
+     * the key are: <br>
+     * [<br>
+     * {@value USER_NAME_KEY}:string,<br>
+     * {@value MESSAGE_CONTENT_KEY}:string,<br>
+     * {@value DATE_KEY}:string(in "yyyy-MM-dd HH:mm:ss" pattern),<br>
+     * {@value ICON_ID_KEY}:int,<br>
+     * {@value IS_SENT_KEY}:boolean<br>
+     * ]<br>
+     *
+     * @param jsonMessage message in json format
+     * @throws JSONException  get the keys from the json object
+     * @throws ParseException parse the
+     */
+    public Message(JSONObject jsonMessage) throws JSONException, ParseException {
+        if (jsonMessage.has(USER_NAME_KEY))
+            this.userName = jsonMessage.getString(USER_NAME_KEY);
+        else
+            this.userName = "user name not found";
+
+        if (jsonMessage.has(MESSAGE_CONTENT_KEY))
+            this.msgContent = jsonMessage.getString(MESSAGE_CONTENT_KEY);
+        else
+            this.msgContent = "";
+
+        if (jsonMessage.has(DATE_KEY))
+            this.date = DATE_TIME_FORMAT.parse(jsonMessage.getString(DATE_KEY));
+        else
+            this.date = new Date();
+        if (jsonMessage.has(ICON_ID_KEY) && !jsonMessage.isNull(ICON_ID_KEY))
+            this.iconID = Integer.parseInt(jsonMessage.getString(ICON_ID_KEY));
+        else
+            this.iconID = R.drawable.ic_launcher_foreground;
+        if (jsonMessage.has(IS_SENT_KEY))
+            this.isSent = jsonMessage.getBoolean(IS_SENT_KEY);
+        else
+            this.isSent = false;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public JSONObject parseToJson() throws JSONException {
+        JSONObject messageAsJson = new JSONObject();
+        messageAsJson.put(USER_NAME_KEY, this.userName);
+        messageAsJson.put(MESSAGE_CONTENT_KEY, this.msgContent);
+        messageAsJson.put(ICON_ID_KEY, this.iconID);
+        messageAsJson.put(IS_SENT_KEY, this.isSent);
+
+        if (this.date != null)
+            messageAsJson.put(DATE_KEY, this.date);
+
+        return messageAsJson;
     }
 
-    public String getTxt() {
-        return txt;
+    public String toStringJsonFormat() {
+        String str = "{\"" +
+                USER_NAME_KEY + "\":\"" + this.userName + "\",\"" +
+                MESSAGE_CONTENT_KEY + "\":\"" + this.msgContent + "\",\"" +
+                ICON_ID_KEY + "\":\"" + this.iconID + "\",\"" +
+                IS_SENT_KEY + "\":" + this.isSent;
+        if (this.date != null) {
+            str += ",\"" + DATE_KEY + "\":\"" + DATE_TIME_FORMAT.format(this.date) + "\"";
+        }
+        return str + "}";
     }
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    /**
+     * @return Only the date from the DateTime object
+     */
+    public String getDateFormat() {
+        return DATE_FORMAT.format(this.date);
     }
 
-    public String getDate() {
+
+    /**
+     * @return Only the time from the DateTime object
+     */
+    public String getTimeFormat() {
+        return TIME_FORMAT.format(this.date);
+    }
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMsgContent() {
+        return msgContent;
+    }
+
+    public void setMsgContent(String msgContent) {
+        this.msgContent = msgContent;
+    }
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
+    public int getIconID() {
+        return iconID;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setIconID(int iconID) {
+        this.iconID = iconID;
+    }
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+    public void setSent(boolean sent) {
+        isSent = sent;
     }
 }

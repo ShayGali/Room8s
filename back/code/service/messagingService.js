@@ -14,7 +14,7 @@ exports.saveMessageToDB = async (apartmentId, userId, message, timestamp) => {
 
 exports.getMessages = async (apartmentId, userId) => {
   const query = `
-    SELECT sender_id, user_name, profile_icon_path, msg_data AS message, send_time AS timestamp
+    SELECT sender_id, user_name, profile_icon_id, msg_data AS message, send_time AS timestamp
     FROM ${messagingTable}
     INNER JOIN ${usersTable} ON
     sender_id = ${usersTable}.ID
@@ -23,21 +23,9 @@ exports.getMessages = async (apartmentId, userId) => {
   let res = await db.execute(query, [apartmentId]);
   let addIfSent = res[0].map((msg) => {
     msg.isSent = msg.sender_id == userId;
-    msg.date = msg.timestamp
-      .toLocaleDateString()
-      .slice(0, 19)
-      .replace("T", " ");
-
-    msg.time = msg.timestamp
-      .toLocaleTimeString("hr-IS")
-      .slice(0, 19)
-      .replace("T", " ");
-
-    delete msg.timestamp;
+    msg.timestamp = msg.timestamp.toISOString().slice(0, 19).replace("T", " ");
     delete msg.sender_id;
-
     return msg;
   });
-  console.log(addIfSent);
   return addIfSent;
 };

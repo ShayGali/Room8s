@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class NodeService implements DatabaseService {
 
     OkHttpClient client = new OkHttpClient();
-    private static final String IP_ADDRESS = "10.113.4.116";
+    private static final String IP_ADDRESS = "192.168.1.155";
     private static final int PORT = 3000;
     public static final String SERVER_BASE_URL = IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;

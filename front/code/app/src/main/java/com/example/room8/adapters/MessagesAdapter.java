@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
+import com.example.room8.model.Message;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_MESSAGE_RECEIVED = 1;
 
     private final LayoutInflater inflater;
-    private final List<JSONObject> messages;
+    private final List<Message> messages;
 
+    private String lastDate;
 
     public MessagesAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -51,28 +54,33 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-        JSONObject message = messages.get(position);
-        try {
-            if (message.getBoolean("isSent")){
-                if (message.has("message")) {
-                    SentMessageHolder sentMessageHolder = (SentMessageHolder) holder;
-                    sentMessageHolder.messageContent.setText(message.getString("message"));
-                    sentMessageHolder.messageDate.setText(message.getString("date"));
-                    sentMessageHolder.messageTime.setText(message.getString("time"));
-                }
+        Message message = messages.get(position);
+        AbstractMessageHolder messageHolder = (AbstractMessageHolder) holder;
+        if (lastDate == null)
+            lastDate = Message.DATE_FORMAT.format(message.getDate());
+        else {
+            String messageDate = Message.DATE_FORMAT.format(message.getDate());
+            System.out.println("prev - " + lastDate);
+            System.out.println("now - " + messageDate);
+            if (!lastDate.equals(messageDate)) {
+                System.out.println("if");
+                lastDate = messageDate;
+                messageHolder.messageDate.setText(message.getDateFormat());
             }else {
-                if (message.has("message")) {
-                    ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
-                    receivedMessageHolder.messageContent.setText(message.getString("message"));
-                    receivedMessageHolder.senderName.setText(message.getString("user_name"));
-                    receivedMessageHolder.senderImg.setImageResource(R.drawable.ic_launcher_foreground);
-                }
+                System.out.println("else");
+                messageHolder.messageDate.setVisibility(View.INVISIBLE);
             }
-        }catch (JSONException e){
-            e.printStackTrace();
+        }
+
+        messageHolder.messageContent.setText(message.getMsgContent());
+        messageHolder.messageTime.setText(message.getTimeFormat());
+        if (!message.isSent()) {
+            ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
+            receivedMessageHolder.senderName.setText(message.getUserName());
+            receivedMessageHolder.senderImg.setImageResource(message.getIconID());
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -81,56 +89,54 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        JSONObject message = messages.get(position);
-        try {
-            if (message.getBoolean("isSent")) {
-                if (message.has("message"))
-                    return TYPE_MESSAGE_SENT;
-            } else {
-                if (message.has("message"))
-                    return TYPE_MESSAGE_RECEIVED;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        Message message = messages.get(position);
+        if (message.isSent())
+            return TYPE_MESSAGE_SENT;
+        else return TYPE_MESSAGE_RECEIVED;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void addMessage(JSONObject jsonObject){
-        messages.add(jsonObject);
+    public void addMessage(JSONObject jsonObject) throws JSONException, ParseException {
+        messages.add(new Message(jsonObject));
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addMessage(Message message) {
+        messages.add(message);
         notifyDataSetChanged();
     }
 
 
-
-    private static class SentMessageHolder extends RecyclerView.ViewHolder {
+    private static abstract class AbstractMessageHolder extends RecyclerView.ViewHolder {
         TextView messageContent;
         TextView messageDate;
         TextView messageTime;
 
-        public SentMessageHolder(View view) {
-            super(view);
-            messageContent = view.findViewById(R.id.message_content);
-            messageDate = view.findViewById(R.id.message_date);
-            messageTime = view.findViewById(R.id.message_time);
+        public AbstractMessageHolder(@NonNull View itemView) {
+            super(itemView);
+            messageContent = itemView.findViewById(R.id.message_content);
+            messageDate = itemView.findViewById(R.id.message_date);
+            messageTime = itemView.findViewById(R.id.message_time);
         }
     }
 
-    private static class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView messageContent;
-        TextView messageDate;
-        TextView messageTime;
+    private static class SentMessageHolder extends AbstractMessageHolder {
+        public SentMessageHolder(View view) {
+            super(view);
+        }
+    }
+
+    private static class ReceivedMessageHolder extends AbstractMessageHolder {
         TextView senderName;
         ImageView senderImg;
 
         public ReceivedMessageHolder(View view) {
             super(view);
-            messageContent = view.findViewById(R.id.message_content);
-            messageDate = view.findViewById(R.id.message_date);
-            messageTime = view.findViewById(R.id.message_time);
             senderName = view.findViewById(R.id.sender_name);
             senderImg = view.findViewById(R.id.sender_img);
         }
     }
 }
+
+
