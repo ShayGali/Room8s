@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room8.MainActivity;
 import com.example.room8.adapters.MessagesAdapter;
 import com.example.room8.model.Message;
+import com.example.room8.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,9 +108,9 @@ public class ChatHandler {
      * initialize the component on the activity
      */
     private void initializeView() {
+        User user = User.getInstance();
         sendBtn.setOnClickListener(v -> {
-            //TODO - GET THE USER NAME AND ICON
-            Message message = new Message("test123", messageEdit.getText().toString(), new Date(), 0, true);
+            Message message = new Message(user.getUserName(), messageEdit.getText().toString(), new Date(), user.getProfileIconId(), true);
             webSocket.send(message.toStringJsonFormat());
             messageAdapter.addMessage(message);
             recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);

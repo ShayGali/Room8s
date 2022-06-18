@@ -3,6 +3,7 @@ package com.example.room8.fragments.home_page_fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -12,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.model.User;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +67,7 @@ public class HomePageFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        ((MainActivity) requireActivity()).fetchUserData();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -106,7 +112,8 @@ public class HomePageFragment extends Fragment {
 
         // navigate to other fragments
         profileBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
+            System.out.println(User.getInstance());
+//            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
         });
 
         tasksBtn.setOnClickListener(v -> {

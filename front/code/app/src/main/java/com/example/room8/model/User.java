@@ -1,8 +1,23 @@
 package com.example.room8.model;
 
+import com.example.room8.R;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public final class User {
+
+    private static final String REQUEST_MESSAGE_KEY = "msg";
+    private static final String REQUEST_RESULT_KET = "result";
+    private static final String ID_KEY = "ID";
+    private static final String USER_NAME_KEY = "user_name";
+    private static final String EMAIL_KEY = "email";
+    private static final String USER_LEVEL_KEY = "user_level";
+    private static final String MONTHLY_PAYMENT_KEY = "monthly_payment";
+    private static final String ICON_ID_KEY = "profile_icon_id";
+
+
     private static User user;
 
     public static User getInstance() {
@@ -11,17 +26,31 @@ public final class User {
         }
         return user;
     }
-    public static User getUser() {
-        return user;
+
+    public static void parseFromJson(JSONObject userAsJson) throws JSONException {
+        if (user == null)
+            user = new User();
+        if (userAsJson.has(REQUEST_MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(REQUEST_RESULT_KET))
+            userAsJson = userAsJson.getJSONObject("result");
+        if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
+            user.id = userAsJson.getInt(ID_KEY);
+        if (userAsJson.has(USER_NAME_KEY))
+            user.userName = userAsJson.getString(USER_NAME_KEY);
+        if (userAsJson.has(EMAIL_KEY))
+            user.email = userAsJson.getString(EMAIL_KEY);
+        if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
+            user.userLevel = userAsJson.getInt(USER_LEVEL_KEY);
+        if (userAsJson.has(MONTHLY_PAYMENT_KEY) && !userAsJson.isNull(MONTHLY_PAYMENT_KEY))
+            user.monthlyPayment = userAsJson.getDouble(MONTHLY_PAYMENT_KEY);
+        if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
+            int iconId = userAsJson.getInt(ICON_ID_KEY);
+            if (iconId == 0)
+                user.profileIconId = R.drawable.ic_launcher_foreground;
+            else
+                user.profileIconId = iconId;
+        }
     }
 
-    public static void setUser(User user) {
-        User.user = user;
-    }
-
-    public static void parseFromJson(JSONObject userAsJson){
-
-    }
 
     private int id;
     private String userName;
@@ -42,7 +71,6 @@ public final class User {
 
     public User() {
     }
-
 
 
     public int getId() {
@@ -91,5 +119,17 @@ public final class User {
 
     public void setProfileIconId(int profileIconId) {
         this.profileIconId = profileIconId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", userLevel=" + userLevel +
+                ", monthlyPayment=" + monthlyPayment +
+                ", profileIconId=" + profileIconId +
+                '}';
     }
 }

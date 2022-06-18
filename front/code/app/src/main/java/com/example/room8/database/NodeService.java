@@ -49,11 +49,11 @@ public class NodeService {
         }
     }
 
-    private void getUserData() {
+    public void getUserData() {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(HTTP_URL + USERS_PATH + "/getData")
+                .url(HTTP_URL + USERS_PATH + "/findById")
                 .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
                 .get()
                 .build();
@@ -84,6 +84,7 @@ public class NodeService {
                     System.err.println("response body: " + stringBody);
                 } else {
                     try {
+                        System.out.println(stringBody);
                         User.parseFromJson(new JSONObject(stringBody));
                     } catch (JSONException e) {
                         e.printStackTrace();

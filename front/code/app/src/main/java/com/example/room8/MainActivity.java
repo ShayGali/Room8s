@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        runOnUiThread(()->Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
     public void goToHomePage() {
@@ -122,5 +122,8 @@ public class MainActivity extends AppCompatActivity {
         new RegisterHandler(mainActivityWeakReference, userNameTextView, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
 
+    public void fetchUserData(){
+        databaseService.getUserData();
+    }
 
 }
