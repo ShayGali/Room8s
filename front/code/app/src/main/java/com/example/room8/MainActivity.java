@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(R.id.action_loginFragment_to_homePageFragment);
     }
 
-    public void goToHomePageWithOutApartment() {
-        Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment);
+    public void goToHomePageWithOutApartment(int actionID) {
+        Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(actionID);
     }
 
     // check if we have a token in the SharedPreferences

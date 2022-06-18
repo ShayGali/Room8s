@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_loginFragment_to_noConnectionFragment"
             app:destination="@id/noConnectionFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homePageUserWithoutApartmentFragment"
+            app:destination="@id/homePageUserWithoutApartmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"

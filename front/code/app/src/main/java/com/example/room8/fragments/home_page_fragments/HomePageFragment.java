@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.room8.MainActivity;
@@ -81,15 +82,11 @@ public class HomePageFragment extends Fragment {
 //            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
 //        }
 
+
         View profileBtn = view.findViewById(R.id.go_to_profile_btn);
         View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
         View messagesBtn = view.findViewById(R.id.go_to_messages_btn);
         View walletBtn = view.findViewById(R.id.go_to_wallet_btn);
-//        try {
-//            Thread.sleep(15000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
@@ -112,8 +109,8 @@ public class HomePageFragment extends Fragment {
 
         // navigate to other fragments
         profileBtn.setOnClickListener(v -> {
-            System.out.println(User.getInstance());
-//            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
+//            User.getInstance().setEmail("123");
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
         });
 
         tasksBtn.setOnClickListener(v -> {

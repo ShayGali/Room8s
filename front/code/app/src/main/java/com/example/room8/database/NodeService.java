@@ -85,7 +85,7 @@ public class NodeService {
                 } else {
                     try {
                         System.out.println(stringBody);
-                        User.parseFromJson(new JSONObject(stringBody));
+                        User.parseDataFromJson(new JSONObject(stringBody));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

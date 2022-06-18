@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import com.example.room8.MainActivity;
+import com.example.room8.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +80,7 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString(MainActivity.JWT_TOKEN, token);
             ed.apply();
-            activity.get().goToHomePageWithOutApartment();
+            activity.get().goToHomePageWithOutApartment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment);
         } else {
             try {
                 activity.get().showToast(responseJson.getString("msg"));

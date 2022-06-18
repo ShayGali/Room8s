@@ -27,7 +27,29 @@ public final class User {
         return user;
     }
 
-    public static void parseFromJson(JSONObject userAsJson) throws JSONException {
+
+    private int id;
+    private int apartmentId;
+    private String userName;
+    private String email;
+    private int userLevel;
+
+    private double monthlyPayment;
+    private int profileIconId;
+
+    public User(int id, String userName, String email, int userLevel, double monthlyPayment, int profileIconId) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.userLevel = userLevel;
+        this.monthlyPayment = monthlyPayment;
+        this.profileIconId = profileIconId;
+    }
+
+    private User() {
+    }
+
+    public static void parseDataFromJson(JSONObject userAsJson) throws JSONException {
         if (user == null)
             user = new User();
         if (userAsJson.has(REQUEST_MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(REQUEST_RESULT_KET))
@@ -52,33 +74,20 @@ public final class User {
     }
 
 
-    private int id;
-    private String userName;
-    private String email;
-    private int userLevel;
-
-    private double monthlyPayment;
-    private int profileIconId;
-
-    public User(int id, String userName, String email, int userLevel, double monthlyPayment, int profileIconId) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.userLevel = userLevel;
-        this.monthlyPayment = monthlyPayment;
-        this.profileIconId = profileIconId;
-    }
-
-    public User() {
-    }
-
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getApartmentId() {
+        return apartmentId;
+    }
+
+    public void setApartmentId(int apartmentId) {
+        this.apartmentId = apartmentId;
     }
 
     public String getUserName() {

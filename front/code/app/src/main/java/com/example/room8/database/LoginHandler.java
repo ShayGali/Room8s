@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import com.example.room8.MainActivity;
+import com.example.room8.R;
+import com.example.room8.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +81,27 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString(MainActivity.JWT_TOKEN, token);
             ed.apply();
-            activity.get().goToHomePage();
+
+            User user = User.getInstance();
+            if (responseJson.has("userId") && !responseJson.isNull("userId")) {
+                try {
+                    user.setId(responseJson.getInt("userId"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (responseJson.has("apartmentId") && !responseJson.isNull("apartmentId")) {
+                try {
+                    user.setApartmentId(responseJson.getInt("apartmentId"));
+                    activity.get().goToHomePage();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                activity.get().goToHomePageWithOutApartment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
+            }
         } else {
             try {
                 activity.get().showToast(responseJson.getString("msg"));
