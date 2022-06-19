@@ -87,7 +87,7 @@ public class MessageFragment extends Fragment {
         menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.test_menu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
 
                 switch (item.getItemId()) {

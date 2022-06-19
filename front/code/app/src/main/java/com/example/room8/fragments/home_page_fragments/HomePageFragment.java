@@ -3,7 +3,6 @@ package com.example.room8.fragments.home_page_fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -11,12 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
-
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,7 +84,7 @@ public class HomePageFragment extends Fragment {
         menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.test_menu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
 
                 switch (item.getItemId()) {
