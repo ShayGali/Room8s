@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * This class represent a message for the chat
@@ -31,26 +32,24 @@ public class Message {
     }
 
     // the keys of the json object
+    private static final String MESSAGE_ID_KEY = "messageId";
+    private static final String UUID_KEY = "UUID";
     public static final String USER_NAME_KEY = "user_name";
     public static final String MESSAGE_CONTENT_KEY = "message";
     public static final String DATE_KEY = "timestamp";
     public static final String ICON_ID_KEY = "profile_icon_id";
     public static final String IS_SENT_KEY = "isSent";
 
+    int messageId;
+    UUID uuid; // for identify when the message id came back from the server
     String userName;
     String msgContent;
     Date date;
     int iconID; // the ID of the img in the drawable dir
     boolean isSent;
 
-    public Message(String userName, String msgContent, int iconID, boolean isSent) {
-        this.userName = userName;
-        this.msgContent = msgContent;
-        this.iconID = iconID;
-        this.isSent = isSent;
-    }
-
     public Message(String userName, String msgContent, Date date, int iconID, boolean isSent) {
+        this.uuid = UUID.randomUUID();
         this.userName = userName;
         this.msgContent = msgContent;
         this.date = date;
@@ -62,6 +61,7 @@ public class Message {
      * Make message object from json object. <br>
      * the key are: <br>
      * [<br>
+     * {@value MESSAGE_ID_KEY}:int,<br>
      * {@value USER_NAME_KEY}:string,<br>
      * {@value MESSAGE_CONTENT_KEY}:string,<br>
      * {@value DATE_KEY}:string(in "yyyy-MM-dd HH:mm:ss" pattern),<br>
@@ -74,6 +74,9 @@ public class Message {
      * @throws ParseException parse the date
      */
     public Message(JSONObject jsonMessage) throws JSONException, ParseException {
+        if (jsonMessage.has(MESSAGE_ID_KEY) && !jsonMessage.isNull(MESSAGE_ID_KEY))
+            this.messageId = jsonMessage.getInt(MESSAGE_ID_KEY);
+
         if (jsonMessage.has(USER_NAME_KEY))
             this.userName = jsonMessage.getString(USER_NAME_KEY);
         else
@@ -89,7 +92,7 @@ public class Message {
         else
             this.date = new Date();
         if (jsonMessage.has(ICON_ID_KEY) && !jsonMessage.isNull(ICON_ID_KEY))
-            this.iconID = Integer.parseInt(jsonMessage.getString(ICON_ID_KEY));
+            this.iconID = jsonMessage.getInt(ICON_ID_KEY);
         else
             this.iconID = R.drawable.ic_launcher_foreground;
         if (jsonMessage.has(IS_SENT_KEY))
@@ -113,6 +116,7 @@ public class Message {
 
     public String toStringJsonFormat() {
         String str = "{\"" +
+                UUID_KEY + "\":\"" + this.uuid.toString() + "\",\"" +
                 USER_NAME_KEY + "\":\"" + this.userName + "\",\"" +
                 MESSAGE_CONTENT_KEY + "\":\"" + this.msgContent + "\",\"" +
                 ICON_ID_KEY + "\":\"" + this.iconID + "\",\"" +
@@ -177,5 +181,21 @@ public class Message {
 
     public void setSent(boolean sent) {
         isSent = sent;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }

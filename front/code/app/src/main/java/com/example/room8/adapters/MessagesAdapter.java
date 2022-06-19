@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -108,6 +109,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void addMessage(Message message) {
         messages.add(message);
         notifyDataSetChanged();
+    }
+
+    public void setMessageIdByUUID(int insertedId, String uuid) {
+        messages.stream().filter(message -> UUID.fromString(uuid).equals(message.getUuid())).findFirst().ifPresent(message -> message.setMessageId(insertedId));
     }
 
 

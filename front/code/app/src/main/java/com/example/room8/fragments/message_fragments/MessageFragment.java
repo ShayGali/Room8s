@@ -1,5 +1,6 @@
 package com.example.room8.fragments.message_fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -70,6 +71,7 @@ public class MessageFragment extends Fragment {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

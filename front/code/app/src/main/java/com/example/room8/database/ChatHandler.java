@@ -18,6 +18,9 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,6 +50,7 @@ public class ChatHandler {
         this.sendBtn = sendBtn;
         this.recyclerView = recyclerView;
         this.messageAdapter = messageAdapter;
+
     }
 
     /**
@@ -81,7 +85,7 @@ public class ChatHandler {
             super.onOpen(webSocket, response);
             activity.runOnUiThread(() -> {
                 Toast.makeText(activity, "Connection", Toast.LENGTH_SHORT).show();
-                initializeView();
+                sendMessageBtn();
             });
         }
 
@@ -89,11 +93,14 @@ public class ChatHandler {
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
             super.onMessage(webSocket, text);
-
             activity.runOnUiThread(() -> {
                 try {
                     JSONObject jsonObject = new JSONObject(text);
-                    messageAdapter.addMessage(jsonObject);
+                    if (jsonObject.has("insertId")) { // if we get back the message id from the data base
+                        messageAdapter.setMessageIdByUUID(jsonObject.getInt("insertId"), jsonObject.getString("messageUUID"));
+                    } else {
+                        messageAdapter.addMessage(jsonObject);
+                    }
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -107,7 +114,7 @@ public class ChatHandler {
      * When the socket is open the method will run
      * initialize the component on the activity
      */
-    private void initializeView() {
+    private void sendMessageBtn() {
         User user = User.getInstance();
         sendBtn.setOnClickListener(v -> {
             Message message = new Message(user.getUserName(), messageEdit.getText().toString(), new Date(), user.getProfileIconId(), true);
