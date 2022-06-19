@@ -86,12 +86,13 @@ public class LoginFragment extends Fragment {
         });
 
 
-        forgetPasswordButton.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
-        );
-
         registerButton.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment)
+        );
+
+        forgetPasswordButton.setOnClickListener(v -> {
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgetPasswordFragment);
+                }
         );
         return view;
     }

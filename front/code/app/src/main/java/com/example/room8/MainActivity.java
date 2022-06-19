@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         databaseService = new NodeService(this);
         loadingAlert.startLoadingDialog();
-
         // check if the user have internet connection
         if (!isNetworkAvailable()) {
             Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
                 if (checkIfJwtTokenExists()) { //TODO refresh token
-                    goToHomePage();
+                    runOnUiThread(this::goToHomePage);
                 }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showToast(String msg) {
-        runOnUiThread(()->Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
     public void goToHomePage() {
@@ -89,12 +88,19 @@ public class MainActivity extends AppCompatActivity {
     // check if we have a token in the SharedPreferences
     public boolean checkIfJwtTokenExists() {
         SharedPreferences sp = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
-        return sp.getString(JWT_TOKEN, null) == null;
+        return sp.getString(JWT_TOKEN, null) != null;
     }
 
     public String getJwtFromSharedPreference() {
         return getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE)
                 .getString(MainActivity.JWT_TOKEN, null);
+    }
+
+    public void saveJwtToSharedPreference(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(JWT_TOKEN, token);
+        editor.apply();
     }
 
 
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         new RegisterHandler(mainActivityWeakReference, userNameTextView, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
 
-    public void fetchUserData(){
+    public void fetchUserData() {
         databaseService.getUserData();
     }
 

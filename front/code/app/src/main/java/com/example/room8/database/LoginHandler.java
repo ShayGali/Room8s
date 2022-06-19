@@ -77,32 +77,17 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            SharedPreferences sp = activity.get().getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE);
-            SharedPreferences.Editor ed = sp.edit();
-            ed.putString(MainActivity.JWT_TOKEN, token);
-            ed.apply();
+            activity.get().saveJwtToSharedPreference(token);
 
-            User user = User.getInstance();
-            if (responseJson.has("userId") && !responseJson.isNull("userId")) {
-                try {
-                    user.setId(responseJson.getInt("userId"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+            // save the user ID and his apartment ID
+            this.setUserIdAndApartmentId(responseJson);
 
-            if (responseJson.has("apartmentId") && !responseJson.isNull("apartmentId")) {
-                try {
-                    user.setApartmentId(responseJson.getInt("apartmentId"));
-                    activity.get().goToHomePage();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }else {
+            // if he is in apartment we send him to the regular home page
+            if (User.getInstance().getApartmentId() != 0) activity.get().goToHomePage();
+            else // if he is not in apartment we send him to the right home page
                 activity.get().goToHomePageWithOutApartment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
-            }
-        } else {
+
+        } else { // if the response don't have token key in the body
             try {
                 activity.get().showToast(responseJson.getString("msg"));
             } catch (JSONException e) {
@@ -110,5 +95,25 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setUserIdAndApartmentId(JSONObject responseJson) {
+        User user = User.getInstance();
+        if (responseJson.has("userId") && !responseJson.isNull("userId")) {
+            try {
+                user.setId(responseJson.getInt("userId"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (responseJson.has("apartmentId") && !responseJson.isNull("apartmentId")) {
+            try {
+                user.setApartmentId(responseJson.getInt("apartmentId"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
