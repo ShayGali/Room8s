@@ -142,6 +142,18 @@ public class Message {
         return TIME_FORMAT.format(this.date);
     }
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageId=" + messageId +
+                ", uuid=" + uuid +
+                ", userName='" + userName + '\'' +
+                ", msgContent='" + msgContent + '\'' +
+                ", date=" + date +
+                ", iconID=" + iconID +
+                ", isSent=" + isSent +
+                '}';
+    }
 
     public String getUserName() {
         return userName;

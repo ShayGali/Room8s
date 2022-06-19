@@ -1,6 +1,7 @@
 package com.example.room8.adapters;
 
 import android.annotation.SuppressLint;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
         AbstractMessageHolder messageHolder = (AbstractMessageHolder) holder;
-        messageHolder.messageDate.setText(message.getDateFormat());
 
+        messageHolder.layout.setOnLongClickListener(view->{ //TODO display dialog for delete message
+            System.out.println(message.toString());
+            return false;
+        });
+
+        messageHolder.messageDate.setText(message.getDateFormat());
         messageHolder.messageContent.setText(message.getMsgContent());
         messageHolder.messageTime.setText(message.getTimeFormat());
         if (!message.isSent()) {
@@ -112,7 +118,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setMessageIdByUUID(int insertedId, String uuid) {
-        messages.stream().filter(message -> UUID.fromString(uuid).equals(message.getUuid())).findFirst().ifPresent(message -> message.setMessageId(insertedId));
+        messages.stream()
+                .filter(message ->
+                        UUID.fromString(uuid).equals(message.getUuid())
+                ).findFirst()
+                .ifPresent(message ->
+                        message.setMessageId(insertedId)
+                );
     }
 
 
@@ -120,12 +132,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * This class is an abstract class that represent the common fields of messages view holder
      */
     private static abstract class AbstractMessageHolder extends RecyclerView.ViewHolder {
+        View layout;
         TextView messageContent;
         TextView messageDate;
         TextView messageTime;
 
         public AbstractMessageHolder(@NonNull View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.message_layout);
             messageContent = itemView.findViewById(R.id.message_content);
             messageDate = itemView.findViewById(R.id.message_date);
             messageTime = itemView.findViewById(R.id.message_time);
