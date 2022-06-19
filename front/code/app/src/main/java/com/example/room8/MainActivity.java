@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
                 if (checkIfJwtTokenExists()) { //TODO refresh token
-                    runOnUiThread(this::goToHomePage);
+                    runOnUiThread(()-> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
                 }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
@@ -77,11 +77,8 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
-    public void goToHomePage() {
-        Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(R.id.action_loginFragment_to_homePageFragment);
-    }
 
-    public void goToHomePageWithOutApartment(int actionID) {
+    public void navigateFragment(int actionID) {
         Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(actionID);
     }
 
@@ -102,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(JWT_TOKEN, token);
         editor.apply();
     }
+
+    public void logout(int actionId) {
+        SharedPreferences sharedPreferences = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(JWT_TOKEN).apply();
+        navigateFragment(actionId);
+    }
+
+
 
 
     /**

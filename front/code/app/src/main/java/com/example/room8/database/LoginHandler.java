@@ -1,8 +1,5 @@
 package com.example.room8.database;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
@@ -83,9 +80,10 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
             this.setUserIdAndApartmentId(responseJson);
 
             // if he is in apartment we send him to the regular home page
-            if (User.getInstance().getApartmentId() != 0) activity.get().goToHomePage();
+            if (User.getInstance().getApartmentId() != 0)
+                activity.get().navigateFragment(R.id.action_loginFragment_to_homePageFragment);
             else // if he is not in apartment we send him to the right home page
-                activity.get().goToHomePageWithOutApartment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
+                activity.get().navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
 
         } else { // if the response don't have token key in the body
             try {

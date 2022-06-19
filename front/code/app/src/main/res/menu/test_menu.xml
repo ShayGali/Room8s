@@ -8,9 +8,8 @@
         android:id="@+id/settings"
         android:title="@string/settings" />
 
-    <item android:title="Item2"
-        android:id="@+id/item2"
+    <item android:title="@string/log_out"
+        android:id="@+id/logout"
         app:showAsAction="never"
-
         />
 </menu>

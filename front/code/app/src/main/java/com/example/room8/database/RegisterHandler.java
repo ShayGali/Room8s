@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -80,7 +79,7 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
             SharedPreferences.Editor ed = sp.edit();
             ed.putString(MainActivity.JWT_TOKEN, token);
             ed.apply();
-            activity.get().goToHomePageWithOutApartment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment);
+            activity.get().navigateFragment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment);
         } else {
             try {
                 activity.get().showToast(responseJson.getString("msg"));

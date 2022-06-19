@@ -2,7 +2,6 @@ package com.example.room8.fragments.message_fragments;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,7 +94,7 @@ public class MessageFragment extends Fragment {
                     case R.id.settings:
                         Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.item2:
+                    case R.id.logout:
                         Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
                         return true;
                 }

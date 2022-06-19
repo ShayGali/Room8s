@@ -11,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
-import com.example.room8.model.User;
 
 import java.util.Objects;
 
@@ -97,8 +95,8 @@ public class HomePageFragment extends Fragment {
                     case R.id.settings:
                         Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_settingsFragment);
                         return true;
-                    case R.id.item2:
-                        Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
+                    case R.id.logout:
+                        ((MainActivity) requireActivity()).logout(R.id.action_homePageFragment_to_loginFragment);
                         return true;
                 }
                 return false;
