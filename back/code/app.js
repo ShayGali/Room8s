@@ -52,12 +52,17 @@ webSocketServer.on("request", async (req) => {
         messageWithTime.isSent = false;
         element.sendUTF(JSON.stringify(messageWithTime));
       } else {
-        messagingService.saveMessageToDB(
-          token.apartmentId,
-          token.userId,
-          messageWithTime.message,
-          timestamp
-        );
+        messagingService
+          .saveMessageToDB(
+            token.apartmentId,
+            token.userId,
+            messageWithTime.message,
+            timestamp,
+            messageWithTime.UUID
+          )
+          .then((response) => {
+            element.sendUTF(JSON.stringify(response));
+          });
       }
     });
   });
