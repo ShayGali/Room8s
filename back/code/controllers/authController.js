@@ -63,6 +63,7 @@ exports.login = async (req, res, next) => {
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId.apartmentId : null,
     });
+
     return res.status(200).json({
       msg: "success",
       jwtToken,

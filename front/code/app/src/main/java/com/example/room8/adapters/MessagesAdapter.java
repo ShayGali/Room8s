@@ -57,7 +57,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Message message = messages.get(position);
         AbstractMessageHolder messageHolder = (AbstractMessageHolder) holder;
 
-        messageHolder.layout.setOnLongClickListener(view->{ //TODO display dialog for delete message
+        messageHolder.layout.setOnLongClickListener(view -> { //TODO display dialog for delete message
             System.out.println(message.toString());
             return false;
         });

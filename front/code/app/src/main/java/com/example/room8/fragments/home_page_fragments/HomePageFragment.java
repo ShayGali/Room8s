@@ -119,6 +119,9 @@ public class HomePageFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
         });
 
+        //TODO: get apartment data
+        //TODO: get expenses data -
+        //TODO: get tasks data - next task
 
         return view;
     }
