@@ -46,21 +46,21 @@ public final class User {
         instance = getInstance(); // for create if not exists
 
         if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
-            instance.id = userAsJson.getInt(ID_KEY);
+            instance.setId(userAsJson.getInt(ID_KEY));
         if (userAsJson.has(USER_NAME_KEY))
-            instance.userName = userAsJson.getString(USER_NAME_KEY);
+            instance.setUserName(userAsJson.getString(USER_NAME_KEY));
         if (userAsJson.has(EMAIL_KEY))
-            instance.email = userAsJson.getString(EMAIL_KEY);
+            instance.setEmail(userAsJson.getString(EMAIL_KEY));
         if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
-            instance.userLevel = userAsJson.getInt(USER_LEVEL_KEY);
+            instance.setUserLevel(userAsJson.getInt(USER_LEVEL_KEY));
         if (userAsJson.has(MONTHLY_PAYMENT_KEY) && !userAsJson.isNull(MONTHLY_PAYMENT_KEY))
-            instance.monthlyPayment = userAsJson.getDouble(MONTHLY_PAYMENT_KEY);
+            instance.setMonthlyPayment(userAsJson.getDouble(MONTHLY_PAYMENT_KEY));
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
             int iconId = userAsJson.getInt(ICON_ID_KEY);
             if (iconId == 0)
-                instance.profileIconId = R.drawable.ic_launcher_foreground;
+                instance.setProfileIconId(R.drawable.ic_launcher_foreground);
             else
-                instance.profileIconId = iconId;
+                instance.setProfileIconId(iconId);
         }
     }
 
