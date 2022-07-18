@@ -9,13 +9,16 @@ import org.json.JSONObject;
 
 
 public final class User {
-    private static User user;
+    private static User instance;
 
     public static User getInstance() {
-        if (user == null) {
-            user = new User();
+        if (instance == null) {
+            synchronized (User.class) {
+                if (instance == null)
+                    instance = new User();
+            }
         }
-        return user;
+        return instance;
     }
 
     private static final String MESSAGE_KEY = "msg";
@@ -41,26 +44,26 @@ public final class User {
     }
 
     public static void parseDataFromJson(JSONObject userAsJson) throws JSONException {
-        if (user == null)
-            user = new User();
+        if (instance == null)
+            instance = new User();
         if (userAsJson.has(MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(RESULT_KET))
             userAsJson = userAsJson.getJSONObject("result");
         if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
-            user.id = userAsJson.getInt(ID_KEY);
+            instance.id = userAsJson.getInt(ID_KEY);
         if (userAsJson.has(USER_NAME_KEY))
-            user.userName = userAsJson.getString(USER_NAME_KEY);
+            instance.userName = userAsJson.getString(USER_NAME_KEY);
         if (userAsJson.has(EMAIL_KEY))
-            user.email = userAsJson.getString(EMAIL_KEY);
+            instance.email = userAsJson.getString(EMAIL_KEY);
         if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
-            user.userLevel = userAsJson.getInt(USER_LEVEL_KEY);
+            instance.userLevel = userAsJson.getInt(USER_LEVEL_KEY);
         if (userAsJson.has(MONTHLY_PAYMENT_KEY) && !userAsJson.isNull(MONTHLY_PAYMENT_KEY))
-            user.monthlyPayment = userAsJson.getDouble(MONTHLY_PAYMENT_KEY);
+            instance.monthlyPayment = userAsJson.getDouble(MONTHLY_PAYMENT_KEY);
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
             int iconId = userAsJson.getInt(ICON_ID_KEY);
             if (iconId == 0)
-                user.profileIconId = R.drawable.ic_launcher_foreground;
+                instance.profileIconId = R.drawable.ic_launcher_foreground;
             else
-                user.profileIconId = iconId;
+                instance.profileIconId = iconId;
         }
     }
 
