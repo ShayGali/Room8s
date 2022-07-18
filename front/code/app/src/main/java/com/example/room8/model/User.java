@@ -1,5 +1,7 @@
 package com.example.room8.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.room8.R;
 
 import org.json.JSONException;
@@ -7,6 +9,14 @@ import org.json.JSONObject;
 
 
 public final class User {
+    private static User user;
+
+    public static User getInstance() {
+        if (user == null) {
+            user = new User();
+        }
+        return user;
+    }
 
     private static final String MESSAGE_KEY = "msg";
     private static final String RESULT_KET = "result";
@@ -18,16 +28,6 @@ public final class User {
     private static final String ICON_ID_KEY = "profile_icon_id";
 
 
-    private static User user;
-
-    public static User getInstance() {
-        if (user == null) {
-            user = new User();
-        }
-        return user;
-    }
-
-
     private int id;
     private int apartmentId;
     private String userName;
@@ -36,15 +36,6 @@ public final class User {
 
     private double monthlyPayment;
     private int profileIconId;
-
-    public User(int id, String userName, String email, int userLevel, double monthlyPayment, int profileIconId) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.userLevel = userLevel;
-        this.monthlyPayment = monthlyPayment;
-        this.profileIconId = profileIconId;
-    }
 
     private User() {
     }
@@ -130,6 +121,7 @@ public final class User {
         this.profileIconId = profileIconId;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +
