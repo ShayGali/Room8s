@@ -3,6 +3,7 @@ package com.example.room8.database;
 import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.User;
 
 import org.json.JSONException;
@@ -61,6 +62,7 @@ public class NodeService {
                 .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
                 .get()
                 .build();
+
         client.newCall(request).enqueue((new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -92,7 +94,7 @@ public class NodeService {
                         JSONObject responseJOSN = new JSONObject(stringBody);
 
                         if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
-                            User.parseDataFromJson(responseJOSN.getJSONObject("result"));
+                            User.parseDataFromJson(responseJOSN.getJSONObject(DATA_KEY));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -103,12 +105,53 @@ public class NodeService {
     }
 
 
-    public void getApartmentData(){
+    public void getApartmentData() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/data")
                 .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
                 .get()
                 .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                System.out.println("onFailure");
+                activity.showToast("fetch data failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("responseBody is null");
+                    System.err.println("fetch data went wrong");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
+                            Apartment.parseDataFromJson(responseJOSN.getJSONObject(DATA_KEY));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
     }
 }
