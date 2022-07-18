@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
                 if (checkIfJwtTokenExists()) { //TODO refresh token
+                    databaseService.getApartmentData();
                     runOnUiThread(()-> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
                 }
             } else {
