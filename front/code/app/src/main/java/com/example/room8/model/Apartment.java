@@ -1,5 +1,7 @@
 package com.example.room8.model;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,9 +19,9 @@ public final class Apartment {
         return instance;
     }
 
-    private static final String ID_KEY = "";
-    private static final String NAME_KEY = "";
-    private static final String NUMBER_OF_PEOPLE_KEY = "";
+    private static final String ID_KEY = "ID";
+    private static final String NAME_KEY = "apartment_name";
+    private static final String NUMBER_OF_PEOPLE_KEY = "number_of_people";
 
     private int id;
     private String name;
@@ -62,5 +64,15 @@ public final class Apartment {
 
     public void setNumber_of_people(int number_of_people) {
         this.number_of_people = number_of_people;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Apartment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", number_of_people=" + number_of_people +
+                '}';
     }
 }
