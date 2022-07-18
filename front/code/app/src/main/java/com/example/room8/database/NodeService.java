@@ -25,12 +25,13 @@ public class NodeService {
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
     public static final String USERS_PATH = "/users";
+    public static final String APARTMENTS_PATH = "/apartments";
 
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
 
     private static final String MESSAGE_KEY = "msg"; // if the response is good
-    private static final String RESULT_KET = "result"; // the data
+    private static final String DATA_KEY = "data"; // the data
 
     MainActivity activity;
 
@@ -90,7 +91,7 @@ public class NodeService {
 
                         JSONObject responseJOSN = new JSONObject(stringBody);
 
-                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(RESULT_KET))
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
                             User.parseDataFromJson(responseJOSN.getJSONObject("result"));
 
                     } catch (JSONException e) {
@@ -102,4 +103,12 @@ public class NodeService {
     }
 
 
+    public void getApartmentData(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/data")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .get()
+                .build();
+    }
 }
