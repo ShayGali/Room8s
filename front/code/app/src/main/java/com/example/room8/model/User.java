@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public final class User {
 
-    private static final String REQUEST_MESSAGE_KEY = "msg";
-    private static final String REQUEST_RESULT_KET = "result";
+    private static final String MESSAGE_KEY = "msg";
+    private static final String RESULT_KET = "result";
     private static final String ID_KEY = "ID";
     private static final String USER_NAME_KEY = "user_name";
     private static final String EMAIL_KEY = "email";
@@ -52,7 +52,7 @@ public final class User {
     public static void parseDataFromJson(JSONObject userAsJson) throws JSONException {
         if (user == null)
             user = new User();
-        if (userAsJson.has(REQUEST_MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(REQUEST_RESULT_KET))
+        if (userAsJson.has(MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(RESULT_KET))
             userAsJson = userAsJson.getJSONObject("result");
         if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
             user.id = userAsJson.getInt(ID_KEY);
