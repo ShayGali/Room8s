@@ -40,7 +40,7 @@ exports.findById = async (req, res, next) => {
     }
 
     delete result["user_password"]; // for remove the password field from the object
-    return res.send({ msg: "success", result });
+    return res.send({ msg: "success", data: result });
   } catch (err) {
     next(err);
   }
