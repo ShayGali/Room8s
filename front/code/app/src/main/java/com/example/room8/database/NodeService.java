@@ -29,6 +29,9 @@ public class NodeService {
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
 
+    private static final String MESSAGE_KEY = "msg"; // if the response is good
+    private static final String RESULT_KET = "result"; // the data
+
     MainActivity activity;
 
     public NodeService(MainActivity activity) {
@@ -84,8 +87,12 @@ public class NodeService {
                     System.err.println("response body: " + stringBody);
                 } else {
                     try {
-                        System.out.println(stringBody);
-                        User.parseDataFromJson(new JSONObject(stringBody));
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(RESULT_KET))
+                            User.parseDataFromJson(responseJOSN.getJSONObject("result"));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

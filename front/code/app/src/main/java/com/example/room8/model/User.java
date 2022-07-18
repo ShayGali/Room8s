@@ -21,8 +21,7 @@ public final class User {
         return instance;
     }
 
-    private static final String MESSAGE_KEY = "msg";
-    private static final String RESULT_KET = "result";
+
     private static final String ID_KEY = "ID";
     private static final String USER_NAME_KEY = "user_name";
     private static final String EMAIL_KEY = "email";
@@ -44,10 +43,8 @@ public final class User {
     }
 
     public static void parseDataFromJson(JSONObject userAsJson) throws JSONException {
-        if (instance == null)
-            instance = new User();
-        if (userAsJson.has(MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(RESULT_KET))
-            userAsJson = userAsJson.getJSONObject("result");
+        instance = getInstance(); // for create if not exists
+
         if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
             instance.id = userAsJson.getInt(ID_KEY);
         if (userAsJson.has(USER_NAME_KEY))
