@@ -42,3 +42,14 @@ exports.findByEmail = async (email) => {
   const [user, _] = await db.execute(query);
   return user[0];
 };
+
+exports.delete = async (userId) => {
+  const query = `
+    DELETE FROM ${usersTable}
+    WHERE ID = ?
+  `;
+
+  const result = await db.execute(query, [userId]);
+
+  return result[0].affectedRows;
+};

@@ -1,9 +1,12 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.room8.database.HomePageHandler;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
@@ -136,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void fetchUserData() {
         databaseService.getUserData();
+    }
+
+    public void fetchApartmentData(WeakReference<TextView> apartmentNameTextView, WeakReference<TextView> apartmentNumTextView, WeakReference<TextView> numberOfRoommatesTextview) {
+        WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
+        new HomePageHandler(mainActivityWeakReference,apartmentNameTextView,apartmentNumTextView, numberOfRoommatesTextview).execute();
     }
 
 }

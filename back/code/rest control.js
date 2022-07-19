@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/apartments", require("./routes/apartmentRoute"));
+app.use("/tasks", require("./routes/tasksRoute"));
 
 // Global Error handler
 app.use((err, req, res, next) => {

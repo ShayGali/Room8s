@@ -10,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.model.Apartment;
+
+import java.lang.ref.WeakReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +80,9 @@ public class HomePageFragment extends Fragment {
 //            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
 //        }
 
+        MainActivity activity = (MainActivity) getActivity();
+        assert activity != null;
+
 
         View profileBtn = view.findViewById(R.id.go_to_profile_btn);
         View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
@@ -103,7 +110,6 @@ public class HomePageFragment extends Fragment {
 
         // navigate to other fragments
         profileBtn.setOnClickListener(v -> {
-//            User.getInstance().setEmail("123");
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
         });
 
@@ -115,14 +121,20 @@ public class HomePageFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment);
         });
 
-        walletBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
-        });
 
-        //TODO: get apartment data
+        WeakReference<TextView> apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview;
+        apartmentNameTextView = new WeakReference<>(view.findViewById(R.id.apartment_name_textView));
+        apartmentNumTextView = new WeakReference<>(view.findViewById(R.id.apartment_num_textView));
+        numberOfRoommatesTextview = new WeakReference<>(view.findViewById(R.id.number_of_roommates_textView));
+        activity.fetchApartmentData(apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview);
+
+
         //TODO: get expenses data -
         //TODO: get tasks data - next task
-
+        walletBtn.setOnClickListener(v -> {
+            Apartment.notifyDataChange();
+//            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
+        });
         return view;
     }
 }

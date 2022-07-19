@@ -1,5 +1,7 @@
 package com.example.room8.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.room8.R;
 
 import org.json.JSONException;
@@ -7,25 +9,25 @@ import org.json.JSONObject;
 
 
 public final class User {
+    private static User instance;
 
-    private static final String REQUEST_MESSAGE_KEY = "msg";
-    private static final String REQUEST_RESULT_KET = "result";
+    public static User getInstance() {
+        if (instance == null) {
+            synchronized (User.class) {
+                if (instance == null)
+                    instance = new User();
+            }
+        }
+        return instance;
+    }
+
+
     private static final String ID_KEY = "ID";
     private static final String USER_NAME_KEY = "user_name";
     private static final String EMAIL_KEY = "email";
     private static final String USER_LEVEL_KEY = "user_level";
     private static final String MONTHLY_PAYMENT_KEY = "monthly_payment";
     private static final String ICON_ID_KEY = "profile_icon_id";
-
-
-    private static User user;
-
-    public static User getInstance() {
-        if (user == null) {
-            user = new User();
-        }
-        return user;
-    }
 
 
     private int id;
@@ -37,39 +39,28 @@ public final class User {
     private double monthlyPayment;
     private int profileIconId;
 
-    public User(int id, String userName, String email, int userLevel, double monthlyPayment, int profileIconId) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.userLevel = userLevel;
-        this.monthlyPayment = monthlyPayment;
-        this.profileIconId = profileIconId;
-    }
-
     private User() {
     }
 
     public static void parseDataFromJson(JSONObject userAsJson) throws JSONException {
-        if (user == null)
-            user = new User();
-        if (userAsJson.has(REQUEST_MESSAGE_KEY) && "success".equals(userAsJson.getString("msg")) && userAsJson.has(REQUEST_RESULT_KET))
-            userAsJson = userAsJson.getJSONObject("result");
+        instance = getInstance(); // for create if not exists
+
         if (userAsJson.has(ID_KEY) && !userAsJson.isNull(ID_KEY))
-            user.id = userAsJson.getInt(ID_KEY);
+            instance.setId(userAsJson.getInt(ID_KEY));
         if (userAsJson.has(USER_NAME_KEY))
-            user.userName = userAsJson.getString(USER_NAME_KEY);
+            instance.setUserName(userAsJson.getString(USER_NAME_KEY));
         if (userAsJson.has(EMAIL_KEY))
-            user.email = userAsJson.getString(EMAIL_KEY);
+            instance.setEmail(userAsJson.getString(EMAIL_KEY));
         if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
-            user.userLevel = userAsJson.getInt(USER_LEVEL_KEY);
+            instance.setUserLevel(userAsJson.getInt(USER_LEVEL_KEY));
         if (userAsJson.has(MONTHLY_PAYMENT_KEY) && !userAsJson.isNull(MONTHLY_PAYMENT_KEY))
-            user.monthlyPayment = userAsJson.getDouble(MONTHLY_PAYMENT_KEY);
+            instance.setMonthlyPayment(userAsJson.getDouble(MONTHLY_PAYMENT_KEY));
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
             int iconId = userAsJson.getInt(ICON_ID_KEY);
             if (iconId == 0)
-                user.profileIconId = R.drawable.ic_launcher_foreground;
+                instance.setProfileIconId(R.drawable.ic_launcher_foreground);
             else
-                user.profileIconId = iconId;
+                instance.setProfileIconId(iconId);
         }
     }
 
@@ -130,6 +121,7 @@ public final class User {
         this.profileIconId = profileIconId;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

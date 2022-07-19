@@ -40,7 +40,7 @@ exports.findById = async (req, res, next) => {
     }
 
     delete result["user_password"]; // for remove the password field from the object
-    return res.send({ msg: "success", result });
+    return res.send({ msg: "success", data: result });
   } catch (err) {
     next(err);
   }
@@ -62,4 +62,14 @@ exports.findByEmail = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.delete = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  if (!userId) return res.sendStatus(403);
+  const result = await userService.delete(userId);
+  if (result === 0) {
+    return res.status(200).json({ msg: "user don`t deleted for some reason" });
+  }
+  res.status(200).json({ msg: "success", data: result });
 };

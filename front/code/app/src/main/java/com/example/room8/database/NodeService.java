@@ -3,6 +3,7 @@ package com.example.room8.database;
 import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.User;
 
 import org.json.JSONException;
@@ -25,9 +26,13 @@ public class NodeService {
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
     public static final String USERS_PATH = "/users";
+    public static final String APARTMENTS_PATH = "/apartments";
 
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
+
+    public static final String MESSAGE_KEY = "msg"; // if the response is good
+    public static final String DATA_KEY = "data"; // the data
 
     MainActivity activity;
 
@@ -57,6 +62,7 @@ public class NodeService {
                 .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
                 .get()
                 .build();
+
         client.newCall(request).enqueue((new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -84,8 +90,12 @@ public class NodeService {
                     System.err.println("response body: " + stringBody);
                 } else {
                     try {
-                        System.out.println(stringBody);
-                        User.parseDataFromJson(new JSONObject(stringBody));
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
+                            User.parseDataFromJson(responseJOSN.getJSONObject(DATA_KEY));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -93,6 +103,4 @@ public class NodeService {
             }
         }));
     }
-
-
 }
