@@ -23,6 +23,9 @@ router.put(
 );
 
 // need to be last
-router.get("/:taskId", authenticateTokenFromRequest, tasksController.findById);
-
+router
+  .route("/:taskId")
+  .get(authenticateTokenFromRequest, tasksController.findById)
+  .put(authenticateTokenFromRequest)
+  .delete(authenticateTokenFromRequest, tasksController.deleteById);
 module.exports = router;

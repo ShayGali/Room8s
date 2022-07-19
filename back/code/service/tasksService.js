@@ -11,7 +11,7 @@ exports.findAllTasksOfApartment = async (apartmentID) => {
   FROM ${tasksTable}
   INNER JOIN ${tasksTypeTable}
   ON ${tasksTable}.task_type = ${tasksTypeTable}.ID
-  WHERE apartment_ID = ?`;
+  WHERE apartment_ID = ?;`;
   const [tasks, _] = await db.execute(query, [apartmentID]);
   return tasks;
 };
@@ -27,7 +27,7 @@ exports.addTask = async (
   let query = `
   INSERT INTO ${tasksTable}(
     apartment_ID, creator_ID, task_type,create_time, expiration_date, title, note
-  ) VALUES(?,?,?,?,?,?,?)
+  ) VALUES(?,?,?,?,?,?,?);
   `;
   let result = await db.execute(query, [
     apartmentID,
@@ -45,7 +45,7 @@ exports.addTask = async (
 exports.findById = async (taskId) => {
   const query = `
   SELECT * FROM ${tasksTable}
-  WHERE ID = ?
+  WHERE ID = ?;
   `;
   const [result, _] = await db.execute(query, [taskId]);
   return result[0];
@@ -55,7 +55,7 @@ exports.associateTaskToUser = async (taskId, userId) => {
   const query = `
   INSERT INTO ${tasksPerUserTable}(
     task_ID, user_ID
-  )VALUES(?,?)
+  )VALUES(?,?);
   `;
   let result = await db.execute(query, [taskId, userId]);
   return result[0].insertId;
@@ -64,10 +64,18 @@ exports.associateTaskToUser = async (taskId, userId) => {
 exports.findUserTasks = async (userId) => {
   const query = `
     select * from ${tasksPerUserTable}
-    where user_ID = ?
+    where user_ID = ?;
   `;
 
   const [result, _] = await db.execute(query, [userId]);
 
   return result;
+};
+
+exports.deleteById = async (taskId) => {
+  const query = `
+    DELETE FROM ${tasksTable}
+    WHERE ID = ?;
+  `;
+  const result = await db.execute(query, [taskId]);
 };

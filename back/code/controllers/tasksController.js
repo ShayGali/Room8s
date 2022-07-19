@@ -129,3 +129,26 @@ exports.findUserTasks = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { taskId } = req.params;
+  if (!userId) return res.status(403).send({ msg: "user id not valid" });
+  if (!taskId) return res.status(400).send({ msg: "send taskId" });
+
+  try {
+    const task = await tasksService.findById(taskId);
+    if (!task) return res.status(404).send({ msg: "tasks not found" });
+    const { apartmentId } = await userService.findUserApartment(userId);
+
+    if (apartmentId !== task.apartment_ID)
+      return res.status(403).send({
+        msg: "Cannot delete a task that does not belong to your apartment",
+      });
+
+    await tasksService.deleteById(taskId);
+    return res.status(200).send({ msg: "success" });
+  } catch (error) {
+    next(error);
+  }
+};
