@@ -122,12 +122,10 @@ public class HomePageFragment extends Fragment {
         });
 
 
-        //TODO: get apartment data
         WeakReference<TextView> apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview;
         apartmentNameTextView = new WeakReference<>(view.findViewById(R.id.apartment_name_textView));
         apartmentNumTextView = new WeakReference<>(view.findViewById(R.id.apartment_num_textView));
         numberOfRoommatesTextview = new WeakReference<>(view.findViewById(R.id.number_of_roommates_textView));
-        activity.showToast(String.valueOf(view.findViewById(R.id.number_of_roommates_textView)));
         activity.fetchApartmentData(apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview);
 
 
