@@ -1,5 +1,7 @@
 package com.example.room8.database;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
@@ -10,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,13 +30,26 @@ public class NodeService {
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
     public static final String USERS_PATH = "/users";
-    public static final String APARTMENTS_PATH = "/apartments";
 
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
 
     public static final String MESSAGE_KEY = "msg"; // if the response is good
     public static final String DATA_KEY = "data"; // the data
+
+    // formatters for the date and time
+    @SuppressLint("SimpleDateFormat") // for parse date time from the server
+    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @SuppressLint("SimpleDateFormat") // for format date object to time string
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    @SuppressLint("SimpleDateFormat") // for format date object to date string
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
+
+    static { // for initial the timezone
+        DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+        DATE_FORMAT.setTimeZone(TimeZone.getDefault());
+        TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+    }
 
     MainActivity activity;
 
@@ -93,7 +110,7 @@ public class NodeService {
 
                         JSONObject responseJOSN = new JSONObject(stringBody);
 
-                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
+                        if (responseJOSN.has(MESSAGE_KEY) && "success" .equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
                             User.parseDataFromJson(responseJOSN.getJSONObject(DATA_KEY));
 
                     } catch (JSONException e) {
