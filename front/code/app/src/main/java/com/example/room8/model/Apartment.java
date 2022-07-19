@@ -1,6 +1,7 @@
 package com.example.room8.model;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableField;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,9 +24,13 @@ public final class Apartment {
     private static final String NAME_KEY = "apartment_name";
     private static final String NUMBER_OF_PEOPLE_KEY = "number_of_people";
 
-    private int id;
-    private String name;
-    private int number_of_people;
+//    private int id;
+//    private String name;
+//    private int numberOfPeople;
+
+    private ObservableField<Integer> id;
+    private ObservableField<String> name;
+    private ObservableField<Integer> numberOfPeople;
 
     public static void parseDataFromJson(JSONObject apartmentAsJson) throws JSONException {
         instance = getInstance(); // for create if not exists
@@ -34,45 +39,56 @@ public final class Apartment {
         if (apartmentAsJson.has(NAME_KEY))
             instance.setName(apartmentAsJson.getString(NAME_KEY));
         if (apartmentAsJson.has(NUMBER_OF_PEOPLE_KEY) && !apartmentAsJson.isNull(NUMBER_OF_PEOPLE_KEY))
-            instance.setNumber_of_people(apartmentAsJson.getInt(NUMBER_OF_PEOPLE_KEY));
+            instance.setNumberOfPeople(apartmentAsJson.getInt(NUMBER_OF_PEOPLE_KEY));
+
+        notifyDataChange();
     }
 
 
     public Apartment() {
-
+        id = new ObservableField<>();
+        name = new ObservableField<>();
+        numberOfPeople = new ObservableField<>();
     }
 
-    public int getId() {
-        return id;
+    public Integer getId() {
+        return id.get();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
-    public int getNumber_of_people() {
-        return number_of_people;
+    public Integer getNumberOfPeople() {
+        return numberOfPeople.get();
     }
 
-    public void setNumber_of_people(int number_of_people) {
-        this.number_of_people = number_of_people;
+    public void setNumberOfPeople(int numberOfPeople) {
+        this.numberOfPeople.set(numberOfPeople);
+    }
+
+
+    public static void notifyDataChange() {
+        instance.id.notifyChange();
+        instance.name.notifyChange();
+        instance.numberOfPeople.notifyChange();
     }
 
     @NonNull
     @Override
     public String toString() {
         return "Apartment{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", number_of_people=" + number_of_people +
+                "id=" + id.get() +
+                ", name='" + name.get() + '\'' +
+                ", number_of_people=" + numberOfPeople.get() +
                 '}';
     }
 }
