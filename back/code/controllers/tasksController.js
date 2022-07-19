@@ -49,7 +49,7 @@ exports.addTask = async (req, res, next) => {
       title,
       note
     );
-    res.send({ msg: "success", data: { insertedID } });
+    res.status(201).send({ msg: "success", data: { insertedID } });
   } catch (error) {
     next(error);
   }
@@ -73,6 +73,8 @@ exports.associateTaskToUser = async (req, res, next) => {
 
   if (taskId === undefined || userId === undefined)
     return res.status(400).send({ msg: "send taskId and userId" });
+
+  if (!senderId) return res.status(403).send({ msg: "user id not valid" });
 
   try {
     const task = await tasksService.findById(taskId);
@@ -112,6 +114,45 @@ exports.associateTaskToUser = async (req, res, next) => {
     const result = await tasksService.associateTaskToUser(taskId, userId);
     if (!result)
       return res.status(500).send({ msg: "associate task to user failed" });
+    return res.status(200).send({ msg: "success" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.removeAssociateFromUser = async (req, res, next) => {
+  const { userId: senderId } = req.tokenData;
+  const { taskId, userId } = req.body;
+
+  if (taskId === undefined || userId === undefined)
+    return res.status(400).send({ msg: "send taskId and userId" });
+
+  try {
+    const task = await tasksService.findById(taskId);
+
+    if (task == undefined)
+      return res.status(404).send({ msg: "task not found" });
+
+    if ((await userService.findById(userId)) === undefined)
+      return res.status(404).send({ msg: "user not found" });
+
+    const { apartmentId: senderApartmentId } =
+      await userService.findUserApartment(senderId);
+
+    if (senderApartmentId !== task.ID)
+      return res.status(403).send({
+        msg: "Cannot associate a task that does not belong to your apartment",
+      });
+
+    const { apartmentId: userToAssociateApartmentId } =
+      await await userService.findUserApartment(userId);
+
+    if (senderApartmentId !== userToAssociateApartmentId)
+      return res.status(403)({
+        msg: "Cannot associate a task to a user who is not with you in the same apartment",
+      });
+
+    await tasksService.removeAssociateFromUser(taskId, userId);
     return res.status(200).send({ msg: "success" });
   } catch (error) {
     next(error);

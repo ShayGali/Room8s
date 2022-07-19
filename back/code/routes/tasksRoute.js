@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const tasksController = require("../controllers/tasksController");
 
-const { authenticateTokenFromRequest } = require("../middleware/auth");
+const {
+  authenticateTokenFromRequest,
+  authenticateToken,
+} = require("../middleware/auth");
 
 router.get(
   "/all",
@@ -16,11 +19,13 @@ router
 
 router.post("/add", authenticateTokenFromRequest, tasksController.addTask);
 
-router.put(
-  "/associate",
-  authenticateTokenFromRequest,
-  tasksController.associateTaskToUser
-);
+router
+  .route("/associate")
+  .post(authenticateTokenFromRequest, tasksController.associateTaskToUser)
+  .delete(
+    authenticateTokenFromRequest,
+    tasksController.removeAssociateFromUser
+  );
 
 // need to be last
 router

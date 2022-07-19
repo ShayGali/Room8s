@@ -61,6 +61,14 @@ exports.associateTaskToUser = async (taskId, userId) => {
   return result[0].insertId;
 };
 
+exports.removeAssociateFromUser = async (taskId, userId) => {
+  const query = `
+  DELETE FROM ${tasksPerUserTable}
+  WHERE task_ID = ? AND user_ID = ?;
+  `;
+  await db.execute(query, [taskId, userId]);
+};
+
 exports.findUserTasks = async (userId) => {
   const query = `
     select * from ${tasksPerUserTable}
@@ -77,5 +85,5 @@ exports.deleteById = async (taskId) => {
     DELETE FROM ${tasksTable}
     WHERE ID = ?;
   `;
-  const result = await db.execute(query, [taskId]);
+  await db.execute(query, [taskId]);
 };
