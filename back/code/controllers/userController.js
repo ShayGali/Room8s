@@ -63,3 +63,13 @@ exports.findByEmail = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.delete = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  if (!userId) return res.sendStatus(403);
+  const result = await userService.delete(userId);
+  if (result === 0) {
+    return res.status(200).json({ msg: "user don`t deleted for some reason" });
+  }
+  res.status(200).json({ msg: "success", data: result });
+};

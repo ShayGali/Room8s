@@ -15,4 +15,6 @@ router
   .route("/findByEmail")
   .get(authenticateTokenFromRequest, userController.findByEmail); //TODO: check roll admin
 
+router.delete("/delete", authenticateTokenFromRequest, userController.delete);
+
 module.exports = router;
