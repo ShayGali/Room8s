@@ -34,11 +34,13 @@ webSocketServer.on("request", async (req) => {
   } else {
     connections[token.apartmentId] = [connection];
   }
-  (await messagingService.getMessages(token.apartmentId, token.userId)).forEach(
-    (msg) => {
+  (await messagingService.getMessages(token.apartmentId, token.userId))
+    .sort((a, b) =>
+      a.messageId === b.messageId ? 0 : a.messageId > b.messageId ? 1 : -1
+    )
+    .forEach((msg) => {
       connection.sendUTF(JSON.stringify(msg));
-    }
-  );
+    });
 
   connection.on("message", (msg) => {
     connections[token.apartmentId].forEach((element) => {
