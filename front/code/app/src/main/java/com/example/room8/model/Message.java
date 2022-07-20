@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.UUID;
 /**
  * This class represent a message for the chat
  */
-public class Message {
+public class Message implements Comparator<Message> {
     // formatters for the date and time
     @SuppressLint("SimpleDateFormat") // for parse date time from the server
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -209,5 +210,11 @@ public class Message {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+
+    @Override
+    public int compare(Message o1, Message o2) {
+        return o1.date.compareTo(o2.date);
     }
 }

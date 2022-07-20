@@ -114,6 +114,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @SuppressLint("NotifyDataSetChanged")
     public void addMessage(Message message) {
         messages.add(message);
+        messages.sort(message);
         notifyDataSetChanged();
     }
 
