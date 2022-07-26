@@ -39,6 +39,6 @@ exports.findAllOfApartment = async (apartmentId) => {
   WHERE apartment_ID = ?;
   ;
   `;
-  const [expenses, _] = await db.execute(query, [apartmentID]);
+  const [expenses, _] = await db.execute(query, [apartmentId]);
   return expenses;
 };

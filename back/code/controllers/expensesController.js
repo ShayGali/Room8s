@@ -30,10 +30,9 @@ exports.addExpenses = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { apartmentId, userId } = req.tokenData;
-
+  const { apartmentId } = req.tokenData;
   try {
-    const expenses = expensesService.findAllOfApartment(apartmentId);
+    const expenses = await expensesService.findAllOfApartment(apartmentId);
     return res.status(200).send({ msg: "success", data: expenses });
   } catch (error) {
     next(error);

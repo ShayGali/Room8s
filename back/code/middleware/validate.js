@@ -12,8 +12,6 @@ exports.matchUserToApartment = async (req, res, next) => {
   try {
     const userApartmentId = await userService.findUserApartmentId(userId);
 
-    console.log(userApartmentId);
-    console.log(apartmentId);
     if (userApartmentId === apartmentId) {
       next();
     } else {
