@@ -9,6 +9,7 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/apartments", require("./routes/apartmentRoute"));
 app.use("/tasks", require("./routes/tasksRoute"));
+app.use("/expenses", require("./routes/expensesRoute"));
 
 // Global Error handler
 app.use((err, req, res, next) => {
