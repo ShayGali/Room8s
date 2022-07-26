@@ -8,7 +8,7 @@ const { authenticateTokenFromRequest } = require("../middleware/auth");
 router.get(
   "/apartmentId",
   authenticateTokenFromRequest,
-  userController.findUserApartment
+  userController.findUserApartmentId
 );
 router.get("/findById", authenticateTokenFromRequest, userController.findById);
 router

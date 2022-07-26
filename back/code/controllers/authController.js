@@ -58,17 +58,17 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ msg: "Invalid password" });
     }
 
-    const apartmentId = await userService.findUserApartment(findUser.ID);
+    const apartmentId = await userService.findUserApartmentId(findUser.ID);
     const jwtToken = await generateToken({
       userId: findUser.ID,
-      apartmentId: apartmentId !== undefined ? apartmentId.apartmentId : null,
+      apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
 
     return res.status(200).json({
       msg: "success",
       jwtToken,
       userId: findUser.ID,
-      apartmentId: apartmentId !== undefined ? apartmentId.apartmentId : null,
+      apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
   } catch (err) {
     next(err);

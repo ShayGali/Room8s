@@ -6,11 +6,11 @@ const userService = require("../service/userService");
  * get the userId from the JWT token, and return the apartment id
  * if the user nut in an apartment, the apartment id will be null
  */
-exports.findUserApartment = async (req, res, next) => {
+exports.findUserApartmentId = async (req, res, next) => {
   const { userId } = req.tokenData;
 
   try {
-    const result = await userService.findUserApartment(userId);
+    const result = await userService.findUserApartmentId(userId);
 
     if (!result) {
       return res
@@ -18,9 +18,7 @@ exports.findUserApartment = async (req, res, next) => {
         .send({ msg: "User not in apartment", apartmentId: null });
     }
 
-    return res
-      .status(200)
-      .send({ msg: "success", apartmentId: result.apartmentId });
+    return res.status(200).send({ msg: "success", apartmentId: result });
   } catch (err) {
     next(err);
   }

@@ -10,15 +10,13 @@ const userService = require("../service/userService");
 exports.getApartmentData = async (req, res, next) => {
   const { userId } = req.tokenData;
   try {
-    const userApartment = await userService.findUserApartment(userId);
+    const userApartmentId = await userService.findUserApartmentId(userId);
 
-    if (!userApartment) {
+    if (!userApartmentId) {
       return res.status(200).send({ msg: "dont have apartment" });
     }
 
-    const apartmentId = userApartment.apartmentId;
-
-    const apartmentData = await apartmentService.getData(apartmentId);
+    const apartmentData = await apartmentService.getData(userApartmentId);
 
     return res.status(200).send({ msg: "success", data: apartmentData });
   } catch (err) {
@@ -34,7 +32,7 @@ exports.getApartmentData = async (req, res, next) => {
 exports.createApartment = async (req, res, next) => {
   const { userId } = req.tokenData;
 
-  if (await userService.findUserApartment(userId)) {
+  if (await userService.findUserApartmentId(userId)) {
     return res.status(200).send({ msg: "user are already in apartment" });
   }
   try {
@@ -71,7 +69,7 @@ exports.addUserToApartment = async (req, res, next) => {
     if (!(await userService.checkIfUserExists(newUserId)))
       return res.status(200).send({ msg: "user not found" });
 
-    const userApartment = await userService.findUserApartment(userId);
+    const userApartmentId = await userService.findUserApartmentId(userId);
 
     if (!userApartment) {
       return res
@@ -79,19 +77,17 @@ exports.addUserToApartment = async (req, res, next) => {
         .send({ msg: "user that try to add new user, not in apartment" });
     }
 
-    if (await userService.findUserApartment(newUserId)) {
+    if (await userService.findUserApartmentId(newUserId)) {
       return res.status(200).send({ msg: "user are already in apartment" });
     }
 
-    const apartmentId = userApartment.apartmentId;
-
     const result = await apartmentService.addUserToApartment(
-      apartmentId,
+      userApartmentId,
       newUserId
     );
     if (result)
       return res.status(201).send({
-        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
+        msg: `user with the id ${newUserId} add to apartment ${userApartmentId}`,
       });
   } catch (err) {
     next(err);

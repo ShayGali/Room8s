@@ -1,11 +1,7 @@
 const expensesService = require("../service/expensesService");
-const userService = require("../service/userService");
 
 exports.addExpenses = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
-
-  if (apartmentId === undefined)
-    return res.status(403).send({ msg: "use not in apartment" });
 
   const { title, expensesType, paymentDate, amount, uploadDate, note } =
     req.body;
@@ -28,6 +24,17 @@ exports.addExpenses = async (req, res, next) => {
 
   res.status(201).send({ msg: "success", data: { insertedID } });
   try {
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAll = async (req, res, next) => {
+  const { apartmentId, userId } = req.tokenData;
+
+  try {
+    const expenses = expensesService.findAllOfApartment(apartmentId);
+    return res.status(200).send({ msg: "success", data: expenses });
   } catch (error) {
     next(error);
   }

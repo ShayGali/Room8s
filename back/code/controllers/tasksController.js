@@ -69,7 +69,7 @@ exports.associateTaskToUser = async (req, res, next) => {
       return res.status(404).send({ msg: "user not found" });
 
     const { apartmentId: senderApartmentId } =
-      await userService.findUserApartment(senderId);
+      await userService.findUserApartmentId(senderId);
 
     if (senderApartmentId !== task.ID)
       return res.status(403).send({
@@ -77,7 +77,7 @@ exports.associateTaskToUser = async (req, res, next) => {
       });
 
     const { apartmentId: userToAssociateApartmentId } =
-      await await userService.findUserApartment(userId);
+      await await userService.findUserApartmentId(userId);
 
     if (senderApartmentId !== userToAssociateApartmentId)
       return res.status(403)({
@@ -120,7 +120,7 @@ exports.removeAssociateFromUser = async (req, res, next) => {
       return res.status(404).send({ msg: "user not found" });
 
     const { apartmentId: senderApartmentId } =
-      await userService.findUserApartment(senderId);
+      await userService.findUserApartmentId(senderId);
 
     if (senderApartmentId !== task.ID)
       return res.status(403).send({
@@ -128,7 +128,7 @@ exports.removeAssociateFromUser = async (req, res, next) => {
       });
 
     const { apartmentId: userToAssociateApartmentId } =
-      await await userService.findUserApartment(userId);
+      await await userService.findUserApartmentId(userId);
 
     if (senderApartmentId !== userToAssociateApartmentId)
       return res.status(403)({
@@ -163,7 +163,7 @@ exports.deleteById = async (req, res, next) => {
   try {
     const task = await tasksService.findById(taskId);
     if (!task) return res.status(404).send({ msg: "tasks not found" });
-    const { apartmentId } = await userService.findUserApartment(userId);
+    const { apartmentId } = await userService.findUserApartmentId(userId);
 
     if (apartmentId !== task.apartment_ID)
       return res.status(403).send({

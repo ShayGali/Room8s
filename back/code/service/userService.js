@@ -1,7 +1,7 @@
 const db = require("../config/db");
 const usersTable = "users";
 
-exports.findUserApartment = async (userID) => {
+exports.findUserApartmentId = async (userID) => {
   if (userID === undefined) return;
   const query = `
   select apartment_ID as apartmentId
@@ -9,7 +9,7 @@ exports.findUserApartment = async (userID) => {
   where user_ID = ?`;
 
   const [id, _] = await db.execute(query, [userID]);
-  return id[0];
+  return id[0].apartmentId;
 };
 
 exports.findById = async (userID) => {
@@ -30,7 +30,7 @@ exports.checkIfUserExists = async (userId) => {
 // Not route function
 // get user id and return if he exists
 exports.checkIfUserInApartment = async (userId) => {
-  const result = await this.findUserApartment(userId);
+  const result = await this.findUserApartmentId(userId);
   return result !== undefined;
 };
 
