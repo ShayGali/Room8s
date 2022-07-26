@@ -19,10 +19,10 @@ exports.findAllTasksOfApartment = async (apartmentID) => {
 exports.addTask = async (
   apartmentID,
   creatorID,
-  taskType,
-  expirationDate,
-  title,
-  note
+  taskType = null,
+  expirationDate = null,
+  title = null,
+  note = null
 ) => {
   let query = `
   INSERT INTO ${tasksTable}(

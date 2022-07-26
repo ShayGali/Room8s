@@ -17,29 +17,12 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
 
 exports.addTask = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
-  const { taskType, expirationDate, title } = req.body;
+  const { taskType, expirationDate, title, note } = req.body;
 
   if (apartmentId === undefined || userId === undefined) {
     return res.status(403).send({ msg: "use not in apartment" });
   }
 
-  if (
-    taskType === undefined ||
-    expirationDate === undefined ||
-    title === undefined
-  ) {
-    return res.status(400).send({
-      msg: `you need to send: ${!taskType ? "'taskType', " : ""}${
-        !expirationDate ? "'expirationDate', " : ""
-      }${!title ? "'title', " : ""} fields`,
-    });
-  }
-
-  let { note } = req.body;
-
-  if (note === undefined) {
-    note = null;
-  }
   try {
     insertedID = await tasksService.addTask(
       apartmentId,
