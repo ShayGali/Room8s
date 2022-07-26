@@ -3,9 +3,6 @@ const userService = require("../service/userService");
 
 exports.findAllTasksOfApartment = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
-  if (!apartmentId) {
-    res.status(400).send({ msg: "User not in apartment" });
-  }
 
   try {
     const result = await tasksService.findAllTasksOfApartment(apartmentId);
@@ -18,10 +15,6 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
 exports.addTask = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
   const { taskType, expirationDate, title, note } = req.body;
-
-  if (apartmentId === undefined || userId === undefined) {
-    return res.status(403).send({ msg: "use not in apartment" });
-  }
 
   try {
     insertedID = await tasksService.addTask(
@@ -39,37 +32,35 @@ exports.addTask = async (req, res, next) => {
 };
 
 exports.findById = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
   const { taskId } = req.params;
   if (!taskId) return res.status(400).send({ msg: "send taskId" });
   try {
-    const result = await tasksService.findById(taskId);
-    if (!result) return res.status(404).send({ msg: "task not found" });
-    return res.send({ msg: "success", data: result });
+    const task = await tasksService.findById(taskId);
+    if (!task) return res.status(404).send({ msg: "task not found" });
+
+    if (apartmentId !== task.apartment_ID) {
+      return res.status(403).send({ msg: "You cant get this task" });
+    }
+
+    return res.send({ msg: "success", data: task });
   } catch (error) {
     next(error);
   }
 };
 
 exports.associateTaskToUser = async (req, res, next) => {
-  const { userId: senderId } = req.tokenData;
+  const { apartmentId: senderApartmentId } = req.tokenData;
   const { taskId, userId } = req.body;
 
-  if (taskId === undefined || userId === undefined)
-    return res.status(400).send({ msg: "send taskId and userId" });
-
-  if (!senderId) return res.status(403).send({ msg: "user id not valid" });
+  if (taskId === undefined)
+    return res.status(400).send({ msg: "send taskId " });
 
   try {
     const task = await tasksService.findById(taskId);
 
     if (task == undefined)
       return res.status(404).send({ msg: "task not found" });
-
-    if ((await userService.findById(userId)) === undefined)
-      return res.status(404).send({ msg: "user not found" });
-
-    const { apartmentId: senderApartmentId } =
-      await userService.findUserApartmentId(senderId);
 
     if (senderApartmentId !== task.ID)
       return res.status(403).send({
@@ -104,23 +95,16 @@ exports.associateTaskToUser = async (req, res, next) => {
 };
 
 exports.removeAssociateFromUser = async (req, res, next) => {
-  const { userId: senderId } = req.tokenData;
+  const { apartmentId: senderApartmentId } = req.tokenData;
   const { taskId, userId } = req.body;
 
-  if (taskId === undefined || userId === undefined)
-    return res.status(400).send({ msg: "send taskId and userId" });
+  if (taskId === undefined) return res.status(400).send({ msg: "send taskId" });
 
   try {
     const task = await tasksService.findById(taskId);
 
     if (task == undefined)
       return res.status(404).send({ msg: "task not found" });
-
-    if ((await userService.findById(userId)) === undefined)
-      return res.status(404).send({ msg: "user not found" });
-
-    const { apartmentId: senderApartmentId } =
-      await userService.findUserApartmentId(senderId);
 
     if (senderApartmentId !== task.ID)
       return res.status(403).send({
