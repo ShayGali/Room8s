@@ -8,6 +8,9 @@ const { matchUserToApartment } = require("../middleware/validate");
 router.use(authenticateTokenFromRequest);
 router.use(matchUserToApartment);
 
-router.get("/", paymentController.findAllPaymentsByFieldName); // TODO: check user
+router
+  .route("/")
+  .get(paymentController.findAllPaymentsByFieldName) // TODO: check user
+  .post(paymentController.add);
 
 module.exports = router;
