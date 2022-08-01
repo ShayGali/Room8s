@@ -1,5 +1,9 @@
 const userService = require("../service/userService");
 
+/**
+ * Check if the user roll is apartment owner or above.
+ * if not we send an 403 error message
+ */
 exports.isApartmentOwner = async (req, res, next) => {
   const { userId } = req.tokenData;
   if (userId === undefined) {
@@ -25,6 +29,10 @@ exports.isApartmentOwner = async (req, res, next) => {
   }
 };
 
+/**
+ * Check if the user roll is admin or above.
+ * if not we send an 403 error message
+ */
 exports.isAdmin = async (req, res, next) => {
   const { userId } = req.tokenData;
   if (userId === undefined) {
