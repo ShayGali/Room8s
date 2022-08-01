@@ -15,7 +15,6 @@ router
   .route("/data")
   .get(matchUserToApartment, apartmentController.getApartmentData);
 
-//TODO: add middleware to check the user role to be an apartment_owner
 router.post(
   "/addUser",
   isApartmentOwner,
