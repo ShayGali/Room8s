@@ -13,4 +13,6 @@ router
   .get(paymentController.findAllPaymentsByFieldName) // TODO: check user
   .post(paymentController.add);
 
+router.route("/:paymentId").delete(paymentController.delete);
+
 module.exports = router;

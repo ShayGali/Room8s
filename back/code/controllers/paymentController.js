@@ -1,4 +1,5 @@
 const paymentService = require("../service/paymentService");
+const userService = require("../service/userService");
 
 const {
   isInDateFormat,
@@ -56,6 +57,42 @@ exports.add = async (req, res, next) => {
     );
 
     return res.status(201).send({ success: true, msg: "success", insertId });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  const { userId, apartmentId } = req.tokenData;
+  const { paymentId } = req.params;
+
+  if (paymentId === undefined) {
+    return res
+      .status(404)
+      .send({ success: false, msg: "send paymentId in params" });
+  }
+
+  try {
+    const payment = await paymentService.findById(paymentId);
+
+    if (payment === undefined) {
+      return res.status(404).send({
+        success: false,
+        msg: `payment with the id ${paymentId} not found`,
+      });
+    }
+
+    if (
+      (await userService.findUserApartmentId(payment.user_ID)) !== apartmentId
+    ) {
+      return res.status(403).send({
+        success: false,
+        msg: "you cant delete this payment because its not belong to your apartment",
+      });
+    }
+
+    await paymentService.delete(paymentId);
+    return res.status(200).send({ success: true, msg: "success" });
   } catch (error) {
     next(error);
   }
