@@ -103,8 +103,8 @@ CREATE TABLE payments(
 ID INT AUTO_INCREMENT PRIMARY KEY,
 expense_ID INT,
 user_ID INT,
-amount_that_paid DOUBLE,
-pay_timestamp DATE,
+amount DOUBLE,
+pay_date DATE,
 
 FOREIGN KEY(user_id)REFERENCES users(ID),
 FOREIGN KEY(expense_ID) REFERENCES expenses (ID)
