@@ -39,3 +39,37 @@ exports.delete = async (expenseId) => {
   `;
   await db.execute(query, [expenseId]);
 };
+
+exports.getUserMonthlyPayments = async (userId) => {
+  const now = new Date();
+
+  const query = `
+  SELECT * FROM ${paymentTable}
+  WHERE 
+    user_ID = ? 
+    AND
+    YEAR(pay_date) = ${now.getFullYear()} 
+    AND
+    MONTH(pay_date) = ${now.getMonth() + 1}
+  `;
+
+  const [result, _] = await db.execute(query, [userId]);
+  return result;
+};
+
+exports.getUserSumOFMonthlyPayments = async (userId) => {
+  const now = new Date();
+
+  const query = `
+  SELECT SUM(amount) FROM ${paymentTable}
+  WHERE 
+    user_ID = ? 
+    AND
+    YEAR(pay_date) = ${now.getFullYear()} 
+    AND
+    MONTH(pay_date) = ${now.getMonth() + 1}
+  `;
+
+  const [result, _] = await db.execute(query, [userId]);
+  return result[0]["SUM(amount)"];
+};

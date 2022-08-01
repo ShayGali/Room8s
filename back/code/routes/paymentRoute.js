@@ -13,6 +13,8 @@ router
   .get(paymentController.findAllPaymentsByFieldName) // TODO: check user
   .post(paymentController.add);
 
+router.get("/monthlyPayments", paymentController.getUserMonthlyPayments);
+
 router.route("/:paymentId").delete(paymentController.delete);
 
 module.exports = router;

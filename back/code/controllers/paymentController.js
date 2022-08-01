@@ -63,7 +63,7 @@ exports.add = async (req, res, next) => {
 };
 
 exports.delete = async (req, res, next) => {
-  const { userId, apartmentId } = req.tokenData;
+  const { apartmentId } = req.tokenData;
   const { paymentId } = req.params;
 
   if (paymentId === undefined) {
@@ -93,6 +93,33 @@ exports.delete = async (req, res, next) => {
 
     await paymentService.delete(paymentId);
     return res.status(200).send({ success: true, msg: "success" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getUserMonthlyPayments = async (req, res, next) => {
+  const { userId: senderId } = req.tokenData;
+  let { userId, onlySum } = req.query;
+
+  try {
+    if (!userId) userId = senderId;
+    else {
+      const { apartmentId } = req.tokenData;
+      if ((await userService.findUserApartmentId(userId)) !== apartmentId) {
+        return res.status(403).send({
+          success: false,
+          msg: "you cant delete this payment because its not belong to your apartment",
+        });
+      }
+    }
+    let payments;
+    if (onlySum === "true") {
+      payments = await paymentService.getUserSumOFMonthlyPayments(userId);
+    } else {
+      payments = await paymentService.getUserMonthlyPayments(userId);
+    }
+    res.status(200).send({ success: true, msg: "success", data: payments });
   } catch (error) {
     next(error);
   }
