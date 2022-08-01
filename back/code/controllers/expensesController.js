@@ -1,6 +1,6 @@
 const expensesService = require("../service/expensesService");
 
-const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+const dateValidate = require("../utilities/dateValidate");
 
 exports.addExpenses = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
@@ -83,7 +83,10 @@ exports.update = async (req, res, next) => {
       });
     }
 
-    if (paymentDate !== undefined && !dateRegex.test(paymentDate)) {
+    if (
+      paymentDate !== undefined &&
+      !dateValidate.isInDateFormat(paymentDate)
+    ) {
       return res.status(400).send({
         success: false,
         msg: "paymentDate need to be is the format of YYYY-MM-DD",
