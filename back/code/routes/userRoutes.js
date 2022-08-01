@@ -5,16 +5,12 @@ const userController = require("../controllers/userController");
 
 const { authenticateTokenFromRequest } = require("../middleware/auth");
 
-router.get(
-  "/apartmentId",
-  authenticateTokenFromRequest,
-  userController.findUserApartmentId
-);
-router.get("/findById", authenticateTokenFromRequest, userController.findById);
-router
-  .route("/findByEmail")
-  .get(authenticateTokenFromRequest, userController.findByEmail); //TODO: check roll admin
+router.use(authenticateTokenFromRequest);
 
-router.delete("/delete", authenticateTokenFromRequest, userController.delete);
+router.get("/apartmentId", userController.findUserApartmentId);
+router.get("/findById", userController.findById);
+router.route("/findByEmail").get(userController.findByEmail); //TODO: check roll admin
+
+router.delete("/delete", userController.delete);
 
 module.exports = router;

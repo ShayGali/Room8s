@@ -5,45 +5,24 @@ const tasksController = require("../controllers/tasksController");
 const { authenticateTokenFromRequest } = require("../middleware/auth");
 const { matchUserToApartment } = require("../middleware/validate");
 
-router.get(
-  "/all",
-  authenticateTokenFromRequest,
-  matchUserToApartment,
-  tasksController.findAllTasksOfApartment
-);
+router.use(authenticateTokenFromRequest);
+router.use(matchUserToApartment);
 
-router
-  .route("/userTasks")
-  .get(authenticateTokenFromRequest, tasksController.findUserTasks);
+router.get("/all", tasksController.findAllTasksOfApartment);
 
-router.post(
-  "/add",
-  authenticateTokenFromRequest,
-  matchUserToApartment,
-  tasksController.addTask
-);
+router.route("/userTasks").get(tasksController.findUserTasks);
+
+router.post("/add", tasksController.addTask);
 
 router
   .route("/associate")
-  .post(
-    authenticateTokenFromRequest,
-    matchUserToApartment,
-    tasksController.associateTaskToUser
-  )
-  .delete(
-    authenticateTokenFromRequest,
-    matchUserToApartment,
-    tasksController.removeAssociateFromUser
-  );
+  .post(tasksController.associateTaskToUser)
+  .delete(tasksController.removeAssociateFromUser);
 
 // need to be last
 router
   .route("/:taskId")
-  .get(
-    authenticateTokenFromRequest,
-    matchUserToApartment,
-    tasksController.findById
-  )
-  .put(authenticateTokenFromRequest)
-  .delete(authenticateTokenFromRequest, tasksController.deleteById);
+  .get(tasksController.findById)
+  .put()
+  .delete(tasksController.deleteById);
 module.exports = router;

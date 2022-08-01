@@ -5,22 +5,14 @@ const apartmentController = require("../controllers/apartmentController");
 
 const { authenticateTokenFromRequest } = require("../middleware/auth");
 
-router.post(
-  "/create",
-  authenticateTokenFromRequest,
-  apartmentController.createApartment
-);
+router.use(authenticateTokenFromRequest);
 
-router
-  .route("/data")
-  .get(authenticateTokenFromRequest, apartmentController.getApartmentData);
+router.post("/create", apartmentController.createApartment);
+
+router.route("/data").get(apartmentController.getApartmentData);
 
 //TODO: add middleware to check the user role to be an apartment_owner
-router.post(
-  "/addUser",
-  authenticateTokenFromRequest,
-  apartmentController.addUserToApartment
-);
+router.post("/addUser", apartmentController.addUserToApartment);
 
 router.delete(
   "/removeUserFromApartment",
