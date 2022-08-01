@@ -6,18 +6,13 @@ const expensesController = require("../controllers/expensesController");
 const { authenticateTokenFromRequest } = require("../middleware/auth");
 const { matchUserToApartment } = require("../middleware/validate");
 
-router.get(
-  "/",
-  authenticateTokenFromRequest,
-  matchUserToApartment,
-  expensesController.getAll
-);
+// middleware
+router.use(authenticateTokenFromRequest);
+router.use(matchUserToApartment);
 
-router.post(
-  "/add",
-  authenticateTokenFromRequest,
-  matchUserToApartment,
-  expensesController.addExpenses
-);
+// requests
+router.get("/", expensesController.getAll);
+
+router.post("/add", expensesController.addExpenses);
 
 module.exports = router;
