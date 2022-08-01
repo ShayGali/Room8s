@@ -42,3 +42,17 @@ exports.findAllOfApartment = async (apartmentId) => {
   const [expenses, _] = await db.execute(query, [apartmentId]);
   return expenses;
 };
+
+exports.findById = async (taskId) => {
+  const query = `
+  SELECT ${expensesTable}.*, ${expensesTypeTable}.expense_type
+  FROM ${expensesTable}
+  INNER JOIN ${expensesTypeTable}
+  ON ${expensesTable}.expense_type = ${expensesTypeTable}.ID
+  WHERE ${expensesTable}.ID = ?;
+  ;
+  `;
+
+  const [expense, _] = await db.execute(query, [taskId]);
+  return expense[0];
+};

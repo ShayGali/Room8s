@@ -38,3 +38,37 @@ exports.getAll = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.findById = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
+  const { taskId } = req.params;
+  try {
+    const expense = await expensesService.findById(taskId);
+    console.log(expense);
+    if (expense === undefined) {
+      return res.status(404).send({ msg: "expense not found", success: false });
+    }
+    if (expense.apartment_ID !== apartmentId) {
+      return res.status(403).send({
+        msg: "you cant get expense that not belong to your apartment",
+        success: false,
+      });
+    }
+
+    return res
+      .status(200)
+      .send({ msg: "success", success: true, data: expense });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
+  const { taskId } = req.params;
+
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
