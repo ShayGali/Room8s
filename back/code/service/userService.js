@@ -9,7 +9,7 @@ exports.findUserApartmentId = async (userID) => {
   where user_ID = ?`;
 
   const [id, _] = await db.execute(query, [userID]);
-  return id[0].apartmentId;
+  return id[0]?.apartmentId;
 };
 
 exports.findById = async (userID) => {
