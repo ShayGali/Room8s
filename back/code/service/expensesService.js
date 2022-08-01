@@ -43,7 +43,7 @@ exports.findAllOfApartment = async (apartmentId) => {
   return expenses;
 };
 
-exports.findById = async (taskId) => {
+exports.findById = async (expenseId) => {
   const query = `
   SELECT ${expensesTable}.*, ${expensesTypeTable}.expense_type
   FROM ${expensesTable}
@@ -53,7 +53,7 @@ exports.findById = async (taskId) => {
   ;
   `;
 
-  const [expense, _] = await db.execute(query, [taskId]);
+  const [expense, _] = await db.execute(query, [expenseId]);
   return expense[0];
 };
 
@@ -80,5 +80,11 @@ exports.update = async (expense) => {
     expense.note,
     expense.ID,
   ]);
+  return result;
+};
+
+exports.delete = async (expenseId) => {
+  const query = `DELETE FROM ${expensesTable} WHERE ID = ?`;
+  const result = await db.execute(query, [expenseId]);
   return result;
 };

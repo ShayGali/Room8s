@@ -43,9 +43,9 @@ exports.getAll = async (req, res, next) => {
 
 exports.findById = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
-  const { taskId } = req.params;
+  const { expenseId } = req.params;
   try {
-    const expense = await expensesService.findById(taskId);
+    const expense = await expensesService.findById(expenseId);
     if (expense === undefined) {
       return res.status(404).send({ success: false, msg: "expense not found" });
     }
@@ -66,11 +66,11 @@ exports.findById = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
-  const { taskId } = req.params;
+  const { expenseId } = req.params;
   const { title, expensesType, paymentDate, amount, note } = req.body;
 
   try {
-    const expense = await expensesService.findById(taskId);
+    const expense = await expensesService.findById(expenseId);
 
     if (expense === undefined) {
       return res.status(404).send({ success: false, msg: "expense not found" });
@@ -99,10 +99,30 @@ exports.update = async (req, res, next) => {
     expense.amount = amount || expense.amount;
     expense.note = note || expense.note;
 
-    const result = await expensesService.update(expense);
-    return res
-      .status(200)
-      .send({ msg: "success", success: true, data: result });
+    await expensesService.update(expense);
+    return res.status(200).send({ msg: "success", success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
+  const { expenseId } = req.params;
+  try {
+    const expense = await expensesService.findById(expenseId);
+    if (expense === undefined) {
+      return res.status(404).send({ success: false, msg: "expense not found" });
+    }
+
+    if (expense.apartment_ID !== apartmentId) {
+      return res.status(403).send({
+        success: false,
+        msg: "you cant update expense that not belong to your apartment",
+      });
+    }
+    await expensesService.delete(expenseId);
+    return res.status(200).send({ msg: "success", success: true });
   } catch (error) {
     next(error);
   }
