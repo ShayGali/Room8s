@@ -15,6 +15,9 @@ router.get("/", expensesController.getAll);
 
 router.post("/add", expensesController.addExpenses);
 
-router.route("/:taskId").get(expensesController.findById);
+router
+  .route("/:taskId")
+  .get(expensesController.findById)
+  .put(expensesController.update);
 
 module.exports = router;

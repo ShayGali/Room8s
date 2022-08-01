@@ -56,3 +56,29 @@ exports.findById = async (taskId) => {
   const [expense, _] = await db.execute(query, [taskId]);
   return expense[0];
 };
+
+exports.update = async (expense) => {
+  if (isNaN(expense.expense_type)) {
+    let [res, _] = await db.execute(
+      `SELECT ID FROM ${expensesTypeTable} WHERE expense_type = ?`,
+      [expense.expense_type]
+    );
+    expense.expense_type = res[0].ID;
+  }
+
+  const query = `
+  UPDATE ${expensesTable}
+  SET title = ?, expense_type = ?, payment_date = ?, amount = ?, note = ?
+  WHERE ${expensesTable}.ID = ?
+  `;
+
+  const result = await db.execute(query, [
+    expense.title,
+    expense.expense_type,
+    expense.payment_date,
+    expense.amount,
+    expense.note,
+    expense.ID,
+  ]);
+  return result;
+};
