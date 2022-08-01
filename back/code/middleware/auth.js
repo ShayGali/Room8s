@@ -10,7 +10,8 @@ exports.authenticateTokenFromRequest = (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token) return res.status(401).send({ msg: "Send token" }); // TODO: make better error message
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, tokenData) => {
-    if (err) return res.status(403).send({ msg: "Invalid token" });
+    if (err)
+      return res.status(403).send({ success: false, msg: "Invalid token" });
     req.tokenData = tokenData;
     next(); // move to the function
   });
