@@ -102,7 +102,7 @@ FOREIGN KEY (expense_type) REFERENCES expense_type(ID)
 CREATE TABLE payments(
 ID INT AUTO_INCREMENT PRIMARY KEY,
 expense_ID INT,
-user_id INT,
+user_ID INT,
 amount_that_paid DOUBLE,
 pay_timestamp DATE,
 
