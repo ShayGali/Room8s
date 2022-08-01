@@ -66,12 +66,9 @@ exports.addUserToApartment = async (req, res, next) => {
   }
 
   try {
-    if (!(await userService.checkIfUserExists(newUserId)))
-      return res.status(200).send({ msg: "user not found" });
-
     const userApartmentId = await userService.findUserApartmentId(userId);
 
-    if (!userApartment) {
+    if (!userApartmentId) {
       return res
         .status(200)
         .send({ msg: "user that try to add new user, not in apartment" });
