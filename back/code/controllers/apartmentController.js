@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const apartmentService = require("../service/apartmentService");
 const userService = require("../service/userService");
 
