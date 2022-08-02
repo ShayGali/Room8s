@@ -84,6 +84,9 @@ async function generateToken(data) {
   return token;
 }
 
+//TODO
+async function generateRefreshToken(data) {}
+
 exports.hello = async (req, res, next) => {
   return res.send({ msg: "hello", token: req.tokenData });
 };
