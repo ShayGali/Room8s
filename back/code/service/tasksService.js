@@ -87,3 +87,33 @@ exports.deleteById = async (taskId) => {
   `;
   await db.execute(query, [taskId]);
 };
+
+/**
+ *
+ * @param {number | string} taskType
+ * @param {Date | string} expirationDate
+ * @param {string} title
+ * @param {string | null} note
+ */
+exports.updateTask = async (taskId, taskType, expirationDate, title, note) => {
+  if (isNaN(taskType)) {
+    let [res, _] = await db.execute(
+      `SELECT ID FROM ${tasksTypeTable} WHERE task_type = ?`,
+      [taskType]
+    );
+    taskType = res[0].ID;
+  }
+  const query = `
+    UPDATE ${tasksTable}
+    SET task_type = ?, expiration_date = ?, title = ?,  note = ?
+    WHERE ID = ?
+    `;
+  const result = await db.execute(query, [
+    taskType,
+    expirationDate,
+    title,
+    note,
+    taskId,
+  ]);
+  return result;
+};

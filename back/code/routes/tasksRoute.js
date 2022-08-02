@@ -23,6 +23,6 @@ router
 router
   .route("/:taskId")
   .get(tasksController.findById)
-  .put()
+  .put(tasksController.updateTask)
   .delete(tasksController.deleteById);
 module.exports = router;
