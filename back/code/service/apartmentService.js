@@ -5,7 +5,7 @@ const apartmentsUserTable = "user_in_apartment";
 exports.getData = async (apartmentsId) => {
   const query = `
     SELECT * FROM ${apartmentsTable}
-    WHERE ID = ?
+    WHERE ID = ?;
     `;
 
   const [apartment, _] = await db.execute(query, [apartmentsId]);

@@ -11,9 +11,7 @@ router.use(authenticateTokenFromRequest);
 
 router.post("/create", apartmentController.createApartment);
 
-router
-  .route("/data")
-  .get(matchUserToApartment, apartmentController.getApartmentData);
+router.route("/data").get(apartmentController.getApartmentData);
 
 router.post(
   "/addUser",
