@@ -229,3 +229,14 @@ exports.updateTask = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getTypes = async (req, res, next) => {
+  try {
+    const result = await tasksService.getTypes();
+    return res
+      .status(200)
+      .send({ success: true, msg: "success", data: result });
+  } catch (error) {
+    next(error);
+  }
+};

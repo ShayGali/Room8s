@@ -19,10 +19,13 @@ router
   .post(tasksController.associateTaskToUser)
   .delete(tasksController.removeAssociateFromUser);
 
+router.get("/types", tasksController.getTypes);
+
 // need to be last
 router
   .route("/:taskId")
   .get(tasksController.findById)
   .put(tasksController.updateTask)
   .delete(tasksController.deleteById);
+
 module.exports = router;

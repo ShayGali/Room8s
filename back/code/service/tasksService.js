@@ -117,8 +117,7 @@ exports.updateTask = async (taskId, taskType, expirationDate, title, note) => {
     );
     taskType = res[0].ID;
   }
-  const query = `
-    UPDATE ${tasksTable}
+  const query = `UPDATE ${tasksTable}
     SET task_type = ?, expiration_date = ?, title = ?,  note = ?
     WHERE ID = ?
     `;
@@ -129,5 +128,10 @@ exports.updateTask = async (taskId, taskType, expirationDate, title, note) => {
     note,
     taskId,
   ]);
+  return result;
+};
+
+exports.getTypes = async () => {
+  const [result, _] = await db.execute(`SELECT * FROM ${tasksTypeTable}`);
   return result;
 };
