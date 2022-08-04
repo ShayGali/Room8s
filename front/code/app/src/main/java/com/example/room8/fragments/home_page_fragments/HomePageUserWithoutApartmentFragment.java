@@ -10,17 +10,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomePageUserWithoutApartmentFragment#newInstance} factory method to
+ * Use the {@link HomePageUserWithoutApartmentFragment#newInstance} factory
+ * method to
  * create an instance of this fragment.
  */
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     View menuBtn;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +65,7 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
         menuBtn = view.findViewById(R.id.menu_btn);
