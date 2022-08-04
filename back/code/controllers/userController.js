@@ -69,3 +69,13 @@ exports.delete = async (req, res, next) => {
   }
   res.status(200).json({ msg: "success", data: result });
 };
+
+exports.getRoommatesData = async (req, res, next) => {
+  const { userId, apartmentId } = req.tokenData;
+  try {
+    const room8 = await userService.getRoommatesData(apartmentId, userId);
+    return res.status(200).json({ success: true, msg: "success", data: room8 });
+  } catch (error) {
+    next(error);
+  }
+};

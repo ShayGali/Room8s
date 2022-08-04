@@ -1,5 +1,6 @@
 const db = require("../config/db");
 const usersTable = "users";
+const apartmentsUserTable = "user_in_apartment";
 
 exports.findUserApartmentId = async (userID) => {
   if (userID === undefined) return;
@@ -52,4 +53,16 @@ exports.delete = async (userId) => {
   const result = await db.execute(query, [userId]);
 
   return result[0].affectedRows;
+};
+
+exports.getRoommatesData = async (apartmentId, userId) => {
+  const query = `
+  SELECT ${usersTable}.ID, user_name, user_level,profile_icon_id
+  from ${usersTable}
+  INNER JOIN ${apartmentsUserTable}
+  ON ${usersTable}.ID = ${apartmentsUserTable}.user_ID
+  WHERE apartment_ID = ? AND NOT ${usersTable}.ID = ?; 
+  `;
+  const [result, _] = await db.execute(query, [apartmentId, userId]);
+  return result;
 };
