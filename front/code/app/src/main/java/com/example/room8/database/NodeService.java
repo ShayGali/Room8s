@@ -110,7 +110,8 @@ public class NodeService {
 
                         JSONObject responseJOSN = new JSONObject(stringBody);
 
-                        if (responseJOSN.has(MESSAGE_KEY) && "success" .equals(responseJOSN.getString("msg")) && responseJOSN.has(DATA_KEY))
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                                && responseJOSN.has(DATA_KEY))
                             User.parseDataFromJson(responseJOSN.getJSONObject(DATA_KEY));
 
                     } catch (JSONException e) {
