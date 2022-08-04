@@ -67,6 +67,7 @@ public class HomePageFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         ((MainActivity) requireActivity()).fetchUserData();
+        ((MainActivity) requireActivity()).fetchRoom8();
     }
 
     @SuppressLint("NonConstantResourceId")

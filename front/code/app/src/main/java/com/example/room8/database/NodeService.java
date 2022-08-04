@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
 import com.example.room8.adapters.TasksAdapter;
+import com.example.room8.model.Apartment;
+import com.example.room8.model.Roommate;
 import com.example.room8.model.User;
 
 import org.json.JSONArray;
@@ -164,11 +166,11 @@ public class NodeService {
                         JSONObject responseJOSN = new JSONObject(stringBody);
 
                         if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
-                                && responseJOSN.has(DATA_KEY)){
+                                && responseJOSN.has(DATA_KEY)) {
                             JSONArray tasks = responseJOSN.getJSONArray(DATA_KEY);
                             for (int i = 0; i < tasks.length(); i++) {
                                 JSONObject task = tasks.getJSONObject(i);
-                                activity.runOnUiThread(()-> {
+                                activity.runOnUiThread(() -> {
                                     try {
                                         taskAdapter.get().addTask(task);
                                     } catch (JSONException | ParseException e) {
@@ -184,5 +186,59 @@ public class NodeService {
                 }
             }
         });
+    }
+
+    public void getRoommates() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/room8")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .get()
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("fetch data failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("responseBody is null");
+                    System.err.println("fetch data went wrong");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                                && responseJOSN.has(DATA_KEY)) {
+                            JSONArray room8 = responseJOSN.getJSONArray(DATA_KEY);
+                            for (int i = 0; i < room8.length(); i++) {
+                                JSONObject roommate = room8.getJSONObject(i);
+                                Apartment.getInstance().getRoommates().add(new Roommate(roommate));
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
     }
 }
