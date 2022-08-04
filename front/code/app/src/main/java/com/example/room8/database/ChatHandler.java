@@ -125,4 +125,10 @@ public class ChatHandler {
         });
     }
 
+    public void closeConnection(){
+        webSocket.close(1000,"end of socket");
+    }
+
+
+
 }
