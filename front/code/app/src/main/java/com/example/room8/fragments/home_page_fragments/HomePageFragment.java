@@ -72,17 +72,17 @@ public class HomePageFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-//        if (((MainActivity) requireActivity()).checkIfJwtTokenExists()) {
-//            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
-//        }
+        // if (((MainActivity) requireActivity()).checkIfJwtTokenExists()) {
+        // Navigation.findNavController(requireActivity(),
+        // R.id.main_nav_host_fragment).navigate(R.id.action_homePageFragment_to_loginFragment);
+        // }
 
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
-
 
         View profileBtn = view.findViewById(R.id.go_to_profile_btn);
         View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
@@ -107,7 +107,6 @@ public class HomePageFragment extends Fragment {
             popupMenu.show();
         });
 
-
         // navigate to other fragments
         profileBtn.setOnClickListener(v -> {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
@@ -121,18 +120,16 @@ public class HomePageFragment extends Fragment {
             Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment);
         });
 
-
         WeakReference<TextView> apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview;
         apartmentNameTextView = new WeakReference<>(view.findViewById(R.id.apartment_name_textView));
         apartmentNumTextView = new WeakReference<>(view.findViewById(R.id.apartment_num_textView));
         numberOfRoommatesTextview = new WeakReference<>(view.findViewById(R.id.number_of_roommates_textView));
         activity.fetchApartmentData(apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview);
 
-
-        //TODO: get expenses data -
-        //TODO: get tasks data - next task
+        // TODO: get expenses data -
+        // TODO: get tasks data - next task
         walletBtn.setOnClickListener(v -> {
-//            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
+            // Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
         });
         return view;
     }
