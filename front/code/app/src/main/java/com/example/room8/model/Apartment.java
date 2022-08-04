@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Apartment {
@@ -30,7 +31,9 @@ public final class Apartment {
     private String name;
     private int numberOfPeople;
 
+    private List<Roommate> roommates;
     private List<Task> tasks;
+
 
     public static void parseDataFromJson(JSONObject apartmentAsJson) throws JSONException {
         instance = getInstance(); // for create if not exists
@@ -44,6 +47,8 @@ public final class Apartment {
     }
 
     private Apartment() {
+        this.roommates = new ArrayList<>();
+        this.tasks = new ArrayList<>();
     }
 
     public int getId() {
@@ -70,13 +75,30 @@ public final class Apartment {
         this.numberOfPeople = numberOfPeople;
     }
 
-    @NonNull
+    public List<Roommate> getRoommates() {
+        return roommates;
+    }
+
+    public void setRoommates(List<Roommate> roommates) {
+        this.roommates = roommates;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     @Override
     public String toString() {
         return "Apartment{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", number_of_people=" + numberOfPeople +
+                ", numberOfPeople=" + numberOfPeople +
+                ", roommates=" + roommates +
+                ", tasks=" + tasks +
                 '}';
     }
 }
