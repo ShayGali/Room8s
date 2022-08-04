@@ -3,12 +3,19 @@ package com.example.room8.fragments.tasks_fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.adapters.TasksAdapter;
+import com.example.room8.database.NodeService;
+
+import java.lang.ref.WeakReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,6 +61,7 @@ public class TasksFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -61,6 +69,12 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tasks, container, false);
+        View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.tasks_RecyclerView);
+        TasksAdapter adapter = new TasksAdapter(getLayoutInflater());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        ((MainActivity) requireActivity()).fetchTasks(new WeakReference<TasksAdapter>(adapter));
+        return view;
     }
 }

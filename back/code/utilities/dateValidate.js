@@ -23,3 +23,7 @@ exports.isInDateFormat = (date) => {
 exports.isInDateTimeFormat = (date) => {
   return dateTimeRegex.test(date);
 };
+
+exports.formatDateTime = (date) => {
+  return date?.toISOString().slice(0, 19).replace("T", " ");
+};

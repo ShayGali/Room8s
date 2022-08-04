@@ -3,6 +3,8 @@ const tasksTable = "tasks";
 const tasksTypeTable = "task_type";
 const tasksPerUserTable = "tasks_per_user";
 
+const { formatDateTime } = require("../utilities/dateValidate");
+
 exports.findAllTasksOfApartment = async (apartmentID) => {
   if (apartmentID === undefined) return;
 
@@ -12,8 +14,14 @@ exports.findAllTasksOfApartment = async (apartmentID) => {
   INNER JOIN ${tasksTypeTable}
   ON ${tasksTable}.task_type = ${tasksTypeTable}.ID
   WHERE apartment_ID = ?;`;
+
   const [tasks, _] = await db.execute(query, [apartmentID]);
-  return tasks;
+
+  return tasks.map((task) => {
+    task.create_time = formatDateTime(task.create_time);
+    task.expiration_date = formatDateTime(task.expiration_date);
+    return task;
+  });
 };
 
 exports.addTask = async (
@@ -48,6 +56,8 @@ exports.findById = async (taskId) => {
   WHERE ID = ?;
   `;
   const [result, _] = await db.execute(query, [taskId]);
+  result[0].create_time = formatDateTime(result[0].create_time);
+  result[0].expiration_date = formatDateTime(result[0].expiration_date);
   return result[0];
 };
 
@@ -77,7 +87,11 @@ exports.findUserTasks = async (userId) => {
 
   const [result, _] = await db.execute(query, [userId]);
 
-  return result;
+  return result.map((task) => {
+    task.create_time = formatDateTime(task.create_time);
+    task.expiration_date = formatDateTime(task.expiration_date);
+    return task;
+  });
 };
 
 exports.deleteById = async (taskId) => {

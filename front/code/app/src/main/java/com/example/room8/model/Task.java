@@ -29,6 +29,22 @@ public class Task {
     String title;
     String note;
 
+    public Task(JSONObject taskAsJson) throws JSONException, ParseException {
+        Task t = parseDataFromJson(taskAsJson);
+        this.id = t.id;
+        this.apartmentId = t.apartmentId;
+        this.creatorId = t.creatorId;
+        this.taskType = t.taskType;
+        this.createDate = t.createDate;
+        this.expirationDate = t.expirationDate;
+        this.title = t.title;
+        this.note = t.note;
+
+    }
+
+    public Task() {
+    }
+
     public static Task parseDataFromJson(JSONObject taskAsJson) throws JSONException, ParseException {
         if (taskAsJson == null) return null;
 
@@ -41,7 +57,7 @@ public class Task {
         if (taskAsJson.has(CREATOR_ID_KEY) && !taskAsJson.isNull(CREATOR_ID_KEY))
             tempTask.setCreatorId(taskAsJson.getInt(CREATOR_ID_KEY));
         if (taskAsJson.has(TASK_TYPE_KEY))
-            tempTask.setTaskType(TASK_TYPE_KEY);
+            tempTask.setTaskType(taskAsJson.getString(TASK_TYPE_KEY));
         if (taskAsJson.has(CREATE_TIME_KEY))
             tempTask.setCreateDate(NodeService.DATE_TIME_FORMAT.parse(taskAsJson.getString(CREATE_TIME_KEY)));
         if (taskAsJson.has(EXPIRATION_DATE_KEY))

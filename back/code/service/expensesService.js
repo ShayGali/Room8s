@@ -2,6 +2,8 @@ const db = require("../config/db");
 const expensesTable = "expenses";
 const expensesTypeTable = "expense_type";
 
+const { formatDateTime } = require("../utilities/dateValidate");
+
 exports.addExpenses = async (
   apartmentId,
   UserThatUploadId,
@@ -40,7 +42,11 @@ exports.findAllOfApartment = async (apartmentId) => {
   ;
   `;
   const [expenses, _] = await db.execute(query, [apartmentId]);
-  return expenses;
+  return expenses.map((expense) => {
+    expense.upload_date = formatDateTime(expense.upload_date);
+    expense.payment_date = formatDateTime(expense.payment_date);
+    return expense;
+  });
 };
 
 exports.findById = async (expenseId) => {
@@ -54,6 +60,8 @@ exports.findById = async (expenseId) => {
   `;
 
   const [expense, _] = await db.execute(query, [expenseId]);
+  expense[0].upload_date = formatDateTime(expense[0].upload_date);
+  expense[0].payment_date = formatDateTime(expense[0].payment_date);
   return expense[0];
 };
 

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.database.HomePageHandler;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
@@ -147,4 +148,7 @@ public class MainActivity extends AppCompatActivity {
         new HomePageHandler(mainActivityWeakReference,apartmentNameTextView,apartmentNumTextView, numberOfRoommatesTextview).execute();
     }
 
+    public void fetchTasks(WeakReference<TasksAdapter> tasksAdapterWeakReference) {
+        databaseService.getAllTask(tasksAdapterWeakReference);
+    }
 }

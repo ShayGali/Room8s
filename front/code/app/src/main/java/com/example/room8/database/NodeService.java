@@ -5,13 +5,16 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
-import com.example.room8.model.Apartment;
+import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.model.User;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
@@ -30,6 +33,7 @@ public class NodeService {
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
     public static final String USERS_PATH = "/users";
+    public static final String TASKS_PATH = "/tasks";
 
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String TOKEN_BODY_KEY = "jwtToken";
@@ -120,5 +124,65 @@ public class NodeService {
                 }
             }
         }));
+    }
+
+    public void getAllTask(WeakReference<TasksAdapter> taskAdapter) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(HTTP_URL + TASKS_PATH + "/all")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("fetch tasks failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("responseBody is null");
+                    System.err.println("fetch data went wrong");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("fetch data went wrong");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                                && responseJOSN.has(DATA_KEY)){
+                            JSONArray tasks = responseJOSN.getJSONArray(DATA_KEY);
+                            for (int i = 0; i < tasks.length(); i++) {
+                                JSONObject task = tasks.getJSONObject(i);
+                                activity.runOnUiThread(()-> {
+                                    try {
+                                        taskAdapter.get().addTask(task);
+                                    } catch (JSONException | ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
