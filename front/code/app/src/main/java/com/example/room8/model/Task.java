@@ -6,7 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Task {
 
@@ -19,6 +21,9 @@ public class Task {
     private static final String TITLE_KEY = "title";
     private static final String NOTE_KEY = "";
     private static final String ICON_PATH_KEY = "icon_path";
+
+    public static final String[] TASK_TYPES = {"general task", "something"};
+
 
     int id;
     int apartmentId;
@@ -133,4 +138,6 @@ public class Task {
     public void setNote(String note) {
         this.note = note;
     }
+
+
 }

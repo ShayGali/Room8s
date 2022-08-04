@@ -15,8 +15,10 @@
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/fragment_wallet.xml" value="0.176" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/single_expense_layout.xml" value="0.4" />
         <entry key="..\:/Users/ASUS/Desktop/old PC user/Desktop/FINAL PROJECT/proj/Room8s/front/code/app/src/main/res/layout/single_task_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/dell/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.18127404873877725" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1325" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/button.xml" value="0.114" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/button_border_style.xml" value="0.126" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/buttun_border_style.xml" value="0.1" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.1325" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2285" />
@@ -30,6 +32,7 @@
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_message.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_no_connection.xml" value="0.16953762466001812" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/activity_wallet.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/drop_dwon_item.xml" value="0.4" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_forget_password.xml" value="0.176" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_forgot_password.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/fragment_home_page.xml" value="0.2" />
@@ -51,6 +54,7 @@
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/message_received.xml" value="0.264" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/message_sent.xml" value="0.4" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/single_task_layout.xml" value="0.264" />
+        <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/layout/task_dialog.xml" value="0.42249240121580545" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/menu/home_page_menu.xml" value="0.2" />
         <entry key="..\:/Users/dell/OneDrive - Ariel University/Desktop/semester b/project/front/code/app/src/main/res/menu/test_menu.xml" value="0.4" />
       </map>

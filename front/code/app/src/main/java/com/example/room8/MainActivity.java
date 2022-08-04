@@ -27,7 +27,7 @@ import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDialogListener{
+public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDialogListener {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDi
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
                 if (checkIfJwtTokenExists()) { //TODO refresh token
-                    runOnUiThread(()-> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
+                    runOnUiThread(() -> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
                 }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDi
     }
 
 
-
-
     /**
      * makes a login attempt
      *
@@ -147,14 +145,14 @@ public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDi
 
     public void fetchApartmentData(WeakReference<TextView> apartmentNameTextView, WeakReference<TextView> apartmentNumTextView, WeakReference<TextView> numberOfRoommatesTextview) {
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
-        new HomePageHandler(mainActivityWeakReference,apartmentNameTextView,apartmentNumTextView, numberOfRoommatesTextview).execute();
+        new HomePageHandler(mainActivityWeakReference, apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview).execute();
     }
 
     public void fetchTasks(WeakReference<TasksAdapter> tasksAdapterWeakReference) {
         databaseService.getAllTask(tasksAdapterWeakReference);
     }
 
-    public void fetchRoom8(){
+    public void fetchRoom8() {
         databaseService.getRoommates();
     }
 

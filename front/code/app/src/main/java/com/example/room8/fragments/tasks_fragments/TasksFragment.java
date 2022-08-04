@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
-import com.example.room8.database.NodeService;
+import com.example.room8.dialogs.TaskDialog;
+import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +23,7 @@ import java.lang.ref.WeakReference;
  * Use the {@link TasksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +72,7 @@ public class TasksFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.tasks_RecyclerView);
-        TasksAdapter adapter = new TasksAdapter(getLayoutInflater());
+        TasksAdapter adapter = new TasksAdapter(getLayoutInflater(), (MainActivity) requireActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         ((MainActivity) requireActivity()).fetchTasks(new WeakReference<TasksAdapter>(adapter));

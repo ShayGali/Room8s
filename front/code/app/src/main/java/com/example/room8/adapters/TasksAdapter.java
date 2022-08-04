@@ -9,9 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.NodeService;
-import com.example.room8.model.Message;
+import com.example.room8.dialogs.TaskDialog;
 import com.example.room8.model.Task;
 
 import org.json.JSONException;
@@ -24,9 +25,11 @@ import java.util.List;
 public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater inflater;
     private final List<Task> tasks;
+    private final MainActivity activity;
 
-    public TasksAdapter(LayoutInflater inflater) {
+    public TasksAdapter(LayoutInflater inflater, MainActivity activity) {
         this.inflater = inflater;
+        this.activity = activity;
         this.tasks = new ArrayList<>();
     }
 
@@ -44,6 +47,11 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.name.setText(task.getTitle() != null ? task.getTitle() : "task don't have title");
         taskHolder.date.setText(task.getExpirationDate() != null ? NodeService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
+
+        taskHolder.layout.setOnClickListener(v->{
+            TaskDialog dialog = new TaskDialog(task);
+            dialog.show(activity.getSupportFragmentManager(),"task dialog");
+        });
     }
 
     @Override
