@@ -47,7 +47,41 @@ public class Task {
 
     }
 
+    /**
+     * copy constructor
+     *
+     * @param o
+     */
+    public Task(Task o) {
+        this.id = o.id;
+        this.apartmentId = o.apartmentId;
+        this.creatorId = o.creatorId;
+        this.taskType = o.taskType;
+        if (o.getCreateDate() != null)
+            this.createDate = new Date(o.getCreateDate().getTime());
+        if (o.expirationDate != null)
+            this.expirationDate = new Date(o.getExpirationDate().getTime());
+        this.title = o.title;
+        this.note = o.note;
+    }
+
     public Task() {
+    }
+
+    /**
+     * copy value frrom one task to another
+     *
+     * @param o
+     */
+    public void setValues(Task o) {
+        this.id = o.id;
+        this.apartmentId = o.apartmentId;
+        this.creatorId = o.creatorId;
+        this.taskType = o.taskType;
+        this.createDate = o.getCreateDate();
+        this.expirationDate = o.getExpirationDate();
+        this.title = o.title;
+        this.note = o.note;
     }
 
     public static Task parseDataFromJson(JSONObject taskAsJson) throws JSONException, ParseException {
@@ -73,6 +107,65 @@ public class Task {
             tempTask.setNote(taskAsJson.getString(NOTE_KEY));
 
         return tempTask;
+    }
+
+    public boolean shouldUpdateTask(Task other) {
+        if (this.creatorId != other.creatorId)
+            return true;
+
+        if (this.expirationDate == null) {
+            if (other.expirationDate != null) {
+                return true;
+            }
+        } else {
+            if (!this.expirationDate.equals(other.expirationDate)) {
+                return true;
+            }
+        }
+
+        if (this.taskType == null) {
+            if (other.taskType != null) {
+                return true;
+            }
+        } else {
+            if (!this.taskType.equals(other.taskType))
+                return true;
+        }
+
+        if (this.title == null) {
+            if (other.title != null) {
+                return true;
+            }
+        } else {
+            if (!this.title.equals(other.title))
+                return true;
+        }
+
+        if (this.note == null) {
+            if (other.note != null) {
+                return true;
+            }
+        } else {
+            if (!this.note.equals(other.note))
+                return true;
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", apartmentId=" + apartmentId +
+                ", creatorId=" + creatorId +
+                ", taskType='" + taskType + '\'' +
+                ", createDate=" + createDate +
+                ", expirationDate=" + expirationDate +
+                ", title='" + title + '\'' +
+                ", note='" + note + '\'' +
+                '}';
     }
 
     public int getId() {
