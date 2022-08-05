@@ -49,7 +49,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.type.setText(task.getTaskType());
 
         taskHolder.layout.setOnClickListener(v->{
-            TaskDialog dialog = new TaskDialog(task);
+            TaskDialog dialog = new TaskDialog(task,this);
             dialog.show(activity.getSupportFragmentManager(),"task dialog");
         });
     }
