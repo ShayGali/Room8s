@@ -158,6 +158,6 @@ public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDi
 
     @Override
     public void updateTask(Task t) {
-        System.out.println(t);
+        databaseService.updateTask(t);
     }
 }
