@@ -99,11 +99,11 @@ public class Task {
             tempTask.setTaskType(taskAsJson.getString(TASK_TYPE_KEY));
         if (taskAsJson.has(CREATE_TIME_KEY))
             tempTask.setCreateDate(NodeService.DATE_TIME_FORMAT.parse(taskAsJson.getString(CREATE_TIME_KEY)));
-        if (taskAsJson.has(EXPIRATION_DATE_KEY))
+        if (taskAsJson.has(EXPIRATION_DATE_KEY) && !taskAsJson.isNull(EXPIRATION_DATE_KEY))
             tempTask.setExpirationDate(NodeService.DATE_TIME_FORMAT.parse(taskAsJson.getString(EXPIRATION_DATE_KEY)));
-        if (taskAsJson.has(TITLE_KEY))
+        if (taskAsJson.has(TITLE_KEY) && !taskAsJson.isNull(TITLE_KEY))
             tempTask.setTitle(taskAsJson.getString(TITLE_KEY));
-        if (taskAsJson.has(NOTE_KEY))
+        if (taskAsJson.has(NOTE_KEY) && !taskAsJson.isNull(NOTE_KEY))
             tempTask.setNote(taskAsJson.getString(NOTE_KEY));
 
         return tempTask;

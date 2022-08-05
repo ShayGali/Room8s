@@ -125,6 +125,9 @@ public class TaskDialog extends AppCompatDialogFragment {
             title.setText(tempTask.getTitle());
 
         if (tempTask.getNote() != null) {
+            System.out.println(tempTask);
+            System.out.println(tempTask.getNote());
+            System.out.println(tempTask.getNote()==null);
             note.setText(tempTask.getNote());
         }
     }
