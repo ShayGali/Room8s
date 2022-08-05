@@ -1,7 +1,10 @@
 package com.example.room8.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,32 +16,42 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
 import com.example.room8.database.NodeService;
 import com.example.room8.model.Apartment;
+import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskDialog extends AppCompatDialogFragment {
 
     private TaskDialogListener listener;
-    private final Task task;
+    private final Task tempTask;
+    private final Task originalTask;
 
-    private TextView creatorName;
+
+    private Spinner creatorName;
     private Spinner taskTypes;
     private TextView createTime;
     private TextView expirationTime;
     private TextView title;
     private TextView note;
 
-    public TaskDialog(Task task) {
-        this.task = task;
+    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+
+    public TaskDialog(Task task, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+        this.originalTask = task;
+        this.tempTask = new Task(task);
+        this.adapter = adapter;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -50,16 +63,40 @@ public class TaskDialog extends AppCompatDialogFragment {
 
         builder
                 .setView(view)
-                .setTitle("title")
-                .setNegativeButton("cencel", (dialog, which) -> {
+                .setTitle("Edit Task")
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    tempTask.setValues(originalTask);
                 })
-                .setPositiveButton("ok", (dialog, which) -> {
-                    listener.updateTask(task);
+                .setPositiveButton("Edit", (dialog, which) -> {
+                    getValuesFromFields();
+                    if (originalTask.shouldUpdateTask(tempTask)) {
+                        listener.updateTask(tempTask);
+                        originalTask.setValues(tempTask);
+                        adapter.notifyDataSetChanged();
+                    }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
         return dialog;
+    }
+
+    private void getValuesFromFields() {
+        tempTask.setCreatorId(getCreatorIdFromName());
+        tempTask.setTaskType(taskTypes.getSelectedItem().toString());
+        tempTask.setTitle(title.getText().toString());
+        if (!note.getText().toString().trim().equals(""))
+            tempTask.setNote(note.getText().toString());
+    }
+
+    private int getCreatorIdFromName() {
+        if (creatorName.getSelectedItem().toString().equals(User.getInstance().getUserName()))
+            return User.getInstance().getId();
+        for (Roommate r : Apartment.getInstance().getRoommates()) {
+            if (creatorName.getSelectedItem().toString().equals(r.getUserName()))
+                return r.getId();
+        }
+        return 0;
     }
 
     private void initDialogDataFields(View view) {
@@ -70,21 +107,40 @@ public class TaskDialog extends AppCompatDialogFragment {
         title = view.findViewById(R.id.dialog_task_title);
         note = view.findViewById(R.id.dialog_task_note);
 
-        if (task.getCreatorId() == User.getInstance().getId()) {
-            creatorName.setText(User.getInstance().getUserName());
+        List<String> room8 = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
+        room8.add(User.getInstance().getUserName());
+
+        ArrayAdapter<String> namesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_dwon_item, room8);
+        creatorName.setAdapter(namesAdapter);
+
+        if (tempTask.getCreatorId() == User.getInstance().getId()) {
+            creatorName.setSelection(room8.size() - 1);
         } else {
-            Apartment.getInstance().getRoommates().stream().filter(roommate -> roommate.getId() == task.getCreatorId()).findFirst().ifPresent(roommate -> creatorName.setText(roommate.getUserName()));
+            for (Roommate r : Apartment.getInstance().getRoommates())
+                if (r.getId() == tempTask.getCreatorId()) {
+                    creatorName.setSelection(namesAdapter.getPosition(r.getUserName()));
+                    break;
+                }
         }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.drop_dwon_item, Task.TASK_TYPES);
-        taskTypes.setAdapter(adapter);
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_dwon_item, Task.TASK_TYPES);
+        taskTypes.setAdapter(typesAdapter);
+        for (int i = 0; i < Task.TASK_TYPES.length; i++) {
+            if (Task.TASK_TYPES[i].equals(tempTask.getTaskType())) {
+                taskTypes.setSelection(i);
+            }
+        }
 
-        createTime.setText(NodeService.DATE_TIME_FORMAT.format(task.getCreateDate()));
-        expirationTime.setText(task.getExpirationDate() != null ? NodeService.DATE_TIME_FORMAT.format(task.getExpirationDate()) : "set expiration date");
-        if (task.getTitle() != null)
-            title.setText(task.getTitle());
-        if (task.getNote() != null)
-            note.setText(task.getNote());
+        createTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getCreateDate()));
+        expirationTime.setText(tempTask.getExpirationDate() != null ? NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()) : "set expiration date");
+
+        expirationTime.setOnClickListener(this::setDateTimeDialogs);
+
+
+        if (tempTask.getTitle() != null)
+            title.setText(tempTask.getTitle());
+        if (tempTask.getNote() != null)
+            note.setText(tempTask.getNote());
     }
 
 
@@ -98,5 +154,24 @@ public class TaskDialog extends AppCompatDialogFragment {
         void updateTask(Task t);
     }
 
-
+    public void setDateTimeDialogs(View v) {
+        Calendar calendar = Calendar.getInstance();
+        if (tempTask.getExpirationDate() != null)
+            calendar.setTime(tempTask.getExpirationDate());
+        TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            tempTask.setExpirationDate(calendar.getTime());
+            expirationTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+        };
+        new TimePickerDialog(getContext(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+        DatePickerDialog.OnDateSetListener dateSetListener = (view1, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            tempTask.setExpirationDate(calendar.getTime());
+            expirationTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+        };
+        new DatePickerDialog(getContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
 }
