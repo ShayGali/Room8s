@@ -56,9 +56,12 @@ exports.findById = async (taskId) => {
   WHERE ID = ?;
   `;
   const [result, _] = await db.execute(query, [taskId]);
-  result[0].create_time = formatDateTime(result[0].create_time);
-  result[0].expiration_date = formatDateTime(result[0].expiration_date);
-  return result[0];
+  if (result[0] !== undefined) {
+    result[0].create_time = formatDateTime(result[0].create_time);
+    result[0].expiration_date = formatDateTime(result[0].expiration_date);
+    return result[0];
+  }
+  return undefined;
 };
 
 exports.associateTaskToUser = async (taskId, userId) => {

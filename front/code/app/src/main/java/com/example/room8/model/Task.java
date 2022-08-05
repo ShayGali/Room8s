@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Task {
+public class Task implements Comparable<Task>{
 
     public static final String ID_KEY = "ID";
     public static final String APARTMENT_ID_KEY = "apartment_ID";
@@ -230,4 +230,8 @@ public class Task {
     }
 
 
+    @Override
+    public int compareTo(Task o) {
+        return Integer.compare(this.getId(),o.getId());
+    }
 }

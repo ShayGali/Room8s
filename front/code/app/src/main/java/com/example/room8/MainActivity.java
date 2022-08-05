@@ -23,6 +23,7 @@ import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
 import com.example.room8.dialogs.LoadingAlert;
 import com.example.room8.dialogs.TaskDialog;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
@@ -159,5 +160,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDi
     @Override
     public void updateTask(Task t) {
         databaseService.updateTask(t);
+    }
+
+    @Override
+    public void delete(Task t) {
+        databaseService.deleteTask(t);
     }
 }

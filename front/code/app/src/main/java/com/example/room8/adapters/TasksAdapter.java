@@ -13,6 +13,7 @@ import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.NodeService;
 import com.example.room8.dialogs.TaskDialog;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Task;
 
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public TasksAdapter(LayoutInflater inflater, MainActivity activity) {
         this.inflater = inflater;
         this.activity = activity;
-        this.tasks = new ArrayList<>();
+        this.tasks = Apartment.getInstance().getTasks();
     }
 
     @NonNull
@@ -48,9 +49,9 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.date.setText(task.getExpirationDate() != null ? NodeService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
 
-        taskHolder.layout.setOnClickListener(v->{
-            TaskDialog dialog = new TaskDialog(task,this);
-            dialog.show(activity.getSupportFragmentManager(),"task dialog");
+        taskHolder.layout.setOnClickListener(v -> {
+            TaskDialog dialog = new TaskDialog(task, this);
+            dialog.show(activity.getSupportFragmentManager(), "task dialog");
         });
     }
 
@@ -62,8 +63,10 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @SuppressLint("NotifyDataSetChanged")
     public void addTask(Task task) {
+        if (tasks.stream().anyMatch(t -> t.getId() == task.getId())) return;
         tasks.add(task);
         notifyDataSetChanged();
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

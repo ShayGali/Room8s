@@ -166,7 +166,7 @@ exports.findUserTasks = async (req, res, next) => {
 };
 
 exports.deleteById = async (req, res, next) => {
-  const { userId } = req.tokenData;
+  const { userId, apartmentId } = req.tokenData;
   const { taskId } = req.params;
   if (!taskId)
     return res.status(400).send({ success: false, msg: "send taskId" });
@@ -175,7 +175,6 @@ exports.deleteById = async (req, res, next) => {
     const task = await tasksService.findById(taskId);
     if (!task)
       return res.status(404).send({ success: false, msg: "tasks not found" });
-    const { apartmentId } = await userService.findUserApartmentId(userId);
 
     if (apartmentId !== task.apartment_ID)
       return res.status(403).send({
@@ -184,7 +183,12 @@ exports.deleteById = async (req, res, next) => {
       });
 
     await tasksService.deleteById(taskId);
-    return res.status(200).send({ success: true, msg: "success" });
+    return res
+      .status(200)
+      .send({
+        success: true,
+        msg: `task with the id ${taskId} has been delete successfully`,
+      });
   } catch (error) {
     next(error);
   }

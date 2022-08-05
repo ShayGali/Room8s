@@ -61,6 +61,12 @@ public class TaskDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.task_dialog, null);
         initDialogDataFields(view);
 
+        view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
+            Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
+            adapter.notifyDataSetChanged();
+            listener.delete(tempTask);
+            dismiss();
+        });
         builder
                 .setView(view)
                 .setTitle("Edit Task")
@@ -127,7 +133,7 @@ public class TaskDialog extends AppCompatDialogFragment {
         if (tempTask.getNote() != null) {
             System.out.println(tempTask);
             System.out.println(tempTask.getNote());
-            System.out.println(tempTask.getNote()==null);
+            System.out.println(tempTask.getNote() == null);
             note.setText(tempTask.getNote());
         }
     }
@@ -141,6 +147,8 @@ public class TaskDialog extends AppCompatDialogFragment {
 
     public interface TaskDialogListener {
         void updateTask(Task t);
+
+        void delete(Task t);
     }
 
     public void setDateTimeDialogs(View v) {

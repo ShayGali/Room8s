@@ -307,4 +307,55 @@ public class NodeService {
             }
         }));
     }
+
+    public void deleteTask(Task task) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(HTTP_URL + TASKS_PATH + "/" + task.getId())
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("delete task " + task.getId() + " failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("delete task " + task.getId() + " failed");
+                    activity.showToast("responseBody is null");
+                    System.err.println("delete task " + task.getId() + " failed");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("delete task " + task.getId() + " failed");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("delete task " + task.getId() + " failed");
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                        ) {
+                                activity.showToast("The task has been delete successfully");
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
+    }
 }
