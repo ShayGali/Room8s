@@ -36,7 +36,7 @@ public class TaskDialog extends AppCompatDialogFragment {
     private final Task originalTask;
 
 
-    private Spinner creatorName;
+    private TextView creatorName;
     private Spinner taskTypes;
     private TextView createTime;
     private TextView expirationTime;
@@ -82,22 +82,12 @@ public class TaskDialog extends AppCompatDialogFragment {
     }
 
     private void getValuesFromFields() {
-        tempTask.setCreatorId(getCreatorIdFromName());
         tempTask.setTaskType(taskTypes.getSelectedItem().toString());
         tempTask.setTitle(title.getText().toString());
         if (!note.getText().toString().trim().equals(""))
             tempTask.setNote(note.getText().toString());
     }
 
-    private int getCreatorIdFromName() {
-        if (creatorName.getSelectedItem().toString().equals(User.getInstance().getUserName()))
-            return User.getInstance().getId();
-        for (Roommate r : Apartment.getInstance().getRoommates()) {
-            if (creatorName.getSelectedItem().toString().equals(r.getUserName()))
-                return r.getId();
-        }
-        return 0;
-    }
 
     private void initDialogDataFields(View view) {
         creatorName = view.findViewById(R.id.dialog_task_creator_name);
@@ -107,18 +97,12 @@ public class TaskDialog extends AppCompatDialogFragment {
         title = view.findViewById(R.id.dialog_task_title);
         note = view.findViewById(R.id.dialog_task_note);
 
-        List<String> room8 = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
-        room8.add(User.getInstance().getUserName());
-
-        ArrayAdapter<String> namesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_dwon_item, room8);
-        creatorName.setAdapter(namesAdapter);
-
         if (tempTask.getCreatorId() == User.getInstance().getId()) {
-            creatorName.setSelection(room8.size() - 1);
+            creatorName.setText(User.getInstance().getUserName());
         } else {
             for (Roommate r : Apartment.getInstance().getRoommates())
                 if (r.getId() == tempTask.getCreatorId()) {
-                    creatorName.setSelection(namesAdapter.getPosition(r.getUserName()));
+                    creatorName.setText(r.getUserName());
                     break;
                 }
         }
@@ -139,8 +123,10 @@ public class TaskDialog extends AppCompatDialogFragment {
 
         if (tempTask.getTitle() != null)
             title.setText(tempTask.getTitle());
-        if (tempTask.getNote() != null)
+
+        if (tempTask.getNote() != null) {
             note.setText(tempTask.getNote());
+        }
     }
 
 
