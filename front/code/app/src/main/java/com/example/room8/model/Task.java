@@ -12,15 +12,15 @@ import java.util.List;
 
 public class Task {
 
-    private static final String ID_KEY = "ID";
-    private static final String APARTMENT_ID_KEY = "apartment_ID";
-    private static final String CREATOR_ID_KEY = "creator_ID";
-    private static final String TASK_TYPE_KEY = "task_type";
-    private static final String CREATE_TIME_KEY = "create_time";
-    private static final String EXPIRATION_DATE_KEY = "expiration_date";
-    private static final String TITLE_KEY = "title";
-    private static final String NOTE_KEY = "";
-    private static final String ICON_PATH_KEY = "icon_path";
+    public static final String ID_KEY = "ID";
+    public static final String APARTMENT_ID_KEY = "apartment_ID";
+    public static final String CREATOR_ID_KEY = "creator_ID";
+    public static final String TASK_TYPE_KEY = "task_type";
+    public static final String CREATE_TIME_KEY = "create_time";
+    public static final String EXPIRATION_DATE_KEY = "expiration_date";
+    public static final String TITLE_KEY = "title";
+    public static final String NOTE_KEY = "";
+    public static final String ICON_PATH_KEY = "icon_path";
 
     public static final String[] TASK_TYPES = {"general task", "something"};
 
