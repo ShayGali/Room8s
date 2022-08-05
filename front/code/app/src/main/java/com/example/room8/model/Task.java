@@ -19,7 +19,7 @@ public class Task {
     public static final String CREATE_TIME_KEY = "create_time";
     public static final String EXPIRATION_DATE_KEY = "expiration_date";
     public static final String TITLE_KEY = "title";
-    public static final String NOTE_KEY = "";
+    public static final String NOTE_KEY = "note";
     public static final String ICON_PATH_KEY = "icon_path";
 
     public static final String[] TASK_TYPES = {"general task", "something"};
@@ -110,9 +110,6 @@ public class Task {
     }
 
     public boolean shouldUpdateTask(Task other) {
-        if (this.creatorId != other.creatorId)
-            return true;
-
         if (this.expirationDate == null) {
             if (other.expirationDate != null) {
                 return true;
