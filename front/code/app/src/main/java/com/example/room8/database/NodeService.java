@@ -8,6 +8,7 @@ import com.example.room8.MainActivity;
 import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Roommate;
+import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
 import org.json.JSONArray;
@@ -22,8 +23,10 @@ import java.util.TimeZone;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -42,6 +45,7 @@ public class NodeService {
 
     public static final String MESSAGE_KEY = "msg"; // if the response is good
     public static final String DATA_KEY = "data"; // the data
+    public static final String SUCCESS_KEY = "success"; // the data
 
     // formatters for the date and time
     @SuppressLint("SimpleDateFormat") // for parse date time from the server
@@ -232,6 +236,68 @@ public class NodeService {
                                 JSONObject roommate = room8.getJSONObject(i);
                                 Apartment.getInstance().getRoommates().add(new Roommate(roommate));
                             }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
+    }
+
+    public void updateTask(Task task) {
+        OkHttpClient client = new OkHttpClient();
+        FormBody.Builder formBody = new FormBody.Builder();
+        if (task.getTaskType() != null)
+            formBody.add("taskType", task.getTaskType());
+        if (task.getExpirationDate() != null)
+            formBody.add("expirationDate", DATE_TIME_FORMAT.format(task.getExpirationDate()));
+        if (task.getTitle() != null)
+            formBody.add("title", task.getTitle());
+        if (task.getNote() != null)
+            formBody.add("note", task.getNote());
+
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + TASKS_PATH + "/" + task.getId())
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .put(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("update task " + task.getId() + " failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("update task " + task.getId() + " failed");
+                    activity.showToast("responseBody is null");
+                    System.err.println("update task " + task.getId() + " failed");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("update task " + task.getId() + " failed");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("update task " + task.getId() + " failed");
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                        ) {
+                            activity.showToast("The task has been updated successfully");
                         }
 
                     } catch (JSONException e) {
