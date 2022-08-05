@@ -3,6 +3,7 @@ const userService = require("../service/userService");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 
+// TODO: check if user name is exist
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
