@@ -1,12 +1,9 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,13 +19,12 @@ import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
 import com.example.room8.dialogs.LoadingAlert;
-import com.example.room8.dialogs.TaskDialog;
-import com.example.room8.model.Apartment;
+import com.example.room8.dialogs.EditTaskDialog;
 import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends AppCompatActivity implements TaskDialog.TaskDialogListener {
+public class MainActivity extends AppCompatActivity implements EditTaskDialog.TaskDialogListener {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";

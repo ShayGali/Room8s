@@ -150,6 +150,13 @@ public class Task implements Comparable<Task>{
         return false;
     }
 
+    public void updateTask(Task o) {
+        this.taskType = o.taskType;
+        this.expirationDate = o.getExpirationDate();
+        this.title = o.title;
+        this.note = o.note;
+    }
+
 
     @Override
     public String toString() {
@@ -234,4 +241,6 @@ public class Task implements Comparable<Task>{
     public int compareTo(Task o) {
         return Integer.compare(this.getId(),o.getId());
     }
+
+
 }

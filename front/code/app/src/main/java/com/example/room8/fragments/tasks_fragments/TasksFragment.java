@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
-import com.example.room8.dialogs.TaskDialog;
-import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
 

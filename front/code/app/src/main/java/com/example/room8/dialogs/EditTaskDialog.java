@@ -26,10 +26,8 @@ import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
 import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class TaskDialog extends AppCompatDialogFragment {
+public class EditTaskDialog extends AppCompatDialogFragment {
 
     private TaskDialogListener listener;
     private final Task tempTask;
@@ -45,7 +43,7 @@ public class TaskDialog extends AppCompatDialogFragment {
 
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
-    public TaskDialog(Task task, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    public EditTaskDialog(Task task, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         this.originalTask = task;
         this.tempTask = new Task(task);
         this.adapter = adapter;
@@ -58,7 +56,7 @@ public class TaskDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.task_dialog, null);
+        View view = inflater.inflate(R.layout.edit_task_dialog, null);
         initDialogDataFields(view);
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
