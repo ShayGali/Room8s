@@ -31,7 +31,7 @@ public final class Apartment {
     private String name;
     private int numberOfPeople;
 
-    private List<Roommate> roommates;
+    private ArrayList<Roommate> roommates;
     private List<Task> tasks;
 
 
@@ -75,11 +75,11 @@ public final class Apartment {
         this.numberOfPeople = numberOfPeople;
     }
 
-    public List<Roommate> getRoommates() {
+    public ArrayList<Roommate> getRoommates() {
         return roommates;
     }
 
-    public void setRoommates(List<Roommate> roommates) {
+    public void setRoommates(ArrayList<Roommate> roommates) {
         this.roommates = roommates;
     }
 
