@@ -10,7 +10,9 @@ router.use(matchUserToApartment);
 
 router.get("/all", tasksController.findAllTasksOfApartment);
 
-router.route("/userTasks").get(tasksController.findUserTasks);
+router.route("/userTasks").get(tasksController.findUserTasksIds);
+
+router.get("/executors/:taskId", tasksController.findTaskExecutors);
 
 router.post("/add", tasksController.addTask);
 

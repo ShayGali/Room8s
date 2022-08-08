@@ -11,6 +11,12 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
 
   try {
     const result = await tasksService.findAllTasksOfApartment(apartmentId);
+
+    for (task of result) {
+      const executorsIds = await tasksService.findTaskExecutors(task.ID);
+      task.executors_ids = executorsIds;
+    }
+
     res.status(200).send({ msg: "success", data: result });
   } catch (error) {
     next(error);
@@ -64,6 +70,9 @@ exports.findById = async (req, res, next) => {
         .send({ success: false, msg: "You cant get this task" });
     }
 
+    const executorsIds = await tasksService.findTaskExecutors(taskId);
+    task.executors_ids = executorsIds;
+
     return res.send({ success: true, msg: "success", data: task });
   } catch (error) {
     next(error);
@@ -89,18 +98,19 @@ exports.associateTaskToUser = async (req, res, next) => {
         msg: "Cannot associate a task that does not belong to your apartment",
       });
 
-    const { apartmentId: userToAssociateApartmentId } =
-      await await userService.findUserApartmentId(userId);
+    const userToAssociateApartmentId = await userService.findUserApartmentId(
+      userId
+    );
 
     if (senderApartmentId !== userToAssociateApartmentId)
-      return res.status(403)({
+      return res.status(403).send({
         success: false,
         msg: "Cannot associate a task to a user who is not with you in the same apartment",
       });
 
     // check if user already associated to this task
     if (
-      (await tasksService.findUserTasks(userId)).find(
+      (await tasksService.findUserTasksIds(userId)).find(
         (task) => task.task_ID === taskId
       ) !== undefined
     ) {
@@ -155,10 +165,20 @@ exports.removeAssociateFromUser = async (req, res, next) => {
   }
 };
 
-exports.findUserTasks = async (req, res, next) => {
+exports.findUserTasksIds = async (req, res, next) => {
   const { userId } = req.tokenData;
   try {
-    const result = await tasksService.findUserTasks(userId);
+    const result = await tasksService.findUserTasksIds(userId);
+    res.send({ success: true, msg: "success", data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.findTaskExecutors = async (req, res, next) => {
+  const { taskId } = req.params;
+  try {
+    const result = await tasksService.findTaskExecutors(taskId);
     res.send({ success: true, msg: "success", data: result });
   } catch (error) {
     next(error);
@@ -183,12 +203,10 @@ exports.deleteById = async (req, res, next) => {
       });
 
     await tasksService.deleteById(taskId);
-    return res
-      .status(200)
-      .send({
-        success: true,
-        msg: `task with the id ${taskId} has been delete successfully`,
-      });
+    return res.status(200).send({
+      success: true,
+      msg: `task with the id ${taskId} has been delete successfully`,
+    });
   } catch (error) {
     next(error);
   }

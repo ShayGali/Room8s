@@ -5,6 +5,11 @@ const tasksPerUserTable = "tasks_per_user";
 
 const { formatDateTime } = require("../utilities/dateValidate");
 
+/**
+ *
+ * @param {number} apartmentID
+ * @returns {Promise<Array<Object>>}
+ */
 exports.findAllTasksOfApartment = async (apartmentID) => {
   if (apartmentID === undefined) return;
 
@@ -82,19 +87,25 @@ exports.removeAssociateFromUser = async (taskId, userId) => {
   await db.execute(query, [taskId, userId]);
 };
 
-exports.findUserTasks = async (userId) => {
+exports.findUserTasksIds = async (userId) => {
   const query = `
-    select * from ${tasksPerUserTable}
+    select task_ID from ${tasksPerUserTable}
     where user_ID = ?;
   `;
 
   const [result, _] = await db.execute(query, [userId]);
 
-  return result.map((task) => {
-    task.create_time = formatDateTime(task.create_time);
-    task.expiration_date = formatDateTime(task.expiration_date);
-    return task;
-  });
+  return result.map((task) => task.task_ID);
+};
+
+exports.findTaskExecutors = async (taskId) => {
+  const query = `
+  SELECT user_ID FROM ${tasksPerUserTable}
+  WHERE task_ID = ?;
+`;
+  const [result, _] = await db.execute(query, [taskId]);
+
+  return result.map((task) => task.user_ID);
 };
 
 exports.deleteById = async (taskId) => {
