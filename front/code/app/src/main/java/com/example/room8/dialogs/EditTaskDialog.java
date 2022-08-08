@@ -62,7 +62,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
             adapter.notifyDataSetChanged();
-            listener.delete(tempTask);
+            listener.deleteTask(tempTask);
             dismiss();
         });
         builder
@@ -111,7 +111,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 }
         }
 
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_dwon_item, Task.TASK_TYPES);
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
         taskTypes.setAdapter(typesAdapter);
         for (int i = 0; i < Task.TASK_TYPES.length; i++) {
             if (Task.TASK_TYPES[i].equals(tempTask.getTaskType())) {
@@ -129,9 +129,6 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             title.setText(tempTask.getTitle());
 
         if (tempTask.getNote() != null) {
-            System.out.println(tempTask);
-            System.out.println(tempTask.getNote());
-            System.out.println(tempTask.getNote() == null);
             note.setText(tempTask.getNote());
         }
     }
@@ -141,12 +138,6 @@ public class EditTaskDialog extends AppCompatDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         listener = (TaskDialogListener) context;
-    }
-
-    public interface TaskDialogListener {
-        void updateTask(Task t);
-
-        void delete(Task t);
     }
 
     public void setDateTimeDialogs(View v) {
