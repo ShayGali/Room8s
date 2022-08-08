@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 public class AddTaskDialog extends AppCompatDialogFragment {
     private TaskDialogListener listener;
-    private Task tempTask;
+    private final Task tempTask;
 
     private TextView executorsTextView;
     private Spinner taskTypesSpinner;
@@ -42,8 +42,11 @@ public class AddTaskDialog extends AppCompatDialogFragment {
 
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
+    ArrayList<String> names;
+
     public AddTaskDialog(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         this.adapter = adapter;
+        tempTask = new Task();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -61,7 +64,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
                 .setTitle("Add Task")
                 .setNegativeButton("Cancel", (dialog, which) -> {
                 })
-                .setPositiveButton("Edit", (dialog, which) -> {
+                .setPositiveButton("Add", (dialog, which) -> {
                     getValuesFromFields();
                     listener.addTask(tempTask);
                     adapter.notifyDataSetChanged();
@@ -87,12 +90,14 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         }
         executorsTextView.setOnClickListener(v -> {
             CheckBoxDialog checkBoxDialog = new CheckBoxDialog("Select Executors", room8Name, isChecklist, strings -> {
+                names = strings;
                 if (strings.size() == 0)
                     executorsTextView.setText("Click To Select");
                 else
                     executorsTextView.setText(String.join(", ", strings));
             });
-            checkBoxDialog.show(getParentFragmentManager(), "IDK");
+
+            checkBoxDialog.show(getParentFragmentManager(), "check box dialog");
         });
 
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
@@ -104,12 +109,26 @@ public class AddTaskDialog extends AppCompatDialogFragment {
 
     private void getValuesFromFields() {
         tempTask.setTaskType(taskTypesSpinner.getSelectedItem().toString());
+
         if (!titleTextView.getText().toString().trim().equals(""))
             tempTask.setTitle(titleTextView.getText().toString());
+
         if (!noteTextView.getText().toString().trim().equals(""))
             tempTask.setNote(noteTextView.getText().toString());
 
-
+        if (names!=null){
+            ArrayList<Roommate> room8 = Apartment.getInstance().getRoommates();
+            List<Integer> executorsIds = names.stream().map(name -> {
+                if (User.getInstance().getUserName().equals(name))
+                    return User.getInstance().getId();
+                for (Roommate roommate : room8) {
+                    if (roommate.getUserName().equals(name))
+                        return roommate.getId();
+                }
+                return null;
+            }).collect(Collectors.toList());
+            tempTask.setExecutorsIds(executorsIds);
+        }
     }
 
     @Override
