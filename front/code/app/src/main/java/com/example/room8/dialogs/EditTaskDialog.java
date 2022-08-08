@@ -25,7 +25,10 @@ import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EditTaskDialog extends AppCompatDialogFragment {
 
@@ -35,6 +38,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
 
     private TextView creatorName;
+    private TextView associate;
     private Spinner taskTypes;
     private TextView createTime;
     private TextView expirationTime;
@@ -69,13 +73,13 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 .setView(view)
                 .setTitle("Edit Task")
                 .setNegativeButton("Cancel", (dialog, which) -> {
-                    tempTask.setValues(originalTask);
+                    tempTask.copyValues(originalTask);
                 })
                 .setPositiveButton("Edit", (dialog, which) -> {
                     getValuesFromFields();
                     if (originalTask.shouldUpdateTask(tempTask)) {
                         listener.updateTask(tempTask);
-                        originalTask.setValues(tempTask);
+                        originalTask.copyValues(tempTask);
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -95,6 +99,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
     private void initDialogDataFields(View view) {
         creatorName = view.findViewById(R.id.dialog_task_creator_name);
+        associate = view.findViewById(R.id.dialog_task_associate);
         taskTypes = view.findViewById(R.id.dialog_task_types);
         createTime = view.findViewById(R.id.dialog_task_create_time);
         expirationTime = view.findViewById(R.id.dialog_task_expiration_date);
@@ -109,6 +114,16 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                     creatorName.setText(r.getUserName());
                     break;
                 }
+        }
+
+        if (tempTask.getExecutorsIds() != null && tempTask.getExecutorsIds().size() != 0) {
+
+            List<String> names = new ArrayList<>();
+            for (Integer id : tempTask.getExecutorsIds()) {
+                if (User.getInstance().getId() == id) names.add(User.getInstance().getUserName());
+                else names.add(Apartment.getInstance().getRoom8NameById(id));
+            }
+            associate.setText(String.join(", ", names));
         }
 
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
