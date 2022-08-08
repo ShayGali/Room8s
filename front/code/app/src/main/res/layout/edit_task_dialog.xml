@@ -88,14 +88,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="108dp" />
+        app:layout_constraintGuide_begin="143dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="155dp" />
+        app:layout_constraintGuide_begin="184dp" />
 
     <TextView
         android:id="@+id/dialog_task_create_time"
@@ -115,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="201dp" />
+        app:layout_constraintGuide_begin="230dp" />
 
     <TextView
         android:id="@+id/dialog_task_expiration_date"
@@ -146,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="254dp" />
+        app:layout_constraintGuide_begin="286dp" />
 
     <EditText
         android:id="@+id/dialog_task_title"
@@ -178,7 +178,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="323dp" />
+        app:layout_constraintGuide_begin="354dp" />
 
     <EditText
         android:id="@+id/dialog_task_note"
@@ -222,5 +222,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_task_note" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="98dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Executors:"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline7" />
+
+    <TextView
+        android:id="@+id/dialog_task_associate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Task is not associated"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

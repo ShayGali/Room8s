@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.room8.database.NodeService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,7 @@ public class Task implements Comparable<Task> {
     public static final String EXPIRATION_DATE_KEY = "expiration_date";
     public static final String TITLE_KEY = "title";
     public static final String NOTE_KEY = "note";
+    public static final String EXECUTORS_IDS = "executors_ids";
     public static final String ICON_PATH_KEY = "icon_path";
 
     public static final String[] TASK_TYPES = {"general task", "something"};
@@ -75,11 +77,11 @@ public class Task implements Comparable<Task> {
     }
 
     /**
-     * copy value frrom one task to another
+     * copy value from one task to another
      *
      * @param o
      */
-    public void setValues(Task o) {
+    public void copyValues(Task o) {
         this.id = o.id;
         this.apartmentId = o.apartmentId;
         this.creatorId = o.creatorId;
@@ -112,6 +114,14 @@ public class Task implements Comparable<Task> {
             tempTask.setTitle(taskAsJson.getString(TITLE_KEY));
         if (taskAsJson.has(NOTE_KEY) && !taskAsJson.isNull(NOTE_KEY))
             tempTask.setNote(taskAsJson.getString(NOTE_KEY));
+        if (taskAsJson.has(EXPIRATION_DATE_KEY)) {
+            JSONArray executorsIdsJson = taskAsJson.getJSONArray(EXECUTORS_IDS);
+            ArrayList<Integer> executorsIds = new ArrayList<>();
+            for (int i = 0; i < executorsIdsJson.length(); i++) {
+                executorsIds.add(executorsIdsJson.getInt(i));
+            }
+            tempTask.setExecutorsIds(executorsIds);
+        }
 
         return tempTask;
     }
