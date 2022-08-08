@@ -37,6 +37,14 @@ exports.addTask = async (
   title = null,
   note = null
 ) => {
+  if (isNaN(taskType)) {
+    let [res, _] = await db.execute(
+      `SELECT ID FROM ${tasksTypeTable} WHERE task_type = ?`,
+      [taskType]
+    );
+    taskType = res[0].ID;
+  }
+
   let query = `
   INSERT INTO ${tasksTable}(
     apartment_ID, creator_ID, task_type,create_time, expiration_date, title, note
