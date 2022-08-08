@@ -19,12 +19,12 @@ import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
 import com.example.room8.dialogs.LoadingAlert;
-import com.example.room8.dialogs.EditTaskDialog;
+import com.example.room8.dialogs.TaskDialogListener;
 import com.example.room8.model.Task;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends AppCompatActivity implements EditTaskDialog.TaskDialogListener {
+public class MainActivity extends AppCompatActivity implements TaskDialogListener {
 
     public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
     public static final String JWT_TOKEN = "jwt token";
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialog.Ta
     }
 
     @Override
-    public void delete(Task t) {
+    public void deleteTask(Task t) {
         databaseService.deleteTask(t);
     }
 }
