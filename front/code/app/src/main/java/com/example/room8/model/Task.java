@@ -1,5 +1,7 @@
 package com.example.room8.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.room8.database.NodeService;
 
 import org.json.JSONException;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
 
     public static final String ID_KEY = "ID";
     public static final String APARTMENT_ID_KEY = "apartment_ID";
@@ -33,6 +35,7 @@ public class Task implements Comparable<Task>{
     Date expirationDate;
     String title;
     String note;
+    ArrayList<Integer> executorsIds;
 
     public Task(JSONObject taskAsJson) throws JSONException, ParseException {
         Task t = parseDataFromJson(taskAsJson);
@@ -44,6 +47,7 @@ public class Task implements Comparable<Task>{
         this.expirationDate = t.expirationDate;
         this.title = t.title;
         this.note = t.note;
+        this.executorsIds = t.executorsIds;
 
     }
 
@@ -63,6 +67,8 @@ public class Task implements Comparable<Task>{
             this.expirationDate = new Date(o.getExpirationDate().getTime());
         this.title = o.title;
         this.note = o.note;
+        if (o.executorsIds != null)
+            this.executorsIds = new ArrayList<>(o.executorsIds);
     }
 
     public Task() {
@@ -78,10 +84,11 @@ public class Task implements Comparable<Task>{
         this.apartmentId = o.apartmentId;
         this.creatorId = o.creatorId;
         this.taskType = o.taskType;
-        this.createDate = o.getCreateDate();
-        this.expirationDate = o.getExpirationDate();
+        this.createDate = o.createDate;
+        this.expirationDate = o.expirationDate;
         this.title = o.title;
         this.note = o.note;
+        this.executorsIds = o.executorsIds;
     }
 
     public static Task parseDataFromJson(JSONObject taskAsJson) throws JSONException, ParseException {
@@ -158,6 +165,7 @@ public class Task implements Comparable<Task>{
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return "Task{" +
@@ -169,6 +177,7 @@ public class Task implements Comparable<Task>{
                 ", expirationDate=" + expirationDate +
                 ", title='" + title + '\'' +
                 ", note='" + note + '\'' +
+                ", executorsIds=" + executorsIds +
                 '}';
     }
 
@@ -236,10 +245,17 @@ public class Task implements Comparable<Task>{
         this.note = note;
     }
 
+    public ArrayList<Integer> getExecutorsIds() {
+        return executorsIds;
+    }
+
+    public void setExecutorsIds(ArrayList<Integer> executorsIds) {
+        this.executorsIds = executorsIds;
+    }
 
     @Override
     public int compareTo(Task o) {
-        return Integer.compare(this.getId(),o.getId());
+        return Integer.compare(this.getId(), o.getId());
     }
 
 
