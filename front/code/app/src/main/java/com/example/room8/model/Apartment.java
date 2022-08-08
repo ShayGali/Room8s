@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Apartment {
 
@@ -46,9 +47,22 @@ public final class Apartment {
 
     }
 
+    public static List<String> apartmentMembersNames(){
+        List<String> names = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
+        names.add(User.getInstance().getUserName());
+        return names;
+    }
+
     private Apartment() {
         this.roommates = new ArrayList<>();
         this.tasks = new ArrayList<>();
+    }
+
+    public String getRoom8NameById(int id){
+        for (Roommate r: roommates) {
+            if (r.getId() == id)return r.getUserName();
+        }
+        return "";
     }
 
     public int getId() {
