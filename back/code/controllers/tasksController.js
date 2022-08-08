@@ -25,7 +25,7 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
 
 exports.addTask = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
-  const { taskType, expirationDate, title, note } = req.body;
+  const { taskType, expirationDate, title, note, executorsIds } = req.body;
 
   if (
     expirationDate &&
@@ -37,6 +37,12 @@ exports.addTask = async (req, res, next) => {
     });
   }
 
+  if (executorsIds !== undefined && !Array.isArray(JSON.parse(executorsIds))) {
+    return res.status(400).send({
+      success: false,
+      msg: "executorsIds need to be an array",
+    });
+  }
   try {
     insertedID = await tasksService.addTask(
       apartmentId,
@@ -46,6 +52,12 @@ exports.addTask = async (req, res, next) => {
       title,
       note
     );
+
+    if (executorsIds !== undefined) {
+      JSON.parse(executorsIds).forEach((executorId) =>
+        tasksService.associateTaskToUser(insertedID, executorId)
+      );
+    }
     res
       .status(201)
       .send({ success: true, msg: "success", data: { insertedID } });
