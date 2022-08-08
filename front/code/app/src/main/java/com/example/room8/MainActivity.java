@@ -20,9 +20,12 @@ import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
 import com.example.room8.dialogs.LoadingAlert;
 import com.example.room8.dialogs.TaskDialogListener;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Task;
+import com.example.room8.model.User;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements TaskDialogListener {
 
@@ -164,7 +167,11 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     @Override
-    public void addTask(Task tempTask) {
-
+    public void addTask(Task task) {
+        Apartment.getInstance().getTasks().add(task);
+        task.setCreateDate(new Date());
+        task.setCreatorId(User.getInstance().getId());
+        task.setApartmentId(Apartment.getInstance().getId());
+        databaseService.addTask(task);
     }
 }

@@ -348,7 +348,76 @@ public class NodeService {
 
                         if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
                         ) {
-                                activity.showToast("The task has been delete successfully");
+                            activity.showToast("The task has been delete successfully");
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
+    }
+
+    public void addTask(Task task) {
+        OkHttpClient client = new OkHttpClient();
+        FormBody.Builder formBody = new FormBody.Builder();
+        if (task.getTaskType() != null)
+            formBody.add("taskType", task.getTaskType());
+        if (task.getExpirationDate() != null)
+            formBody.add("expirationDate", DATE_TIME_FORMAT.format(task.getExpirationDate()));
+        if (task.getTitle() != null)
+            formBody.add("title", task.getTitle());
+        if (task.getNote() != null)
+            formBody.add("note", task.getNote());
+        if (task.getExecutorsIds() != null) {
+            formBody.add("executorsIds", task.getExecutorsIds().toString());
+        }
+
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + TASKS_PATH + "/add")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .post(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("add task failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("add task failed");
+                    activity.showToast("responseBody is null");
+                    System.err.println("add task failed");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("add task failed");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("add task failed");
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                        ) {
+                            if (responseJOSN.has(DATA_KEY)) {
+                                if (responseJOSN.getJSONObject(DATA_KEY).has("insertedID") && !responseJOSN.getJSONObject(DATA_KEY).isNull("insertedID"))
+                                    task.setId(responseJOSN.getJSONObject(DATA_KEY).getInt("insertedID"));
+                                activity.showToast("The task has been add successfully");
+                            }
                         }
 
                     } catch (JSONException e) {
