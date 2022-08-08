@@ -162,4 +162,9 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     public void deleteTask(Task t) {
         databaseService.deleteTask(t);
     }
+
+    @Override
+    public void addTask(Task tempTask) {
+
+    }
 }
