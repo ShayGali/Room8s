@@ -35,7 +35,7 @@ public class Task implements Comparable<Task> {
     Date expirationDate;
     String title;
     String note;
-    ArrayList<Integer> executorsIds;
+    List<Integer> executorsIds;
 
     public Task(JSONObject taskAsJson) throws JSONException, ParseException {
         Task t = parseDataFromJson(taskAsJson);
@@ -245,11 +245,11 @@ public class Task implements Comparable<Task> {
         this.note = note;
     }
 
-    public ArrayList<Integer> getExecutorsIds() {
+    public List<Integer> getExecutorsIds() {
         return executorsIds;
     }
 
-    public void setExecutorsIds(ArrayList<Integer> executorsIds) {
+    public void setExecutorsIds(List<Integer> executorsIds) {
         this.executorsIds = executorsIds;
     }
 
