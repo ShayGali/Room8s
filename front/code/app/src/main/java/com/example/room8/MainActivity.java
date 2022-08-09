@@ -85,12 +85,18 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     public void showToast(String msg) {
-        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+        if (msg == null) {
+            msg = "";
+        }
+        String finalMsg = msg;
+        runOnUiThread(() -> Toast.makeText(this, finalMsg, Toast.LENGTH_SHORT).show());
     }
 
 
     public void navigateFragment(int actionID) {
-        Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(actionID);
+        runOnUiThread(() ->
+                Navigation.findNavController(this, R.id.main_nav_host_fragment).navigate(actionID)
+        );
     }
 
     // check if we have a token in the SharedPreferences
@@ -200,5 +206,9 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         task.setCreatorId(User.getInstance().getId());
         task.setApartmentId(Apartment.getInstance().getId());
         databaseService.addTask(task);
+    }
+
+    public void createApartment(String name) {
+        databaseService.createApartment(name);
     }
 }

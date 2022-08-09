@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.dialogs.CreateApartmentDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,7 @@ import com.example.room8.R;
  */
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
+    MainActivity activity;
     View menuBtn;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,8 +74,10 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
+        activity = (MainActivity) requireActivity();
 
         initMenuBtn(view);
+        initCreateApartmentButton(view);
         disableBackPress();
 
 
@@ -113,7 +118,10 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     private void initCreateApartmentButton(View view){
         View createApartmentButton = view.findViewById(R.id.create_apartment_btn);
         createApartmentButton.setOnClickListener(v->{
-
+            CreateApartmentDialog createApartmentDialog = new CreateApartmentDialog(str->{
+                activity.createApartment(str);
+            });
+            createApartmentDialog.show(getParentFragmentManager(), "createApartmentDialog");
         });
     }
 }

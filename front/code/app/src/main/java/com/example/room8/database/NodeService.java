@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 
 import com.example.room8.MainActivity;
+import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Roommate;
@@ -38,6 +39,7 @@ public class NodeService {
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
 
     public static final String USERS_PATH = "/users";
+    public static final String APARTMENTS_PATH = "/apartments";
     public static final String TASKS_PATH = "/tasks";
 
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
@@ -257,7 +259,7 @@ public class NodeService {
             formBody.add("title", task.getTitle());
         if (task.getNote() != null)
             formBody.add("note", task.getNote());
-        if (task.getExecutorsIds() !=null)
+        if (task.getExecutorsIds() != null)
             formBody.add("executorsIds", task.getExecutorsIds().toString());
 
 
@@ -422,6 +424,75 @@ public class NodeService {
                             }
                         }
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
+    }
+
+    public void createApartment(String name) {
+        OkHttpClient client = new OkHttpClient();
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("name", name);
+
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/create")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .post(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("create apartment failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("create apartment failed");
+                    activity.showToast("responseBody is null");
+                    System.err.println("add task failed");
+                    System.err.println("responseBody is null");
+                } else if (!response.isSuccessful()) {
+                    activity.showToast("create apartment failed");
+                    activity.showToast("response code: " + response.code());
+                    activity.showToast("response body: " + stringBody);
+
+                    System.err.println("create apartment failed");
+                    System.err.println("response code: " + response.code());
+                    System.err.println("response body: " + stringBody);
+                } else {
+                    try {
+
+                        JSONObject responseJOSN = new JSONObject(stringBody);
+
+                        if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                        ) {
+                            if (responseJOSN.has(DATA_KEY)) {
+                                if (responseJOSN.getJSONObject(DATA_KEY).has("apartmentId") && !responseJOSN.getJSONObject(DATA_KEY).isNull("apartmentId")) {
+                                    Apartment.getInstance().setId(responseJOSN.getJSONObject(DATA_KEY).getInt("apartmentId"));
+                                    activity.setIsInApartment(true);
+                                }
+                                if (responseJOSN.getJSONObject(DATA_KEY).has("token") && !responseJOSN.getJSONObject(DATA_KEY).isNull("token")) {
+                                    activity.saveJwtToSharedPreference(responseJOSN.getJSONObject(DATA_KEY).getString("token"));
+                                }
+
+                            }
+                            activity.showToast("create apartment went successfully");
+                            activity.navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment);
+                        }else{
+                            if (responseJOSN.has(MESSAGE_KEY)){
+                                activity.showToast(responseJOSN.getString(MESSAGE_KEY));
+                            }
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
