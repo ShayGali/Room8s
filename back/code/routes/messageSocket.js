@@ -2,7 +2,7 @@ const SocketServer = require("websocket").server;
 
 const { server } = require("../app");
 
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateToken } = require("../utilities/jwtHandler");
 const messagingService = require("../service/messagingService");
 
 const webSocketServer = new SocketServer({
