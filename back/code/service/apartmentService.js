@@ -78,7 +78,7 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
   WHERE user_ID = ? AND apartment_ID = ?;
   `;
 
-  let result = await db.execute(deleteRelationQuery, [userId, apartmentsId]);
+  let result = await db.execute(deleteRelationQuery, [userId, apartmentId]);
   if (!result) return undefined;
 
   const updateNumberOfPeopleQuery = `
@@ -86,7 +86,7 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
     SET number_of_people = number_of_people - 1
     WHERE ID = ?;
     `;
-  result = await db.execute(updateNumberOfPeopleQuery, [apartmentsId]);
+  result = await db.execute(updateNumberOfPeopleQuery, [apartmentId]);
 
   const checkNumOfPeopleQuery = `
   SELECT number_of_people FROM ${apartmentsTable}
@@ -102,4 +102,18 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
   return deleteApartment(apartmentId);
 };
 
+/**
+ *
+ * @param {number} apartmentId
+ * @returns {Promise<Array<number>>}
+ */
+exports.getRoom8Ids = async (apartmentId) => {
+  const query = `SELECT user_ID
+   FROM ${apartmentsUserTable}
+   WHERE apartment_ID = ?;`;
+  const [result, _] = await db.execute(query, [apartmentId]);
+  return result.map((obj) => obj.user_ID);
+};
+
+//TODO:
 exports.deleteApartment = async (apartmentId) => {};
