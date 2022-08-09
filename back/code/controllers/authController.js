@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
-    const jwtToken = await generateAccessToken({
+    const jwtToken = generateAccessToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
