@@ -26,7 +26,6 @@ public final class User {
     private static final String USER_NAME_KEY = "user_name";
     private static final String EMAIL_KEY = "email";
     private static final String USER_LEVEL_KEY = "user_level";
-    private static final String MONTHLY_PAYMENT_KEY = "monthly_payment";
     private static final String ICON_ID_KEY = "profile_icon_id";
 
 
@@ -36,7 +35,6 @@ public final class User {
     private String email;
     private int userLevel;
 
-    private double monthlyPayment;
     private int profileIconId;
 
     private User() {
@@ -53,8 +51,6 @@ public final class User {
             instance.setEmail(userAsJson.getString(EMAIL_KEY));
         if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
             instance.setUserLevel(userAsJson.getInt(USER_LEVEL_KEY));
-        if (userAsJson.has(MONTHLY_PAYMENT_KEY) && !userAsJson.isNull(MONTHLY_PAYMENT_KEY))
-            instance.setMonthlyPayment(userAsJson.getDouble(MONTHLY_PAYMENT_KEY));
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
             int iconId = userAsJson.getInt(ICON_ID_KEY);
             if (iconId == 0)
@@ -108,13 +104,7 @@ public final class User {
         this.userLevel = userLevel;
     }
 
-    public double getMonthlyPayment() {
-        return monthlyPayment;
-    }
 
-    public void setMonthlyPayment(double monthlyPayment) {
-        this.monthlyPayment = monthlyPayment;
-    }
 
     public int getProfileIconId() {
         return profileIconId;
@@ -132,7 +122,6 @@ public final class User {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", userLevel=" + userLevel +
-                ", monthlyPayment=" + monthlyPayment +
                 ", profileIconId=" + profileIconId +
                 '}';
     }
