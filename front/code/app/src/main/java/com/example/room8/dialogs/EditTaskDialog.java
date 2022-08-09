@@ -47,6 +47,8 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
+    ArrayList<String> names;
+
     public EditTaskDialog(Task task, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         this.originalTask = task;
         this.tempTask = new Task(task);
@@ -91,9 +93,25 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
     private void getValuesFromFields() {
         tempTask.setTaskType(taskTypes.getSelectedItem().toString());
+
         tempTask.setTitle(title.getText().toString());
+
         if (!note.getText().toString().trim().equals(""))
             tempTask.setNote(note.getText().toString());
+
+        if (names != null) {
+            ArrayList<Roommate> room8 = Apartment.getInstance().getRoommates();
+            List<Integer> executorsIds = names.stream().map(name -> {
+                if (User.getInstance().getUserName().equals(name))
+                    return User.getInstance().getId();
+                for (Roommate roommate : room8) {
+                    if (roommate.getUserName().equals(name))
+                        return roommate.getId();
+                }
+                return null;
+            }).collect(Collectors.toList());
+            tempTask.setExecutorsIds(executorsIds);
+        }
     }
 
 
@@ -116,15 +134,53 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 }
         }
 
+        names = new ArrayList<>();
         if (tempTask.getExecutorsIds() != null && tempTask.getExecutorsIds().size() != 0) {
-
-            List<String> names = new ArrayList<>();
             for (Integer id : tempTask.getExecutorsIds()) {
                 if (User.getInstance().getId() == id) names.add(User.getInstance().getUserName());
                 else names.add(Apartment.getInstance().getRoom8NameById(id));
             }
             associate.setText(String.join(", ", names));
         }
+
+        ArrayList<Roommate> room8 = Apartment.getInstance().getRoommates();
+        ArrayList<String> room8Name = new ArrayList<>();
+        ArrayList<Boolean> isChecklist = new ArrayList<>();
+
+        if (tempTask.getExecutorsIds() != null && tempTask.getExecutorsIds().size() != 0) {
+            if (tempTask.getExecutorsIds().contains(User.getInstance().getId())) {
+                isChecklist.add(true);
+            }else
+                isChecklist.add(false);
+        }else{
+            isChecklist.add(false);
+        }
+        room8Name.add(User.getInstance().getUserName());
+
+        for (int i = 0; i < room8.size(); i++) {
+            if (tempTask.getExecutorsIds() != null && tempTask.getExecutorsIds().size() != 0) {
+                if (tempTask.getExecutorsIds().contains(room8.get(i).getId())) {
+                    isChecklist.add(true);
+                } else {
+                    isChecklist.add(false);
+                }
+            } else {
+                isChecklist.add(false);
+            }
+                room8Name.add(room8.get(i).getUserName());
+        }
+
+
+        associate.setOnClickListener(v -> {
+            CheckBoxDialog checkBoxDialog = new CheckBoxDialog("Select Executors", room8Name, isChecklist, strings -> {
+                names = strings;
+                if (strings.size() == 0) {
+                    associate.setText("Click To Select");
+                } else
+                    associate.setText(String.join(", ", strings));
+            });
+            checkBoxDialog.show(getParentFragmentManager(), "check box dialog");
+        });
 
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
         taskTypes.setAdapter(typesAdapter);

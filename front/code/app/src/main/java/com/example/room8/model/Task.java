@@ -163,6 +163,21 @@ public class Task implements Comparable<Task> {
             if (!this.note.equals(other.note))
                 return true;
         }
+        if (this.executorsIds == null) {
+            if (other.executorsIds != null) {
+                return true;
+            }
+        } else {
+            if (other.executorsIds == null) {
+                return false;
+            }
+            for (int id : other.executorsIds) {
+                if (!this.executorsIds.contains(id)) return true;
+            }
+            for (int id : executorsIds) {
+                if (!other.executorsIds.contains(id)) return true;
+            }
+        }
 
         return false;
     }

@@ -257,6 +257,8 @@ public class NodeService {
             formBody.add("title", task.getTitle());
         if (task.getNote() != null)
             formBody.add("note", task.getNote());
+        if (task.getExecutorsIds() !=null)
+            formBody.add("executorsIds", task.getExecutorsIds().toString());
 
 
         Request request = new Request.Builder()

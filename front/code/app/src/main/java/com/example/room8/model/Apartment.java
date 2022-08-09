@@ -47,10 +47,10 @@ public final class Apartment {
 
     }
 
-    public static List<String> apartmentMembersNames(){
+    public static ArrayList<String> apartmentMembersNames(){
         List<String> names = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
-        names.add(User.getInstance().getUserName());
-        return names;
+        names.add(0,User.getInstance().getUserName());
+        return (ArrayList<String>) names;
     }
 
     private Apartment() {
