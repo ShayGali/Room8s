@@ -2,7 +2,7 @@ const userService = require("../service/userService");
 
 exports.matchUserToApartment = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
-
+  console.log(apartmentId, userId);
   if (userId === undefined) {
     return res.status(403).send({ success: false, msg: "userId undefined" });
   }

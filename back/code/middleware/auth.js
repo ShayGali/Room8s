@@ -16,15 +16,3 @@ exports.authenticateTokenFromRequest = (req, res, next) => {
     next(); // move to the function
   });
 };
-
-exports.authenticateToken = (token) => {
-  if (!token) return;
-  return JWT.verify(
-    token,
-    process.env.ACCESS_TOKEN_SECRET,
-    (err, tokenData) => {
-      if (err) return;
-      return tokenData;
-    }
-  );
-};

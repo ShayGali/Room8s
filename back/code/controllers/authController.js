@@ -1,7 +1,8 @@
 const authService = require("../service/authService");
 const userService = require("../service/userService");
 const bcrypt = require("bcrypt");
-const JWT = require("jsonwebtoken");
+
+const { generateAccessToken } = require("../utilities/jwtHandler");
 
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
@@ -27,10 +28,11 @@ exports.register = async (req, res, next) => {
       return res.status(409).json({ msg: result.errorMsg });
     }
 
-    jwtToken = await generateToken({
+    jwtToken = generateAccessToken({
       userId: result.insertId,
       apartmentId: null,
     });
+
     return res
       .status(201)
       .json({ msg: "success", jwtToken, databaseChanges: result });
@@ -58,7 +60,7 @@ exports.login = async (req, res, next) => {
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
-    const jwtToken = await generateToken({
+    const jwtToken = await generateAccessToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
@@ -73,20 +75,6 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
-
-async function generateToken(data) {
-  const token = await JWT.sign(
-    {
-      ...data,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "365d" }
-  );
-  return token;
-}
-
-//TODO
-async function generateRefreshToken(data) {}
 
 exports.hello = async (req, res, next) => {
   return res.send({ msg: "hello", token: req.tokenData });
