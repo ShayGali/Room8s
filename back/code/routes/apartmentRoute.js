@@ -15,6 +15,7 @@ router.route("/data").get(apartmentController.getApartmentData);
 
 router.post(
   "/addUser",
+  matchUserToApartment,
   isApartmentOwner,
   apartmentController.addUserToApartment
 );
@@ -24,6 +25,12 @@ router.delete(
   matchUserToApartment,
   isApartmentOwner,
   apartmentController.removeUserFromApartment
+);
+router.delete(
+  "/delete",
+  matchUserToApartment,
+  isApartmentOwner,
+  apartmentController.deleteApartment
 );
 
 module.exports = router;
