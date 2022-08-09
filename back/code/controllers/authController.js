@@ -3,13 +3,21 @@ const userService = require("../service/userService");
 const bcrypt = require("bcrypt");
 
 const { generateAccessToken } = require("../utilities/jwtHandler");
-
+const valuesValidate = require("../utilities/valuesValidate");
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
     return res.status(400).json({ msg: "Send all data" });
   }
+
+  if (!valuesValidate.validateEmail(email)) {
+    return res.status(400).json({ success: false, msg: "email not valid" });
+  }
+  if (!valuesValidate.validatePassword(password)) {
+    return res.status(400).json({ success: false, msg: "password not valid" });
+  }
+
   try {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
@@ -37,9 +45,7 @@ exports.register = async (req, res, next) => {
       apartmentId: null,
     });
 
-    return res
-      .status(201)
-      .json({ msg: "success", jwtToken, databaseChanges: result });
+    return res.status(201).json({ msg: "success", jwtToken });
   } catch (err) {
     next(err);
   }
