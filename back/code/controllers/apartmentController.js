@@ -1,6 +1,7 @@
 const apartmentService = require("../service/apartmentService");
 const userService = require("../service/userService");
 
+const { generateAccessToken } = require("../utilities/jwtHandler");
 /**
  * get the data of the apartment of the user
  * if the dont have apartment it will return message
@@ -29,13 +30,29 @@ exports.getApartmentData = async (req, res, next) => {
  */
 exports.createApartment = async (req, res, next) => {
   const { userId } = req.tokenData;
+  const { name } = req.body;
+
+  if (name === undefined) {
+    return res
+      .status(400)
+      .send({ success: false, msg: "need to send a apartment name" });
+  }
 
   if (await userService.findUserApartmentId(userId)) {
     return res.status(200).send({ msg: "user are already in apartment" });
   }
   try {
-    const apartmentId = await apartmentService.createApartment(userId, "hello");
-    res.status(200).send({ msg: "success", apartmentId });
+    const apartmentId = await apartmentService.createApartment(userId, name);
+    userService.changeRole(userId, 2);
+    // לשלוח טוקן חדש
+
+    res.status(200).send({
+      msg: "success",
+      data: {
+        apartmentId,
+        token: generateAccessToken({ userId, apartmentId }),
+      },
+    });
   } catch (err) {
     next(err);
   }
@@ -53,7 +70,6 @@ exports.createApartment = async (req, res, next) => {
  * else we will return 201
  */
 
-// TODO: only admin user can add new users
 exports.addUserToApartment = async (req, res, next) => {
   const { userId } = req.tokenData;
 
@@ -64,14 +80,6 @@ exports.addUserToApartment = async (req, res, next) => {
   }
 
   try {
-    const userApartmentId = await userService.findUserApartmentId(userId);
-
-    if (!userApartmentId) {
-      return res
-        .status(200)
-        .send({ msg: "user that try to add new user, not in apartment" });
-    }
-
     if (await userService.findUserApartmentId(newUserId)) {
       return res.status(200).send({ msg: "user are already in apartment" });
     }
@@ -97,5 +105,15 @@ exports.removeUserFromApartment = async (req, res, next) => {
     res.send(result);
   } catch (err) {
     next(err);
+  }
+};
+
+exports.deleteApartment = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
+  try {
+    apartmentService.deleteApartment(apartmentId);
+    res.send({ success: true, msg: "apartment deleted" });
+  } catch (error) {
+    next(error);
   }
 };
