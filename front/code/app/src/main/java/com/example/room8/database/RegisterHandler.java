@@ -75,7 +75,7 @@ public class RegisterHandler extends AsyncTask<Void, Void, JSONObject> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            SharedPreferences sp = activity.get().getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE);
+            SharedPreferences sp = activity.get().getSharedPreferences(MainActivity.SHARED_PREFERENCE, Context.MODE_PRIVATE);
             SharedPreferences.Editor ed = sp.edit();
             ed.putString(MainActivity.JWT_TOKEN, token);
             ed.apply();

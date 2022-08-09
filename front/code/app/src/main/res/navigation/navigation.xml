@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_homePageUserWithoutApartmentFragment_self"
             app:destination="@id/homePageUserWithoutApartmentFragment" />
+        <action
+            android:id="@+id/action_homePageUserWithoutApartmentFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/homePageFragment"

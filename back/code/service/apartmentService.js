@@ -72,6 +72,12 @@ INSERT INTO ${apartmentsUserTable} (
   return result;
 };
 
+/**
+ *
+ * @param {number} apartmentId
+ * @param {number} userId
+ * @returns
+ */
 exports.removeUserFromApartment = async (apartmentId, userId) => {
   const deleteRelationQuery = `
   DELETE FROM ${apartmentsUserTable}
@@ -103,7 +109,6 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
 };
 
 /**
- *
  * @param {number} apartmentId
  * @returns {Promise<Array<number>>}
  */
@@ -116,4 +121,7 @@ exports.getRoom8Ids = async (apartmentId) => {
 };
 
 //TODO:
-exports.deleteApartment = async (apartmentId) => {};
+exports.deleteApartment = (apartmentId) => {
+  const query = `DELETE FROM ${apartmentsTable} WHERE ID = ?`;
+  db.execute(query, [apartmentId]);
+};

@@ -13,8 +13,7 @@ const { formatDateTime } = require("../utilities/dateValidate");
 exports.findAllTasksOfApartment = async (apartmentID) => {
   if (apartmentID === undefined) return;
 
-  const query = `
-  SELECT ${tasksTable}.*, ${tasksTypeTable}.task_type, ${tasksTypeTable}.icon_path
+  const query = `SELECT ${tasksTable}.*, ${tasksTypeTable}.task_type, ${tasksTypeTable}.icon_path
   FROM ${tasksTable}
   INNER JOIN ${tasksTypeTable}
   ON ${tasksTable}.task_type = ${tasksTypeTable}.ID
@@ -124,7 +123,6 @@ exports.deleteById = async (taskId) => {
 };
 
 /**
- *
  * @param {number | string} taskType
  * @param {Date | string} expirationDate
  * @param {string} title

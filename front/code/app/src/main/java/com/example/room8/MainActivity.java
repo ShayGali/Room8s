@@ -29,8 +29,9 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements TaskDialogListener {
 
-    public static final String JWT_SHARED_PREFERENCE = "jwt shared preference";
+    public static final String SHARED_PREFERENCE = "shared preference";
     public static final String JWT_TOKEN = "jwt token";
+    public static final String IS_IN_APARTMENT = "is in apartment";
 
 
     public NodeService databaseService;
@@ -56,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
             if (databaseService.isServerUp()) {
                 runOnUiThread(() -> Toast.makeText(this, "Server is up", Toast.LENGTH_SHORT).show());
                 if (checkIfJwtTokenExists()) { //TODO refresh token
-                    runOnUiThread(() -> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
+                    if (isInApartment())
+                        runOnUiThread(() -> this.navigateFragment(R.id.action_loginFragment_to_homePageFragment));
+                    else
+                        runOnUiThread(() -> this.navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment));
                 }
             } else {
                 runOnUiThread(() -> Toast.makeText(this, "Server is down", Toast.LENGTH_LONG).show());
@@ -91,26 +95,47 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
 
     // check if we have a token in the SharedPreferences
     public boolean checkIfJwtTokenExists() {
-        SharedPreferences sp = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         return sp.getString(JWT_TOKEN, null) != null;
     }
 
+
     public String getJwtFromSharedPreference() {
-        return getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE)
+        return getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE)
                 .getString(MainActivity.JWT_TOKEN, null);
     }
 
     public void saveJwtToSharedPreference(String token) {
-        SharedPreferences sharedPreferences = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(JWT_TOKEN, token);
         editor.apply();
     }
 
-    public void logout(int actionId) {
-        SharedPreferences sharedPreferences = getSharedPreferences(JWT_SHARED_PREFERENCE, MODE_PRIVATE);
+
+    public boolean isInApartment() {
+        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+        return sp.getBoolean(IS_IN_APARTMENT, false);
+    }
+
+    public void setIsInApartment(boolean isInApartment) {
+        SharedPreferences sp = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(IS_IN_APARTMENT, isInApartment);
+        editor.apply();
+    }
+
+    public void deleteSaveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(JWT_TOKEN).apply();
+        editor.remove(IS_IN_APARTMENT).apply();
+        User.resetData();
+        Apartment.resetData();
+    }
+
+    public void logout(int actionId) {
+        deleteSaveData();
         navigateFragment(actionId);
     }
 
@@ -123,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
      */
     // get the Jwt token from the database, save it to the SharedPreferences
     public void login(WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
+        deleteSaveData();
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
         new LoginHandler(mainActivityWeakReference, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }
@@ -135,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
      * @param passwordTextViewWeakReference weak reference for the password input
      */
     public void register(WeakReference<TextView> userNameTextView, WeakReference<TextView> emailTextViewWeakReference, WeakReference<TextView> passwordTextViewWeakReference) {
+        deleteSaveData();
         WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
         new RegisterHandler(mainActivityWeakReference, userNameTextView, emailTextViewWeakReference, passwordTextViewWeakReference).execute();
     }

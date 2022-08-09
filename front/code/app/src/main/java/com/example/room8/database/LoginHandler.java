@@ -80,10 +80,14 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
             this.setUserIdAndApartmentId(responseJson);
 
             // if he is in apartment we send him to the regular home page
-            if (User.getInstance().getApartmentId() != 0)
+            if (User.getInstance().getApartmentId() != 0) {
+                activity.get().setIsInApartment(true);
                 activity.get().navigateFragment(R.id.action_loginFragment_to_homePageFragment);
-            else // if he is not in apartment we send him to the right home page
+            }
+            else {// if he is not in apartment we send him to the right home page
+                activity.get().setIsInApartment(false);
                 activity.get().navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
+            }
 
         } else { // if the response don't have token key in the body
             try {
@@ -112,6 +116,5 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
-
     }
 }

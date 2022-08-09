@@ -18,9 +18,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,7 +55,7 @@ public class ChatHandler {
      */
     public void initializeSocketConnection() {
         // get the jwt token from the shared preferences
-        String jwtToken = activity.getSharedPreferences(MainActivity.JWT_SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN, null);
+        String jwtToken = activity.getSharedPreferences(MainActivity.SHARED_PREFERENCE, Context.MODE_PRIVATE).getString(MainActivity.JWT_TOKEN, null);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
                 .url(SERVER_PATH)

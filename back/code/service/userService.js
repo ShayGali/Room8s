@@ -66,3 +66,11 @@ exports.getRoommatesData = async (apartmentId, userId) => {
   const [result, _] = await db.execute(query, [apartmentId, userId]);
   return result;
 };
+
+exports.changeRole = (userId, roleId) => {
+  const query = `UPDATE ${usersTable}
+   SET user_level = ?
+   WHERE ID = ?
+   `;
+  db.execute(query, [roleId, userId]);
+};

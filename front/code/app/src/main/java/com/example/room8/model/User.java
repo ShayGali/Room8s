@@ -64,6 +64,9 @@ public final class User {
         }
     }
 
+    public static void resetData() {
+        instance = null;}
+
 
     public int getId() {
         return id;

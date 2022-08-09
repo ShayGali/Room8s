@@ -58,6 +58,10 @@ public final class Apartment {
         this.tasks = new ArrayList<>();
     }
 
+    public static void resetData() {
+        instance = null;
+    }
+
     public String getRoom8NameById(int id){
         for (Roommate r: roommates) {
             if (r.getId() == id)return r.getUserName();
