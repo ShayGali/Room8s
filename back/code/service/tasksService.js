@@ -107,8 +107,7 @@ exports.findUserTasksIds = async (userId) => {
 };
 
 exports.findTaskExecutors = async (taskId) => {
-  const query = `
-  SELECT user_ID FROM ${tasksPerUserTable}
+  const query = `SELECT user_ID FROM ${tasksPerUserTable}
   WHERE task_ID = ?;
 `;
   const [result, _] = await db.execute(query, [taskId]);
@@ -145,7 +144,6 @@ exports.updateTask = async (
     );
     taskType = res[0].ID;
   }
-  console.log(taskId, taskType, expirationDate, title, note);
   const query = `UPDATE ${tasksTable}
     SET task_type = ?, expiration_date = ?, title = ?,  note = ?
     WHERE ID = ?

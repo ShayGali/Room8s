@@ -1,5 +1,6 @@
 const tasksService = require("../service/tasksService");
 const userService = require("../service/userService");
+const apartmentService = require("../service/apartmentService");
 
 const {
   isInDateFormat,
@@ -53,10 +54,13 @@ exports.addTask = async (req, res, next) => {
       note
     );
 
+    const room8Ids = await apartmentService.getRoom8Ids(apartmentId);
     if (executorsIds !== undefined) {
-      JSON.parse(executorsIds).forEach((executorId) =>
-        tasksService.associateTaskToUser(insertedID, executorId)
-      );
+      JSON.parse(executorsIds).forEach((executorId) => {
+        if (room8Ids.includes(executorId)) {
+          tasksService.associateTaskToUser(insertedID, executorId);
+        }
+      });
     }
     res
       .status(201)
@@ -229,12 +233,29 @@ exports.updateTask = async (req, res, next) => {
   const { userId, apartmentId } = req.tokenData;
   const { taskId } = req.params;
 
-  const { taskType, expirationDate, title, note } = req.body;
+  let { taskType, expirationDate, title, note, executorsIds } = req.body;
 
   if (!taskId) {
     return res
       .status(400)
       .send({ success: false, msg: "send taskId in params" });
+  }
+
+  if (executorsIds !== undefined) {
+    try {
+      executorsIds = JSON.parse(executorsIds);
+      if (!Array.isArray(executorsIds)) {
+        return res.status(400).send({
+          success: false,
+          msg: "executorsIds need to be an array",
+        });
+      }
+    } catch (e) {
+      return res.status(400).send({
+        success: false,
+        msg: "executorsIds need to be an array",
+      });
+    }
   }
 
   try {
@@ -257,6 +278,23 @@ exports.updateTask = async (req, res, next) => {
       title || task.title,
       note === undefined ? task.note : note
     );
+
+    if (executorsIds !== undefined) {
+      const room8Ids = await apartmentService.getRoom8Ids(apartmentId);
+      const executors = await tasksService.findTaskExecutors(taskId);
+
+      executors.forEach((executorId) => {
+        if (!executorsIds.includes(executorId)) {
+          tasksService.removeAssociateFromUser(taskId, executorId);
+        }
+      });
+
+      executorsIds.forEach((executorId) => {
+        if (room8Ids.includes(executorId) && !executors.includes(executorId)) {
+          tasksService.associateTaskToUser(taskId, executorId);
+        }
+      });
+    }
 
     return res.status(200).send({ success: true, msg: "success" });
   } catch (error) {
