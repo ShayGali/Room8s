@@ -38,9 +38,18 @@ exports.checkIfUserInApartment = async (userId) => {
 exports.findByEmail = async (email) => {
   const query = `
     SELECT * FROM ${usersTable}
-    WHERE email = '${email}'
+    WHERE email = ?
     `;
-  const [user, _] = await db.execute(query);
+  const [user, _] = await db.execute(query, [email]);
+  return user[0];
+};
+
+exports.findByUserName = async (userName) => {
+  const query = `
+    SELECT * FROM ${usersTable}
+    WHERE user_name = ?
+    `;
+  const [user, _] = await db.execute(query, [userName]);
   return user[0];
 };
 

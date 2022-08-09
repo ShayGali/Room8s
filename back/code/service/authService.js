@@ -4,12 +4,7 @@ const usersTable = "users";
 const userService = require("./userService");
 
 exports.register = async (user) => {
-  let checkUserExists = await userService.findByEmail(user.email);
-  if (checkUserExists !== undefined) {
-    return { errorMsg: "Email is already registered" };
-  }
-  const query = `
-      INSERT INTO ${usersTable} (
+  const query = `INSERT INTO ${usersTable} (
           user_name,email,user_password
       )
       VALUE (?,?,?);

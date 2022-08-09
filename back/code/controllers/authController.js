@@ -6,17 +6,24 @@ const { generateAccessToken } = require("../utilities/jwtHandler");
 
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    return res.status(400).json({ msg: "Send all data" });
+  }
   try {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
-      return res.status(400).json({ msg: "Send all data" });
-    }
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
-    let checkUserExists = await userService.findByEmail(email);
-    if (checkUserExists !== undefined) {
-      return res.status(409).json({ msg: result.errorMsg });
+    if ((await userService.findByEmail(email)) !== undefined) {
+      return res
+        .status(409)
+        .json({ success: false, msg: "email is already exists" });
+    }
+
+    if ((await userService.findByUserName(username)) !== undefined) {
+      return res
+        .status(409)
+        .json({ success: false, msg: "username is already exists" });
     }
 
     const result = await authService.register({
@@ -24,9 +31,6 @@ exports.register = async (req, res, next) => {
       email,
       password: hashPassword,
     });
-    if (result.errorMsg !== undefined) {
-      return res.status(409).json({ msg: result.errorMsg });
-    }
 
     jwtToken = generateAccessToken({
       userId: result.insertId,
