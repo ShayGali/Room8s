@@ -7,7 +7,7 @@ const dateTimeRegex =
  * example: 2022-01-08
  *
  * @param {string} date
- * @returns boolean
+ * @returns {boolean}
  */
 exports.isInDateFormat = (date) => {
   return date !== undefined && dateRegex.test(date);
@@ -15,10 +15,10 @@ exports.isInDateFormat = (date) => {
 
 /**
  * check if date is in the format of 'YYYY-MM-DDTHH:MM:SS'.
- * example: 2022-01-08T14:07:34
+ * example: 2022-01-08T14:07:34 or 2022-01-08 14:07:34
  *
  * @param {string} date
- * @returns boolean
+ * @returns {boolean}
  */
 exports.isInDateTimeFormat = (date) => {
   return dateTimeRegex.test(date);
