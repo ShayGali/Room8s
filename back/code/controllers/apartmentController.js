@@ -39,14 +39,16 @@ exports.createApartment = async (req, res, next) => {
   }
 
   if (await userService.findUserApartmentId(userId)) {
-    return res.status(200).send({ msg: "user are already in apartment" });
+    return res
+      .status(200)
+      .send({ success: false, msg: "user are already in apartment" });
   }
   try {
     const apartmentId = await apartmentService.createApartment(userId, name);
     userService.changeRole(userId, 2);
-    // לשלוח טוקן חדש
 
-    res.status(200).send({
+    res.status(201).send({
+      success: true,
       msg: "success",
       data: {
         apartmentId,
