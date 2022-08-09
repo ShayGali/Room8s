@@ -62,7 +62,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.edit_task_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_edit_task, null);
         initDialogDataFields(view);
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
@@ -182,7 +182,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             checkBoxDialog.show(getParentFragmentManager(), "check box dialog");
         });
 
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.view_drop_down_item, Task.TASK_TYPES);
         taskTypes.setAdapter(typesAdapter);
         for (int i = 0; i < Task.TASK_TYPES.length; i++) {
             if (Task.TASK_TYPES[i].equals(tempTask.getTaskType())) {

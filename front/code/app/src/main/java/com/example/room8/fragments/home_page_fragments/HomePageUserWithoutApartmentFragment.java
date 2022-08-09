@@ -10,7 +10,6 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupMenu;
 
 import com.example.room8.MainActivity;
@@ -69,15 +68,18 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-            }
-        });
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
+
+        initMenuBtn(view);
+        disableBackPress();
+
+
+        return view;
+    }
+
+    private void initMenuBtn(View view) {
         menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
@@ -97,7 +99,21 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
             popupMenu.show();
 
         });
+    }
 
-        return view;
+    private void disableBackPress() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+            }
+        });
+    }
+
+    private void initCreateApartmentButton(View view){
+        View createApartmentButton = view.findViewById(R.id.create_apartment_btn);
+        createApartmentButton.setOnClickListener(v->{
+
+        });
     }
 }

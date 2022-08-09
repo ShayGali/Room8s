@@ -52,12 +52,12 @@
         android:scaleType="fitCenter"
         android:src="@drawable/profile_btn"
         app:layout_constraintDimensionRatio="w,1.15:1"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/create_apartment_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/create_apartment_btn"
         android:layout_width="0dp"
         android:layout_height="111dp"
         android:layout_marginStart="20dp"

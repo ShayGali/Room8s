@@ -1,12 +1,9 @@
 package com.example.room8.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room8.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CheckBoxRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -33,7 +27,7 @@ public class CheckBoxRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(inflater.inflate(R.layout.drop_down_item_select, parent, false));
+        return new ViewHolder(inflater.inflate(R.layout.view_drop_down_item_select, parent, false));
     }
 
     @Override

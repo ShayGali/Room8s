@@ -56,7 +56,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_task_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_add_task, null);
         initDialogDataFields(view);
 
         builder
@@ -100,7 +100,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
             checkBoxDialog.show(getParentFragmentManager(), "check box dialog");
         });
 
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.drop_down_item, Task.TASK_TYPES);
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), R.layout.view_drop_down_item, Task.TASK_TYPES);
         taskTypesSpinner.setAdapter(typesAdapter);
 
         expirationTimeTextView.setOnClickListener(this::showDateTimeDialogs);

@@ -1,7 +1,6 @@
 package com.example.room8.adapters;
 
 import android.annotation.SuppressLint;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,13 +41,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         View view;
         switch (viewType) {
             case TYPE_MESSAGE_SENT:
-                view = inflater.inflate(R.layout.message_sent, parent, false);
+                view = inflater.inflate(R.layout.view_message_sent, parent, false);
                 return new SentMessageHolder(view);
             case TYPE_MESSAGE_RECEIVED:
-                view = inflater.inflate(R.layout.message_received, parent, false);
+                view = inflater.inflate(R.layout.view_message_received, parent, false);
                 return new ReceivedMessageHolder(view);
         }
-        view = inflater.inflate(R.layout.message_received, parent, false);
+        view = inflater.inflate(R.layout.view_message_received, parent, false);
         return new ReceivedMessageHolder(view);
     }
 
