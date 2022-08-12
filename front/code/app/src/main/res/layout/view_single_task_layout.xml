@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/layout_border_style"
+    android:background="@drawable/style_layout_border_gray"
     android:orientation="horizontal">
 
     <LinearLayout

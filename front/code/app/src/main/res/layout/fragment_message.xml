@@ -18,7 +18,7 @@
         android:clickable="true"
         android:contentDescription="@string/menu"
         android:padding="10dp"
-        android:src="@drawable/menu_btn"
+        android:src="@drawable/btn_img_menu"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/layout_border_style"
+        android:background="@drawable/style_layout_border_gray"
         android:paddingStart="2dp"
         android:paddingEnd="2dp"
         app:layout_constraintBottom_toTopOf="@+id/enter_message_EditText"
@@ -79,7 +79,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:contentDescription="@string/send_message"
-        android:src="@drawable/send_btn"
+        android:src="@drawable/btn_img_send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

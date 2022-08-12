@@ -17,7 +17,7 @@
         android:clickable="true"
         android:contentDescription="@string/menu"
         android:padding="10dp"
-        android:src="@drawable/menu_btn"
+        android:src="@drawable/btn_img_menu"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
             android:id="@+id/profile_edit_btn"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
+            android:background="@drawable/style_btn_border_blue"
             android:gravity="center"
             android:text="@string/profile_edit"
             android:textSize="24sp" />
@@ -74,7 +74,7 @@
             android:id="@+id/tell_us_btn"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
+            android:background="@drawable/style_btn_border_blue"
             android:gravity="center"
             android:text="@string/tell_us"
             android:textSize="24sp" />
@@ -96,7 +96,7 @@
             android:id="@+id/invite_friend_btn"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
+            android:background="@drawable/style_btn_border_blue"
             android:gravity="center"
             android:text="@string/invite_friend"
             android:textSize="24sp" />
@@ -118,7 +118,7 @@
             android:id="@+id/delete_user_btn"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
+            android:background="@drawable/style_btn_border_blue"
             android:gravity="center"
             android:text="@string/delete_user"
             android:textSize="24sp" />
@@ -140,7 +140,7 @@
             android:id="@+id/log_out_btn"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_border_style"
+            android:background="@drawable/style_btn_border_blue"
             android:gravity="center"
             android:text="@string/log_out"
             android:textSize="24sp" />

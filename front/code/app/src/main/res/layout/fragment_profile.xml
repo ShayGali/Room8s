@@ -16,7 +16,7 @@
         android:clickable="true"
         android:contentDescription="@string/menu"
         android:padding="10dp"
-        android:src="@drawable/menu_btn"
+        android:src="@drawable/btn_img_menu"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/layout_border_style"
+        android:background="@drawable/style_layout_border_gray"
         app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
-            android:background="@drawable/layout_border_style"
+            android:background="@drawable/style_layout_border_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/layout_border_style"
+        android:background="@drawable/style_layout_border_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -85,13 +85,19 @@
         app:layout_constraintTop_toBottomOf="@+id/top_layout">
 
         <TextView
-            android:id="@+id/profile_set_name"
+            android:id="@+id/change_password_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:text="@string/profile_set_name_txt"
-            android:textSize="18sp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/style_layout_border_gray"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="Change Password"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/profile_set_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,35 +105,35 @@
             android:id="@+id/profile_set_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:text="@string/profile_set_password_txt"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/profile_set_phone_number"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/style_layout_border_gray"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="Rommates"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/ui"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_set_name"
-            app:layout_constraintVertical_bias="0.395" />
+            app:layout_constraintTop_toBottomOf="@+id/change_password_btn" />
 
         <TextView
-            android:id="@+id/profile_set_phone_number"
+            android:id="@+id/ui"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:text="@string/profile_set_phone_number_txt"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/profile_set_email"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/style_layout_border_gray"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="Leave Room"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_set_password" />
-
-        <TextView
-            android:id="@+id/profile_set_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:text="@string/profile_set_email_txt"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_set_phone_number" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
