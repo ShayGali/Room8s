@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
 
     LoadingAlert loadingAlert = new LoadingAlert(this);
 
+    public static boolean isStrongPassword(String password) {
+        return true;
+    }
+
 
     @SuppressLint("ResourceType")
     @Override
@@ -210,5 +214,9 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
 
     public void createApartment(String name) {
         databaseService.createApartment(name);
+    }
+
+    public void changePassword(String password) {
+        databaseService.changePassword(password);
     }
 }

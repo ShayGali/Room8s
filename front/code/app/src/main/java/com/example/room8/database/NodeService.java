@@ -500,4 +500,8 @@ public class NodeService {
             }
         }));
     }
+
+    public void changePassword(String password) {
+
+    }
 }
