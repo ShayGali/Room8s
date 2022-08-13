@@ -1,11 +1,11 @@
-const tasksService = require("../service/tasksService");
-const userService = require("../service/userService");
-const apartmentService = require("../service/apartmentService");
+const tasksService = require("./tasksService");
+const userService = require("../../routes/userRoutes/userService");
+const apartmentService = require("../../routes/apartmentRoute/apartmentService");
 
 const {
   isInDateFormat,
   isInDateTimeFormat,
-} = require("../utilities/dateValidate");
+} = require("../../utilities/dateValidate");
 
 exports.findAllTasksOfApartment = async (req, res, next) => {
   const { apartmentId } = req.tokenData;

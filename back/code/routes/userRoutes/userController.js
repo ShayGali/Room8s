@@ -1,4 +1,6 @@
-const userService = require("../service/userService");
+const userService = require("./userService");
+
+const { hashPassword } = require("../../utilities/passwordHandler");
 
 /**
  * get the userId from the JWT token, and return the apartment id
@@ -75,6 +77,20 @@ exports.getRoommatesData = async (req, res, next) => {
   try {
     const room8 = await userService.getRoommatesData(apartmentId, userId);
     return res.status(200).json({ success: true, msg: "success", data: room8 });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.changePassword = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { password } = req.body;
+  try {
+    const hash = await hashPassword(password);
+    userService.changePassword(userId, hash);
+    return res
+      .status(200)
+      .json({ success: true, msg: "password change successfully" });
   } catch (error) {
     next(error);
   }

@@ -14,13 +14,7 @@ app.use("/expenses", require("./routes/expensesRoute"));
 app.use("/payments", require("./routes/paymentRoute"));
 
 // Global Error handler
-app.use((err, req, res, next) => {
-  console.log(err.stack);
-  console.log(err.name);
-  console.log(err.code);
-
-  res.status(500).json({ msg: "Something went wrong" });
-});
+app.use(errorHandler);
 
 app.all("/isAlive", (req, res) => {
   res.status(200).send({ msg: "Server Alive" });
@@ -40,3 +34,20 @@ app.all("/*", (req, res) => {
 });
 
 module.exports = app;
+
+/**
+ *
+ * @param {Error} err
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+function errorHandler(err, req, res, next) {
+  console.log(err.stack);
+  console.log(err.name);
+
+  console.log(err.code);
+  console.log(err.msg);
+
+  res.status(code || 500).json({ msg: "Something went wrong", err: msg });
+}

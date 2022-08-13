@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const usersTable = "users";
 const apartmentsUserTable = "user_in_apartment";
 
@@ -82,4 +82,17 @@ exports.changeRole = (userId, roleId) => {
    WHERE ID = ?
    `;
   db.execute(query, [roleId, userId]);
+};
+
+/**
+ *
+ * @param {number} userId
+ * @param {string} password
+ */
+exports.changePassword = (userId, password) => {
+  const query = `UPDATE ${usersTable}
+   SET user_password = ?
+   WHERE ID = ?
+   `;
+  db.execute(query, [password, userId]);
 };

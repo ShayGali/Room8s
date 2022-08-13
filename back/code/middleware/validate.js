@@ -1,4 +1,4 @@
-const userService = require("../service/userService");
+const userService = require("../routes/userRoutes/userService");
 
 exports.matchUserToApartment = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;

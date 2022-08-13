@@ -1,4 +1,4 @@
-const userService = require("../service/userService");
+const userService = require("../routes/userRoutes/userService");
 
 /**
  * Check if the user roll is apartment owner or above.

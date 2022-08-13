@@ -1,10 +1,10 @@
-const paymentService = require("../service/paymentService");
-const userService = require("../service/userService");
+const paymentService = require("./paymentService");
+const userService = require("../../routes/userRoutes/userService");
 
 const {
   isInDateFormat,
   isInDateTimeFormat,
-} = require("../utilities/dateValidate");
+} = require("../../utilities/dateValidate");
 
 exports.findAllPaymentsByFieldName = async (req, res, next) => {
   const { field, id } = req.body;

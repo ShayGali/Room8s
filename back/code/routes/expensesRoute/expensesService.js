@@ -1,8 +1,8 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const expensesTable = "expenses";
 const expensesTypeTable = "expense_type";
 
-const { formatDateTime } = require("../utilities/dateValidate");
+const { formatDateTime } = require("../../utilities/dateValidate");
 
 exports.addExpenses = async (
   apartmentId,

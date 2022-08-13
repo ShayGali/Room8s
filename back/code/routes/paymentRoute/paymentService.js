@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const paymentTable = "payments";
 
 exports.findById = async (paymentId) => {

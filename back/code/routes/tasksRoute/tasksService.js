@@ -1,9 +1,9 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const tasksTable = "tasks";
 const tasksTypeTable = "task_type";
 const tasksPerUserTable = "tasks_per_user";
 
-const { formatDateTime } = require("../utilities/dateValidate");
+const { formatDateTime } = require("../../utilities/dateValidate");
 
 /**
  *

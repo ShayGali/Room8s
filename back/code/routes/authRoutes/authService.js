@@ -1,7 +1,5 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const usersTable = "users";
-
-const userService = require("./userService");
 
 exports.register = async (user) => {
   const query = `INSERT INTO ${usersTable} (

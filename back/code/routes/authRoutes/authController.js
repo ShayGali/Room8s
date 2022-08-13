@@ -1,9 +1,11 @@
-const authService = require("../service/authService");
-const userService = require("../service/userService");
+const authService = require("./authService");
+const userService = require("../../routes/userRoutes/userService");
+
 const bcrypt = require("bcrypt");
 
-const { generateAccessToken } = require("../utilities/jwtHandler");
-const valuesValidate = require("../utilities/valuesValidate");
+const { generateAccessToken } = require("../../utilities/jwtHandler");
+const valuesValidate = require("../../utilities/valuesValidate");
+
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;

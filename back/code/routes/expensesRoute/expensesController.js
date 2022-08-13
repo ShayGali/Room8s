@@ -1,6 +1,6 @@
-const expensesService = require("../service/expensesService");
+const expensesService = require("./expensesService");
 
-const { isInDateFormat } = require("../utilities/dateValidate");
+const { isInDateFormat } = require("../../utilities/dateValidate");
 
 exports.addExpenses = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;

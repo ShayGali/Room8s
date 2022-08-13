@@ -1,7 +1,7 @@
-const apartmentService = require("../service/apartmentService");
-const userService = require("../service/userService");
+const apartmentService = require("./apartmentService");
+const userService = require("../userRoutes/userService");
 
-const { generateAccessToken } = require("../utilities/jwtHandler");
+const { generateAccessToken } = require("../../utilities/jwtHandler");
 /**
  * get the data of the apartment of the user
  * if the dont have apartment it will return message

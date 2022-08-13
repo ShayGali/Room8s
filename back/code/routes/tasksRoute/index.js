@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const tasksController = require("../controllers/tasksController");
+const tasksController = require("./tasksController");
 
-const { authenticateTokenFromRequest } = require("../middleware/auth");
-const { matchUserToApartment } = require("../middleware/validate");
+const { authenticateTokenFromRequest } = require("../../middleware/auth");
+const { matchUserToApartment } = require("../../middleware/validate");
 
 router.use(authenticateTokenFromRequest);
 router.use(matchUserToApartment);

@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const userController = require("../controllers/userController");
+const userController = require("./userController");
 
-const { authenticateTokenFromRequest } = require("../middleware/auth");
-const { matchUserToApartment } = require("../middleware/validate");
+const { authenticateTokenFromRequest } = require("../../middleware/auth");
+const { matchUserToApartment } = require("../../middleware/validate");
 
 router.use(authenticateTokenFromRequest);
 
