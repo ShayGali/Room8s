@@ -1,4 +1,4 @@
-const JWT = require("jsonwebtoken");
+const { authenticateToken } = require("../utilities/jwtHandler");
 /** Global middleware function to validate JWT token
  * will return:
  * 401 if token not send
@@ -8,11 +8,14 @@ const JWT = require("jsonwebtoken");
  */
 exports.authenticateTokenFromRequest = (req, res, next) => {
   const token = req.header("x-auth-token");
-  if (!token) return res.status(401).send({ msg: "Send token" }); // TODO: make better error message
-  JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, tokenData) => {
-    if (err)
-      return res.status(403).send({ success: false, msg: "Invalid token" });
-    req.tokenData = tokenData;
-    next(); // move to the function
-  });
+  if (!token)
+    return res.status(401).send({ msg: "Send JWT token to make this request" }); // TODO: make better error message
+
+  const tokenData = authenticateToken(token);
+
+  if (tokenData === undefined)
+    return res.status(403).send({ success: false, msg: "Token is Invalid" });
+
+  req.tokenData = tokenData;
+  next();
 };
