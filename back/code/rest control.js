@@ -49,5 +49,7 @@ function errorHandler(err, req, res, next) {
   console.log(err.code);
   console.log(err.msg);
 
-  res.status(code || 500).json({ msg: "Something went wrong", err: msg });
+  res
+    .status(err.code || 500)
+    .json({ msg: "Something went wrong", err: err.msg });
 }
