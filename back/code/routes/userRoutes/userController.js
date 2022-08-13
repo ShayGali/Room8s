@@ -1,6 +1,9 @@
 const userService = require("./userService");
 
-const { hashPassword } = require("../../utilities/passwordHandler");
+const {
+  hashPassword,
+  isStrongPassword,
+} = require("../../utilities/passwordHandler");
 
 /**
  * get the userId from the JWT token, and return the apartment id
@@ -85,6 +88,20 @@ exports.getRoommatesData = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
   const { userId } = req.tokenData;
   const { password } = req.body;
+  if (password === undefined) {
+    return res.status(400).json({ success: false, msg: "send new password" });
+  }
+  if (typeof password !== "string") {
+    return res.status(400).json({
+      success: false,
+      msg: `type of password need to be a string, you passed ${typeof password}`,
+    });
+  }
+  if (!isStrongPassword(password)) {
+    return res
+      .status(400)
+      .json({ success: false, msg: "password not strong enough" });
+  }
   try {
     const hash = await hashPassword(password);
     userService.changePassword(userId, hash);

@@ -4,7 +4,7 @@ const userService = require("../../routes/userRoutes/userService");
 const bcrypt = require("bcrypt");
 
 const { generateAccessToken } = require("../../utilities/jwtHandler");
-const valuesValidate = require("../../utilities/valuesValidate");
+const { isStrongPassword } = require("../../utilities/passwordHandler");
 
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
   if (!valuesValidate.validateEmail(email)) {
     return res.status(400).json({ success: false, msg: "email not valid" });
   }
-  if (!valuesValidate.validatePassword(password)) {
+  if (!isStrongPassword(password)) {
     return res.status(400).json({ success: false, msg: "password not valid" });
   }
 
