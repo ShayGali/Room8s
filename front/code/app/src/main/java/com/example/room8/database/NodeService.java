@@ -459,7 +459,7 @@ public class NodeService {
                 if (stringBody == null) {
                     activity.showToast("create apartment failed");
                     activity.showToast("responseBody is null");
-                    System.err.println("add task failed");
+                    System.err.println("create apartment failed");
                     System.err.println("responseBody is null");
                 } else if (!response.isSuccessful()) {
                     activity.showToast("create apartment failed");
@@ -488,8 +488,8 @@ public class NodeService {
                             }
                             activity.showToast("create apartment went successfully");
                             activity.navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment);
-                        }else{
-                            if (responseJOSN.has(MESSAGE_KEY)){
+                        } else {
+                            if (responseJOSN.has(MESSAGE_KEY)) {
                                 activity.showToast(responseJOSN.getString(MESSAGE_KEY));
                             }
                         }
@@ -502,6 +502,72 @@ public class NodeService {
     }
 
     public void changePassword(String password) {
+        OkHttpClient client = new OkHttpClient();
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("password", password);
 
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/password")
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .put(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue((new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast("change password failed");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+                if (stringBody == null) {
+                    activity.showToast("change password failed");
+                    activity.showToast("responseBody is null");
+                    System.err.println("change password failed");
+                    System.err.println("responseBody is null");
+                    return;
+                }
+                JSONObject responseJOSN = null;
+                try {
+                    responseJOSN = new JSONObject(stringBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+                if (!response.isSuccessful()) {
+                    activity.showToast("change password failed");
+                    activity.showToast("response code: " + response.code());
+                    try {
+                        activity.showToast("response body: " + responseJOSN.getString(MESSAGE_KEY));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.err.println("change password failed");
+                    System.err.println("response code: " + response.code());
+                    System.err.println("msg: " + stringBody);
+                    return;
+                }
+                try {
+                    if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY) || responseJOSN.has(MESSAGE_KEY) && "success".equals(responseJOSN.getString("msg"))
+                    ) {
+                        activity.showToast("Change password successfully");
+                    } else {
+                        if (responseJOSN.has(MESSAGE_KEY)) {
+                            activity.showToast(responseJOSN.getString(MESSAGE_KEY));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }));
     }
 }
