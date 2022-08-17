@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 
 const { generateAccessToken } = require("../../utilities/jwtHandler");
 const { isStrongPassword } = require("../../utilities/passwordHandler");
+const valuesValidate = require("../../utilities/valuesValidate");
 
 // TODO: check if user name is exist
 exports.register = async (req, res, next) => {
