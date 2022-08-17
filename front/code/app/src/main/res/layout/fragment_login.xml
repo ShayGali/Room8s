@@ -123,7 +123,7 @@
             android:clickable="true"
             android:minHeight="48dp"
             android:padding="10dp"
-            android:text="@string/forget_password"
+            android:text="@string/forgot_password"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
