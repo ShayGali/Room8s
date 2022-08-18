@@ -41,9 +41,9 @@ exports.addTask = async (
       `SELECT ID FROM ${tasksTypeTable} WHERE task_type = ?`,
       [taskType]
     );
-    taskType = res[0].ID;
+    taskType = res[0]?.ID;
   }
-
+  if(taskType === undefined) return;
   let query = `
   INSERT INTO ${tasksTable}(
     apartment_ID, creator_ID, task_type,create_time, expiration_date, title, note
