@@ -136,7 +136,7 @@ public class HomePageFragment extends Fragment {
         // TODO: get expenses data -
         // TODO: get tasks data - next task
         walletBtn.setOnClickListener(v -> {
-            // Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
+            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
         });
         return view;
     }
