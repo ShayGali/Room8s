@@ -1,7 +1,5 @@
 package com.example.room8.model;
 
-import androidx.annotation.NonNull;
-
 import com.example.room8.R;
 
 import org.json.JSONException;
@@ -27,6 +25,7 @@ public final class User {
     private static final String EMAIL_KEY = "email";
     private static final String USER_LEVEL_KEY = "user_level";
     private static final String ICON_ID_KEY = "profile_icon_id";
+    private static final String LEVEL_NAME_KEY = "level_name";
 
 
     private int id;
@@ -34,6 +33,7 @@ public final class User {
     private String userName;
     private String email;
     private int userLevel;
+    private String levelName;
 
     private int profileIconId;
 
@@ -51,6 +51,8 @@ public final class User {
             instance.setEmail(userAsJson.getString(EMAIL_KEY));
         if (userAsJson.has(USER_LEVEL_KEY) && !userAsJson.isNull(USER_LEVEL_KEY))
             instance.setUserLevel(userAsJson.getInt(USER_LEVEL_KEY));
+        if(userAsJson.has(LEVEL_NAME_KEY))
+            instance.setLevelName(userAsJson.getString(LEVEL_NAME_KEY));
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
             int iconId = userAsJson.getInt(ICON_ID_KEY);
             if (iconId == 0)
@@ -114,14 +116,23 @@ public final class User {
         this.profileIconId = profileIconId;
     }
 
-    @NonNull
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", apartmentId=" + apartmentId +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", userLevel=" + userLevel +
+                ", levelName='" + levelName + '\'' +
                 ", profileIconId=" + profileIconId +
                 '}';
     }
