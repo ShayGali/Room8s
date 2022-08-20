@@ -1,6 +1,7 @@
 const db = require("../../config/db");
 const usersTable = "users";
 const apartmentsUserTable = "user_in_apartment";
+const userLevelTable = "user_level";
 
 exports.findUserApartmentId = async (userID) => {
   if (userID === undefined) return;
@@ -14,8 +15,10 @@ exports.findUserApartmentId = async (userID) => {
 };
 
 exports.findById = async (userID) => {
-  const query = `
-  SELECT * FROM ${usersTable} WHERE ID = ? ;`;
+  const query = `SELECT *,level_name FROM ${usersTable}
+  INNER JOIN ${userLevelTable}
+  ON ${usersTable}.user_level = ${userLevelTable}
+  WHERE ${usersTable}.ID = ? ;`;
 
   const [user, _] = await db.execute(query, [userID]);
   return user[0];
@@ -36,8 +39,9 @@ exports.checkIfUserInApartment = async (userId) => {
 };
 
 exports.findByEmail = async (email) => {
-  const query = `
-    SELECT * FROM ${usersTable}
+  const query = `SELECT *,level_name FROM ${usersTable}
+    INNER JOIN ${userLevelTable}
+    ON ${usersTable}.user_level = ${userLevelTable}
     WHERE email = ?
     `;
   const [user, _] = await db.execute(query, [email]);
@@ -45,8 +49,9 @@ exports.findByEmail = async (email) => {
 };
 
 exports.findByUserName = async (userName) => {
-  const query = `
-    SELECT * FROM ${usersTable}
+  const query = `SELECT *,level_name FROM ${usersTable}
+    INNER JOIN ${userLevelTable}
+    ON ${usersTable}.user_level = ${userLevelTable}
     WHERE user_name = ?
     `;
   const [user, _] = await db.execute(query, [userName]);
@@ -66,10 +71,12 @@ exports.delete = async (userId) => {
 
 exports.getRoommatesData = async (apartmentId, userId) => {
   const query = `
-  SELECT ${usersTable}.ID, user_name, user_level,profile_icon_id
+  SELECT ${usersTable}.ID, user_name, user_level,level_name,profile_icon_id
   from ${usersTable}
   INNER JOIN ${apartmentsUserTable}
   ON ${usersTable}.ID = ${apartmentsUserTable}.user_ID
+  INNER JOIN ${userLevelTable}
+  ON ${usersTable}.user_level = ${userLevelTable}
   WHERE apartment_ID = ? AND NOT ${usersTable}.ID = ?; 
   `;
   const [result, _] = await db.execute(query, [apartmentId, userId]);
