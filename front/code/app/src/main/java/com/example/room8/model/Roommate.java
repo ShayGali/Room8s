@@ -61,6 +61,14 @@ public class Roommate {
         this.userLevel = userLevel;
     }
 
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
     @NonNull
     @Override
     public String toString() {
