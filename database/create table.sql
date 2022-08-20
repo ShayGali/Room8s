@@ -120,4 +120,17 @@ FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE ,
 FOREIGN KEY (sender_ID) REFERENCES users (ID)
 );
 
+INSERT INTO user_level VALUES
+(1, 'basic user'),
+(2, 'apartment owner'),
+(3, 'admin');
+
+INSERT INTO task_type (ID, task_type) VALUES
+(1, 'general task');
+
+INSERT INTO expense_type VALUES
+(1, 'general expense');
+
+
+
 
