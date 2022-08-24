@@ -51,5 +51,5 @@ function errorHandler(err, req, res, next) {
 
   res
     .status(err.code || 500)
-    .json({ msg: "Something went wrong", err: err.msg });
+    .json({ success: false, msg: "Something went wrong", err: err.msg });
 }
