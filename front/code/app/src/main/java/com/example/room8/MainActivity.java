@@ -219,4 +219,8 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     public void changePassword(String password) {
         databaseService.changePassword(password);
     }
+
+    public void removeRoom8s(Integer id) {
+        databaseService.removeRoom8s(id);
+    }
 }

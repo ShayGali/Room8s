@@ -47,9 +47,9 @@ public final class Apartment {
 
     }
 
-    public static ArrayList<String> apartmentMembersNames(){
+    public static ArrayList<String> apartmentMembersNames() {
         List<String> names = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
-        names.add(0,User.getInstance().getUserName());
+        names.add(0, User.getInstance().getUserName());
         return (ArrayList<String>) names;
     }
 
@@ -62,11 +62,16 @@ public final class Apartment {
         instance = null;
     }
 
-    public String getRoom8NameById(int id){
-        for (Roommate r: roommates) {
-            if (r.getId() == id)return r.getUserName();
+    public String getRoom8NameById(int id) {
+        for (Roommate r : roommates) {
+            if (r.getId() == id) return r.getUserName();
         }
         return "";
+    }
+
+    public void addRoommate(Roommate r) {
+        if (roommates.stream().anyMatch(roommate -> roommate.getId() == r.getId())) return;
+        roommates.add(r);
     }
 
     public int getId() {

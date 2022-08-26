@@ -20,7 +20,10 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.TimeZone;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -236,7 +239,7 @@ public class NodeService {
                             JSONArray room8 = responseJOSN.getJSONArray(DATA_KEY);
                             for (int i = 0; i < room8.length(); i++) {
                                 JSONObject roommate = room8.getJSONObject(i);
-                                Apartment.getInstance().getRoommates().add(new Roommate(roommate));
+                                Apartment.getInstance().addRoommate(new Roommate(roommate));
                             }
                         }
 
@@ -569,5 +572,77 @@ public class NodeService {
 
             }
         }));
+    }
+
+    public void removeRoom8s(Integer id) {
+        OkHttpClient client = new OkHttpClient();
+        FormBody.Builder formBody = new FormBody.Builder();
+
+
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + id)
+                .addHeader(TOKEN_HEADER_KEY, activity.getJwtFromSharedPreference())
+                .delete(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("remove user failed", null));
+    }
+
+    public Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
+        return new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.showToast(failMsg);
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                ResponseBody responseBody = response.body();
+
+                String stringBody = responseBody != null ? responseBody.string() : null;
+
+                if (stringBody == null) {
+                    activity.showToast(failMsg);
+                    activity.showToast("responseBody is null");
+                    System.err.println(failMsg);
+                    System.err.println("responseBody is null");
+                    return;
+                }
+                try {
+                    JSONObject responseJOSN = new JSONObject(stringBody);
+
+                    if (!response.isSuccessful()) {
+                        handleUnsuccessfulReq(response.code(), responseJOSN);
+                        return;
+                    }
+
+                    if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY)) {
+                        if (successAction != null) {
+                            successAction.accept(responseJOSN);
+                        }
+                    } else {
+                        handleUnsuccessfulReq(response.code(), responseJOSN);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    void handleUnsuccessfulReq(int responseCode, JSONObject responseJOSN) {
+        activity.showToast("change password failed");
+        activity.showToast("response code: " + responseCode);
+        try {
+            activity.showToast("response body: " + responseJOSN.getString(MESSAGE_KEY));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.err.println("change password failed");
+        System.err.println("response code: " + responseCode);
+        System.err.println("msg: " + responseJOSN);
     }
 }

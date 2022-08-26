@@ -95,14 +95,14 @@
             android:paddingVertical="10dp"
             android:text="Change Password"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/profile_set_password"
+            app:layout_constraintBottom_toTopOf="@+id/rooms_dialog_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/profile_set_password"
+            android:id="@+id/rooms_dialog_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
@@ -133,7 +133,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_set_password" />
+            app:layout_constraintTop_toBottomOf="@+id/rooms_dialog_btn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

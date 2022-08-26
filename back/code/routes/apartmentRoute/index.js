@@ -21,7 +21,7 @@ router.post(
 );
 
 router.delete(
-  "/removeUserFromApartment",
+  "/removeUserFromApartment/:userId",
   matchUserToApartment,
   isApartmentOwner,
   apartmentController.removeUserFromApartment

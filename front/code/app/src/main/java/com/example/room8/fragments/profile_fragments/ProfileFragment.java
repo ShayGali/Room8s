@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.dialogs.ChangePasswordDialog;
+import com.example.room8.dialogs.RoommatesDialog;
+import com.example.room8.model.Apartment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,11 +72,21 @@ public class ProfileFragment extends Fragment {
 
 
         View changePasswordBtn = view.findViewById(R.id.change_password_btn);
-        changePasswordBtn.setOnClickListener(v->{
-            ChangePasswordDialog dialog = new ChangePasswordDialog(password->{
+        View openRoom8sDialogBtn = view.findViewById(R.id.rooms_dialog_btn);
+
+
+        changePasswordBtn.setOnClickListener(v -> {
+            ChangePasswordDialog dialog = new ChangePasswordDialog(password -> {
                 activity.changePassword(password);
             });
-            dialog.show(getParentFragmentManager(),"Change Password");
+            dialog.show(getParentFragmentManager(), "Change Password");
+        });
+
+        openRoom8sDialogBtn.setOnClickListener(v -> {
+            RoommatesDialog dialog = new RoommatesDialog(Apartment.getInstance().getRoommates(), id -> {
+                activity.removeRoom8s(id);
+            });
+            dialog.show(getParentFragmentManager(), "Room8s");
         });
         return view;
     }

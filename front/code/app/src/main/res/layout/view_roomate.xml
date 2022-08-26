@@ -37,10 +37,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:background="#dc3545"
-        android:backgroundTint="#dc3545"
+        android:backgroundTint="#17a2b8"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_close_24" />
+        app:srcCompat="@drawable/ic_baseline_delete_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

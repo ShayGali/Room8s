@@ -10,19 +10,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Roommate;
-import com.example.room8.model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater inflater;
-    private final List<Roommate> room8s;
+    private List<Roommate> room8s;
+    private final Consumer<Integer> action;
 
-    public RoommatesAdapter(LayoutInflater inflater, List<Roommate> room8s) {
+    public RoommatesAdapter(LayoutInflater inflater, List<Roommate> room8s, Consumer<Integer> action) {
         this.inflater = inflater;
-        this.room8s = room8s;
+        this.room8s = Apartment.getInstance().getRoommates();
+        this.action = action;
     }
 
     @NonNull
@@ -31,7 +36,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return new Room8Holder(inflater.inflate(R.layout.view_roomate, parent, false));
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Roommate roommate = room8s.get(position);
@@ -39,7 +44,14 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         room8Holder.name.setText(roommate.getUserName());
         room8Holder.role.setText("Role: " + roommate.getLevelName());
-        room8Holder.delete.setOnClickListener(v->{});
+        room8Holder.delete.setOnClickListener(v -> {
+            action.accept(roommate.getId());
+            Apartment.getInstance().setRoommates(
+                    (ArrayList<Roommate>) Apartment.getInstance().getRoommates().stream().filter(r -> roommate.getId() != r.getId()).collect(Collectors.toList())
+            );
+            room8s = Apartment.getInstance().getRoommates();
+            notifyDataSetChanged();
+        });
     }
 
     @Override

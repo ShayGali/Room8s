@@ -65,6 +65,7 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     const findUser = await userService.findByEmail(email);
+    console.log(findUser);
     if (!findUser) {
       return res.status(401).json({ msg: "Invalid email" }); //TODO: change the msg
     }
@@ -73,6 +74,7 @@ exports.login = async (req, res, next) => {
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
+    console.log(findUser.ID);
     const jwtToken = generateAccessToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,

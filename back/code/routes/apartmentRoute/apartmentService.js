@@ -85,7 +85,7 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
   `;
 
   let result = await db.execute(deleteRelationQuery, [userId, apartmentId]);
-  if (!result) return undefined;
+  if (!result || result[0]?.affectedRows === 0) return;
 
   const updateNumberOfPeopleQuery = `
     UPDATE ${apartmentsTable}
@@ -102,10 +102,9 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
   const [numberOfPeople, _] = await db.execute(checkNumOfPeopleQuery, [
     apartmentId,
   ]);
-  if (numberOfPeople[0].number_of_people > 0)
-    return numberOfPeople[0].number_of_people;
-
-  return deleteApartment(apartmentId);
+  if (numberOfPeople[0].number_of_people < 0) {
+    this.deleteApartment(apartmentId);
+  }
 };
 
 /**
@@ -120,7 +119,6 @@ exports.getRoom8Ids = async (apartmentId) => {
   return result.map((obj) => obj.user_ID);
 };
 
-//TODO:
 exports.deleteApartment = (apartmentId) => {
   const query = `DELETE FROM ${apartmentsTable} WHERE ID = ?`;
   db.execute(query, [apartmentId]);

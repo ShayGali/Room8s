@@ -73,7 +73,7 @@ exports.createApartment = async (req, res, next) => {
  */
 
 exports.addUserToApartment = async (req, res, next) => {
-  const { userId } = req.tokenData;
+  const { apartmentId } = req.tokenData;
 
   const { newUserId } = req.body;
 
@@ -87,12 +87,12 @@ exports.addUserToApartment = async (req, res, next) => {
     }
 
     const result = await apartmentService.addUserToApartment(
-      userApartmentId,
+      apartmentId,
       newUserId
     );
     if (result)
       return res.status(201).send({
-        msg: `user with the id ${newUserId} add to apartment ${userApartmentId}`,
+        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
       });
   } catch (err) {
     next(err);
@@ -100,11 +100,26 @@ exports.addUserToApartment = async (req, res, next) => {
 };
 
 exports.removeUserFromApartment = async (req, res, next) => {
+  const { apartmentId } = req.tokenData;
   const { userId } = req.params;
 
+  console.log(apartmentId, userId);
+  if (userId === undefined) {
+    return res.status(400).json({
+      success: false,
+      msg: "you need to send userId in the request params",
+    });
+  }
+
   try {
-    const result = await apartmentService.removeUserFromApartment(11, 15);
-    res.send(result);
+    const result = await apartmentService.removeUserFromApartment(
+      apartmentId,
+      +userId
+    );
+    res.json({
+      success: true,
+      msg: `user ${userId} has deleted from apartment ${apartmentId}`,
+    });
   } catch (err) {
     next(err);
   }

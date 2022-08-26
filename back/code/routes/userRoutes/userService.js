@@ -15,9 +15,9 @@ exports.findUserApartmentId = async (userID) => {
 };
 
 exports.findById = async (userID) => {
-  const query = `SELECT *,level_name FROM ${usersTable}
+  const query = `SELECT ${usersTable}.*,level_name FROM ${usersTable}
   INNER JOIN ${userLevelTable}
-  ON ${usersTable}.user_level = ${userLevelTable}
+  ON ${usersTable}.user_level = ${userLevelTable}.ID
   WHERE ${usersTable}.ID = ? ;`;
 
   const [user, _] = await db.execute(query, [userID]);
@@ -39,9 +39,9 @@ exports.checkIfUserInApartment = async (userId) => {
 };
 
 exports.findByEmail = async (email) => {
-  const query = `SELECT *,level_name FROM ${usersTable}
+  const query = `SELECT ${usersTable}.*,level_name FROM ${usersTable}
     INNER JOIN ${userLevelTable}
-    ON ${usersTable}.user_level = ${userLevelTable}
+    ON ${usersTable}.user_level = ${userLevelTable}.ID
     WHERE email = ?
     `;
   const [user, _] = await db.execute(query, [email]);
@@ -49,9 +49,9 @@ exports.findByEmail = async (email) => {
 };
 
 exports.findByUserName = async (userName) => {
-  const query = `SELECT *,level_name FROM ${usersTable}
+  const query = `SELECT ${usersTable}.*,level_name FROM ${usersTable}
     INNER JOIN ${userLevelTable}
-    ON ${usersTable}.user_level = ${userLevelTable}
+    ON ${usersTable}.user_level = ${userLevelTable}.ID
     WHERE user_name = ?
     `;
   const [user, _] = await db.execute(query, [userName]);
@@ -70,15 +70,15 @@ exports.delete = async (userId) => {
 };
 
 exports.getRoommatesData = async (apartmentId, userId) => {
-  const query = `
-  SELECT ${usersTable}.ID, user_name, user_level,level_name,profile_icon_id
-  from ${usersTable}
-  INNER JOIN ${apartmentsUserTable}
-  ON ${usersTable}.ID = ${apartmentsUserTable}.user_ID
-  INNER JOIN ${userLevelTable}
-  ON ${usersTable}.user_level = ${userLevelTable}
-  WHERE apartment_ID = ? AND NOT ${usersTable}.ID = ?; 
-  `;
+  const query = `SELECT user_with_level.* FROM 
+    (SELECT ${usersTable}.ID, user_name, user_level,level_name, profile_icon_id
+    FROM ${usersTable}
+    INNER JOIN ${userLevelTable}
+    ON ${usersTable}.user_level = ${userLevelTable}.ID) AS user_with_level
+    INNER JOIN ${apartmentsUserTable}
+    ON user_with_level.ID = ${apartmentsUserTable}.user_ID
+    WHERE apartment_ID = ? AND NOT user_with_level.ID = ?; 
+    `;
   const [result, _] = await db.execute(query, [apartmentId, userId]);
   return result;
 };
