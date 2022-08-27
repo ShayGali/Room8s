@@ -124,4 +124,15 @@ public final class Apartment {
                 ", tasks=" + tasks +
                 '}';
     }
+
+    public void addTask(Task task) {
+        for (Task t : tasks) {
+            if (t.getId() == task.getId()){
+                t.updateTask(task);
+                return;
+            }else{
+                tasks.add(task);
+            }
+        }
+    }
 }

@@ -75,6 +75,7 @@ public class LoginHandler extends AsyncTask<Void, Void, JSONObject> {
                 e.printStackTrace();
             }
             activity.get().saveJwtToSharedPreference(token);
+//            SharedPreferenceHandler.getInstance().saveJwtAccessToken(token);
 
             // save the user ID and his apartment ID
             this.setUserIdAndApartmentId(responseJson);
