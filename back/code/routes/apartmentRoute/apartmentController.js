@@ -103,7 +103,6 @@ exports.removeUserFromApartment = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
   const { userId } = req.params;
 
-  console.log(apartmentId, userId);
   if (userId === undefined) {
     return res.status(400).json({
       success: false,
