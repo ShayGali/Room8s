@@ -115,29 +115,12 @@ public class HomePageFragment extends Fragment {
         });
 
         // navigate to other fragments
-        profileBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
-        });
+        profileBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment));
 
-        tasksBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_tasksFragment);
-        });
+        tasksBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_tasksFragment));
 
-        messagesBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment);
-        });
-
-        WeakReference<TextView> apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview;
-        apartmentNameTextView = new WeakReference<>(view.findViewById(R.id.apartment_name_textView));
-        apartmentNumTextView = new WeakReference<>(view.findViewById(R.id.apartment_num_textView));
-        numberOfRoommatesTextview = new WeakReference<>(view.findViewById(R.id.number_of_roommates_textView));
-        activity.fetchApartmentData(apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview);
-
-        // TODO: get expenses data -
-        // TODO: get tasks data - next task
-        walletBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment);
-        });
+        messagesBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment));
+        walletBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment));
         return view;
     }
 }
