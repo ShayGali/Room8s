@@ -12,12 +12,16 @@ exports.getApartmentData = async (req, res, next) => {
     const userApartmentId = await userService.findUserApartmentId(userId);
 
     if (!userApartmentId) {
-      return res.status(200).send({ msg: "dont have apartment" });
+      return res
+        .status(200)
+        .send({ success: false, msg: "dont have apartment" });
     }
 
     const apartmentData = await apartmentService.getData(userApartmentId);
 
-    return res.status(200).send({ msg: "success", data: apartmentData });
+    return res
+      .status(200)
+      .send({ success: false, msg: "success", data: apartmentData });
   } catch (err) {
     next(err);
   }
@@ -78,12 +82,16 @@ exports.addUserToApartment = async (req, res, next) => {
   const { newUserId } = req.body;
 
   if (!newUserId) {
-    return res.status(400).send({ msg: "new user id is required" });
+    return res
+      .status(400)
+      .send({ success: false, msg: "new user id is required" });
   }
 
   try {
     if (await userService.findUserApartmentId(newUserId)) {
-      return res.status(200).send({ msg: "user are already in apartment" });
+      return res
+        .status(200)
+        .send({ success: false, msg: "user are already in apartment" });
     }
 
     const result = await apartmentService.addUserToApartment(
@@ -91,9 +99,12 @@ exports.addUserToApartment = async (req, res, next) => {
       newUserId
     );
     if (result)
-      return res.status(201).send({
-        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
-      });
+      return res
+        .status(201)
+        .send({
+          success: true,
+          msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
+        });
   } catch (err) {
     next(err);
   }

@@ -10,6 +10,7 @@ exports.addExpenses = async (req, res, next) => {
 
   if (title === undefined) {
     return res.status(400).send({
+      success: false,
       msg: `you need to send: 'title' field`,
     });
   }
@@ -24,7 +25,7 @@ exports.addExpenses = async (req, res, next) => {
     note
   );
 
-  res.status(201).send({ msg: "success", data: { insertedID } });
+  res.status(201).send({ success: true, msg: "success", data: { insertedID } });
   try {
   } catch (error) {
     next(error);
@@ -35,7 +36,9 @@ exports.getAll = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
   try {
     const expenses = await expensesService.findAllOfApartment(apartmentId);
-    return res.status(200).send({ msg: "success", data: expenses });
+    return res
+      .status(200)
+      .send({ success: true, msg: "success", data: expenses });
   } catch (error) {
     next(error);
   }
@@ -51,8 +54,8 @@ exports.findById = async (req, res, next) => {
     }
     if (expense.apartment_ID !== apartmentId) {
       return res.status(403).send({
-        msg: "you cant get expense that not belong to your apartment",
         success: false,
+        msg: "you cant get expense that not belong to your apartment",
       });
     }
 
@@ -97,7 +100,9 @@ exports.update = async (req, res, next) => {
     expense.note = note || expense.note;
 
     await expensesService.update(expense);
-    return res.status(200).send({ msg: "success", success: true });
+    return res
+      .status(200)
+      .send({ success: true, msg: "success", success: true });
   } catch (error) {
     next(error);
   }
@@ -119,7 +124,7 @@ exports.delete = async (req, res, next) => {
       });
     }
     await expensesService.delete(expenseId);
-    return res.status(200).send({ msg: "success", success: true });
+    return res.status(200).send({ success: true, msg: "success" });
   } catch (error) {
     next(error);
   }

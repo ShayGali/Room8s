@@ -21,7 +21,9 @@ exports.findUserApartmentId = async (req, res, next) => {
         .send({ msg: "User not in apartment", apartmentId: null });
     }
 
-    return res.status(200).send({ msg: "success", apartmentId: result });
+    return res
+      .status(200)
+      .send({ success: true, msg: "success", apartmentId: result });
   } catch (err) {
     next(err);
   }
@@ -37,11 +39,11 @@ exports.findById = async (req, res, next) => {
     const { userId } = req.tokenData;
     const result = await userService.findById(userId);
     if (!result) {
-      return res.status(404).send({ msg: "User not found" });
+      return res.status(404).send({ success: false, msg: "User not found" });
     }
 
     delete result["user_password"]; // for remove the password field from the object
-    return res.send({ msg: "success", data: result });
+    return res.send({ success: true, msg: "success", data: result });
   } catch (err) {
     next(err);
   }
@@ -51,15 +53,15 @@ exports.findByEmail = async (req, res, next) => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).send({ msg: "email no send" });
+    return res.status(400).send({ success: false, msg: "email no send" });
   }
   try {
     const result = await userService.findByEmail(email);
     if (!result) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(404).json({ success: false, msg: "User not found" });
     }
 
-    return res.status(200).json({ user: result });
+    return res.status(200).json({ success: true, user: result });
   } catch (err) {
     next(err);
   }
@@ -67,12 +69,12 @@ exports.findByEmail = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   const { userId } = req.tokenData;
-  if (!userId) return res.sendStatus(403);
+  if (!userId) return res.status(403).send({ success: false });
   const result = await userService.delete(userId);
   if (result === 0) {
     return res.status(200).json({ msg: "user don`t deleted for some reason" });
   }
-  res.status(200).json({ msg: "success", data: result });
+  res.status(200).json({ success: true, msg: "success", data: result });
 };
 
 exports.getRoommatesData = async (req, res, next) => {

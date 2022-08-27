@@ -11,7 +11,7 @@ const valuesValidate = require("../../utilities/valuesValidate");
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
-    return res.status(400).json({ msg: "Send all data" });
+    return res.status(400).json({ success: false, msg: "Send all data" });
   }
 
   if (!valuesValidate.validateEmail(email)) {
@@ -48,7 +48,7 @@ exports.register = async (req, res, next) => {
       apartmentId: null,
     });
 
-    return res.status(201).json({ msg: "success", jwtToken });
+    return res.status(201).json({ success: true, msg: "success", jwtToken });
   } catch (err) {
     next(err);
   }
@@ -66,10 +66,10 @@ exports.login = async (req, res, next) => {
 
     const findUser = await userService.findByEmail(email);
     if (!findUser) {
-      return res.status(401).json({ msg: "Invalid email" }); //TODO: change the msg
+      return res.status(401).json({ success: false, msg: "Invalid email" }); //TODO: change the msg
     }
     if (!(await bcrypt.compare(password, findUser.user_password))) {
-      return res.status(401).json({ msg: "Invalid password" });
+      return res.status(401).json({ success: false, msg: "Invalid password" });
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
@@ -79,6 +79,7 @@ exports.login = async (req, res, next) => {
     });
 
     return res.status(200).json({
+      success: true,
       msg: "success",
       jwtToken,
       userId: findUser.ID,
@@ -90,5 +91,5 @@ exports.login = async (req, res, next) => {
 };
 
 exports.hello = async (req, res, next) => {
-  return res.send({ msg: "hello", token: req.tokenData });
+  return res.send({ success: true, msg: "hello", token: req.tokenData });
 };
