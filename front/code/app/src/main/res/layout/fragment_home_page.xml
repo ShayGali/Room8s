@@ -39,87 +39,12 @@
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="32dp"
         android:contentDescription="@string/logo"
         android:src="@drawable/logo_dark_mode"
-        app:layout_constraintBottom_toTopOf="@+id/apartment_detail_layout"
         app:layout_constraintDimensionRatio="w,1.16:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintVertical_bias="0.48000002" />
-
-    <LinearLayout
-        android:id="@+id/apartment_detail_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/style_layout_border_gray"
-
-        android:baselineAligned="false"
-        app:layout_constraintBottom_toTopOf="@+id/btn_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/apartment_name_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="7dp"
-                android:background="@android:color/transparent"
-                android:text="@string/apartment_name"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/apartment_num_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="7dp"
-                android:background="@android:color/transparent"
-                android:text="@string/apartment_number"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/number_of_roommates_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="7dp"
-                android:background="@android:color/transparent"
-                android:text="@string/number_of_roommates"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
 
     <View
@@ -140,13 +65,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/hr_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apartment_detail_layout">
+        app:layout_constraintTop_toTopOf="@+id/guideline17">
 
 
         <ImageView
@@ -232,7 +156,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"
             app:layout_constraintTop_toBottomOf="@+id/go_to_tasks_btn" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="295dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

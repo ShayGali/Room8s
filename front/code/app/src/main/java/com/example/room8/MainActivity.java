@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.room8.adapters.TasksAdapter;
-import com.example.room8.database.HomePageHandler;
 import com.example.room8.database.LoginHandler;
 import com.example.room8.database.NodeService;
 import com.example.room8.database.RegisterHandler;
@@ -180,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService.getUserData();
     }
 
-    public void fetchApartmentData(WeakReference<TextView> apartmentNameTextView, WeakReference<TextView> apartmentNumTextView, WeakReference<TextView> numberOfRoommatesTextview) {
-        WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
-        new HomePageHandler(mainActivityWeakReference, apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview).execute();
-    }
+//    public void fetchApartmentData(WeakReference<TextView> apartmentNameTextView, WeakReference<TextView> apartmentNumTextView, WeakReference<TextView> numberOfRoommatesTextview) {
+//        WeakReference<MainActivity> mainActivityWeakReference = new WeakReference<>(this);
+//        new HomePageHandler(mainActivityWeakReference, apartmentNameTextView, apartmentNumTextView, numberOfRoommatesTextview).execute();
+//    }
 
     public void fetchTasks(WeakReference<TasksAdapter> tasksAdapterWeakReference) {
         databaseService.getAllTask(tasksAdapterWeakReference);
