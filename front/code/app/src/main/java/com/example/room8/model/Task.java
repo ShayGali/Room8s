@@ -2,7 +2,7 @@ package com.example.room8.model;
 
 import androidx.annotation.NonNull;
 
-import com.example.room8.database.NodeService;
+import com.example.room8.database.ServerRequestsService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,9 +107,9 @@ public class Task implements Comparable<Task> {
         if (taskAsJson.has(TASK_TYPE_KEY))
             tempTask.setTaskType(taskAsJson.getString(TASK_TYPE_KEY));
         if (taskAsJson.has(CREATE_TIME_KEY))
-            tempTask.setCreateDate(NodeService.DATE_TIME_FORMAT.parse(taskAsJson.getString(CREATE_TIME_KEY)));
+            tempTask.setCreateDate(ServerRequestsService.DATE_TIME_FORMAT.parse(taskAsJson.getString(CREATE_TIME_KEY)));
         if (taskAsJson.has(EXPIRATION_DATE_KEY) && !taskAsJson.isNull(EXPIRATION_DATE_KEY))
-            tempTask.setExpirationDate(NodeService.DATE_TIME_FORMAT.parse(taskAsJson.getString(EXPIRATION_DATE_KEY)));
+            tempTask.setExpirationDate(ServerRequestsService.DATE_TIME_FORMAT.parse(taskAsJson.getString(EXPIRATION_DATE_KEY)));
         if (taskAsJson.has(TITLE_KEY) && !taskAsJson.isNull(TITLE_KEY))
             tempTask.setTitle(taskAsJson.getString(TITLE_KEY));
         if (taskAsJson.has(NOTE_KEY) && !taskAsJson.isNull(NOTE_KEY))

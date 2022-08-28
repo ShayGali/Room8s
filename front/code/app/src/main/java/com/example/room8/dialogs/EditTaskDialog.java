@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
-import com.example.room8.database.NodeService;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
@@ -68,7 +68,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
             adapter.notifyDataSetChanged();
-            listener.deleteTask(tempTask);
+            listener.deleteTask(tempTask.getId());
             dismiss();
         });
         builder
@@ -150,9 +150,9 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         if (tempTask.getExecutorsIds() != null && tempTask.getExecutorsIds().size() != 0) {
             if (tempTask.getExecutorsIds().contains(User.getInstance().getId())) {
                 isChecklist.add(true);
-            }else
+            } else
                 isChecklist.add(false);
-        }else{
+        } else {
             isChecklist.add(false);
         }
         room8Name.add(User.getInstance().getUserName());
@@ -167,7 +167,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             } else {
                 isChecklist.add(false);
             }
-                room8Name.add(room8.get(i).getUserName());
+            room8Name.add(room8.get(i).getUserName());
         }
 
 
@@ -190,8 +190,8 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             }
         }
 
-        createTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getCreateDate()));
-        expirationTime.setText(tempTask.getExpirationDate() != null ? NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()) : "set expiration date");
+        createTime.setText(ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getCreateDate()));
+        expirationTime.setText(tempTask.getExpirationDate() != null ? ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()) : "set expiration date");
 
         expirationTime.setOnClickListener(this::setDateTimeDialogs);
 
@@ -219,7 +219,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calendar.set(Calendar.MINUTE, minute);
             tempTask.setExpirationDate(calendar.getTime());
-            expirationTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+            expirationTime.setText(ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
         };
         new TimePickerDialog(getContext(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
         DatePickerDialog.OnDateSetListener dateSetListener = (view1, year, month, dayOfMonth) -> {
@@ -227,7 +227,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             tempTask.setExpirationDate(calendar.getTime());
-            expirationTime.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+            expirationTime.setText(ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
         };
         new DatePickerDialog(getContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }

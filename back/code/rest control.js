@@ -17,7 +17,7 @@ app.use("/payments", require("./routes/paymentRoute"));
 app.use(errorHandler);
 
 app.all("/isAlive", (req, res) => {
-  res.status(200).send({ msg: "Server Alive" });
+  res.status(200).send({ success: true, msg: "Server Alive" });
 });
 
 app.get("/msg", async (req, res) => {

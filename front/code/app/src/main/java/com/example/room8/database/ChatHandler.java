@@ -29,7 +29,7 @@ public class ChatHandler {
 
     private WebSocket webSocket; // the socket
     private static final String PATH = "/messages";
-    private static final String SERVER_PATH = "ws://" + NodeService.SERVER_BASE_URL + PATH; // the url of the server
+    private static final String SERVER_PATH = "ws://" + ServerRequestsService.SERVER_BASE_URL + PATH; // the url of the server
 
 
     MainActivity activity;
@@ -59,7 +59,7 @@ public class ChatHandler {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder() //okhttp3
                 .url(SERVER_PATH)
-                .addHeader(NodeService.TOKEN_HEADER_KEY, jwtToken)
+                .addHeader(ServerRequestsService.TOKEN_HEADER_KEY, jwtToken)
                 .build();
         webSocket = client.newWebSocket(request, new SocketListener());
     }

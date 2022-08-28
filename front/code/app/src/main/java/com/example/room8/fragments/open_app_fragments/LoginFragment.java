@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
 
 
         loginButton.setOnClickListener(v -> {
-            activity.login(new WeakReference<>(emailInput), new WeakReference<>(passwordInput));
+            activity.login(emailInput.getText().toString(), passwordInput.getText().toString());
         });
 
 

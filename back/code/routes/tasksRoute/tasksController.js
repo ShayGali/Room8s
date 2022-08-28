@@ -17,8 +17,7 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
       const executorsIds = await tasksService.findTaskExecutors(task.ID);
       task.executors_ids = executorsIds;
     }
-
-    res.status(200).send({ msg: "success", data: result });
+    res.status(200).send({ success: true, msg: "success", data: result });
   } catch (error) {
     next(error);
   }
@@ -151,7 +150,8 @@ exports.removeAssociateFromUser = async (req, res, next) => {
   const { apartmentId: senderApartmentId } = req.tokenData;
   const { taskId, userId } = req.body;
 
-  if (taskId === undefined) return res.status(400).send({ msg: "send taskId" });
+  if (taskId === undefined)
+    return res.status(400).send({ success: false, msg: "send taskId" });
 
   try {
     const task = await tasksService.findById(taskId);

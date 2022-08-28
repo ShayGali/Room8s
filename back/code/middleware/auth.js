@@ -9,7 +9,9 @@ const { authenticateToken } = require("../utilities/jwtHandler");
 exports.authenticateTokenFromRequest = (req, res, next) => {
   const token = req.header("x-auth-token");
   if (!token)
-    return res.status(401).send({ msg: "Send JWT token to make this request" }); // TODO: make better error message
+    return res
+      .status(401)
+      .send({ success: false, msg: "Send JWT token to make this request" }); // TODO: make better error message
 
   const tokenData = authenticateToken(token);
 
