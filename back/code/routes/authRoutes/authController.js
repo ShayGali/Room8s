@@ -91,5 +91,5 @@ exports.login = async (req, res, next) => {
 };
 
 exports.hello = async (req, res, next) => {
-  return res.send({ success: true, msg: "hello", token: req.tokenData });
+  return res.send({ success: true, msg: "hello", jwtToken: req.tokenData });
 };

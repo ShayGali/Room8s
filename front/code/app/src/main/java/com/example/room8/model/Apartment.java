@@ -130,9 +130,8 @@ public final class Apartment {
             if (t.getId() == task.getId()){
                 t.updateTask(task);
                 return;
-            }else{
-                tasks.add(task);
             }
         }
+        tasks.add(task);
     }
 }

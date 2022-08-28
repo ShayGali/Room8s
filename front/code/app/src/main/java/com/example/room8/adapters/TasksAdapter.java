@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
-import com.example.room8.database.NodeService;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.EditTaskDialog;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Task;
@@ -45,7 +45,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TaskHolder taskHolder = (TaskHolder) holder;
 
         taskHolder.name.setText(task.getTitle() != null ? task.getTitle() : "task don't have title");
-        taskHolder.date.setText(task.getExpirationDate() != null ? NodeService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
+        taskHolder.date.setText(task.getExpirationDate() != null ? ServerRequestsService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
 
         taskHolder.layout.setOnClickListener(v -> {

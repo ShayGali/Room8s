@@ -37,11 +37,11 @@ public class SharedPreferenceHandler {
     SharedPreferences sp;
 
     private SharedPreferenceHandler() {
-        sp = activity.getSharedPreferences(AUTH_PREFERENCE, Context.MODE_PRIVATE);
     }
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+        sp = activity.getSharedPreferences(AUTH_PREFERENCE, Context.MODE_PRIVATE);
     }
 
     public void saveJwtAccessToken(String token) {

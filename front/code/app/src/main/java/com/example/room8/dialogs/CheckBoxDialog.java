@@ -44,6 +44,8 @@ public class CheckBoxDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_recycler_view, null);
 
+        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v->dismiss());
+
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         CheckBoxRecyclerAdapter adapter = new CheckBoxRecyclerAdapter(getLayoutInflater(), list,isChecklist);
         recyclerView.setAdapter(adapter);

@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
-import com.example.room8.database.NodeService;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
@@ -145,7 +145,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calendar.set(Calendar.MINUTE, minute);
             tempTask.setExpirationDate(calendar.getTime());
-            expirationTimeTextView.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+            expirationTimeTextView.setText(ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
         };
         new TimePickerDialog(getContext(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
         DatePickerDialog.OnDateSetListener dateSetListener = (view1, year, month, dayOfMonth) -> {
@@ -153,7 +153,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             tempTask.setExpirationDate(calendar.getTime());
-            expirationTimeTextView.setText(NodeService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
+            expirationTimeTextView.setText(ServerRequestsService.DATE_TIME_FORMAT.format(tempTask.getExpirationDate()));
         };
         new DatePickerDialog(getContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }

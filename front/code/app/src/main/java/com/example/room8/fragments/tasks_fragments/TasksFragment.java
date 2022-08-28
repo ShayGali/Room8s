@@ -14,6 +14,7 @@ import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.dialogs.AddTaskDialog;
+import com.example.room8.model.Apartment;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +23,7 @@ import java.lang.ref.WeakReference;
  * Use the {@link TasksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TasksFragment extends Fragment  {
+public class TasksFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,11 +76,11 @@ public class TasksFragment extends Fragment  {
         TasksAdapter adapter = new TasksAdapter(getLayoutInflater(), (MainActivity) requireActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        activity.fetchTasks(new WeakReference<>(adapter));
+        activity.fetchTasks(adapter::notifyDataSetChanged);
         View addTaskButton = view.findViewById(R.id.add_task_btn);
         addTaskButton.setOnClickListener(v -> {
-            AddTaskDialog addTaskDialog = new AddTaskDialog(adapter) ;
-            addTaskDialog.show(activity.getSupportFragmentManager(),"Add New Task");
+            AddTaskDialog addTaskDialog = new AddTaskDialog(adapter);
+            addTaskDialog.show(activity.getSupportFragmentManager(), "Add New Task");
         });
         return view;
     }

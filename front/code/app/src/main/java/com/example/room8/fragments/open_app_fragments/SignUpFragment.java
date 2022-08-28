@@ -77,8 +77,8 @@ public class SignUpFragment extends Fragment {
 
         submitBtn.setOnClickListener(v -> {
                     //TODO: make register function
-                    MainActivity activity = (MainActivity)getActivity();
-                    activity.register(new WeakReference<>(usernameEditText),new WeakReference<>(emailEditText),new WeakReference<>(passwordEditText));
+                    MainActivity activity = (MainActivity) getActivity();
+                    activity.register(usernameEditText.getText().toString(), emailEditText.getText().toString(), passwordEditText.getText().toString());
                 }
         );
 

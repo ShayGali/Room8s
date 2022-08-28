@@ -56,7 +56,7 @@ exports.createApartment = async (req, res, next) => {
       msg: "success",
       data: {
         apartmentId,
-        token: generateAccessToken({ userId, apartmentId }),
+        jwtToken: generateAccessToken({ userId, apartmentId }),
       },
     });
   } catch (err) {
@@ -99,12 +99,10 @@ exports.addUserToApartment = async (req, res, next) => {
       newUserId
     );
     if (result)
-      return res
-        .status(201)
-        .send({
-          success: true,
-          msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
-        });
+      return res.status(201).send({
+        success: true,
+        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
+      });
   } catch (err) {
     next(err);
   }

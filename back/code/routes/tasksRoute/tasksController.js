@@ -17,8 +17,7 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
       const executorsIds = await tasksService.findTaskExecutors(task.ID);
       task.executors_ids = executorsIds;
     }
-
-    res.status(200).send({ msg: "success", data: result });
+    res.status(200).send({ success: true, msg: "success", data: result });
   } catch (error) {
     next(error);
   }
