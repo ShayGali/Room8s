@@ -23,7 +23,7 @@ exports.getData = async (apartmentsId) => {
  * @param {string} apartmentName
  * @returns new apartment id
  */
-exports.createApartment = async (userId, apartmentName) => {
+exports.createApartment = async (userId, apartmentName) => { //TODO check number of people
   const createApartmentQuery = `
     INSERT INTO ${apartmentsTable} (
             apartment_name
