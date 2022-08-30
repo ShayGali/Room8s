@@ -465,4 +465,16 @@ public class ServerRequestsService {
             showToast("remove room8 successfully");
         }));
     }
+    public void leave(Runnable navigate){
+         Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + User.getInstance().getId())
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+            navigate.run();
+            showToast("remove room8 successfully");
+        }));
+    }
 }
