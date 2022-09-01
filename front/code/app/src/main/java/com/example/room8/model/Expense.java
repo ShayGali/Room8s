@@ -20,7 +20,7 @@ public class Expense {
     private static final String UPLOAD_DATE_KEY = "upload_date";
     private static final String NOTE_KEY = "note";
 
-    private static final String[] TASK_TYPES = {"general expense", "electric bill", "water bill", "groceries"};
+    public static final String[] EXPENSE_TYPES = {"general expense", "electric bill", "water bill", "groceries"};
 
 
     private int id;
@@ -62,6 +62,16 @@ public class Expense {
             this.note = expenseAsJson.getString(NOTE_KEY);
     }
 
+    public Expense(Expense o) {
+        this.id = o.id;
+        this.userId = o.userId;
+        this.title = o.title;
+        this.type = o.type;
+        this.amount = o.amount;
+        this.paymentDate = new Date(o.paymentDate.getTime());
+        this.uploadDate = new Date(o.uploadDate.getTime());
+        this.note = o.note;
+    }
 
     public void update(Expense o) {
         this.userId = o.userId;

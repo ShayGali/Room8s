@@ -14,4 +14,7 @@
     <color name="hint_text">#9E9E9E</color>
     <color name="edit_text_under_line">#4f99b9</color>
     <color name="border_color">#9b8a78</color>
+
+    <color name="close_button">#dc3545</color>
+    <color name="done_button">#2196F3</color>
 </resources>
