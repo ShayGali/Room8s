@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
+import com.example.room8.dialogs.ExpensesDialog;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +67,25 @@ public class WalletFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wallet, container, false);
+        View view = inflater.inflate(R.layout.fragment_wallet, container, false);
+        fetchAllExpenses();
+
+        view.findViewById(R.id.monthly_expenses_btn).setOnClickListener((v) -> {
+            new ExpensesDialog(expense -> {
+                if (expense.getPaymentDate() == null) return false;
+
+                Calendar today = Calendar.getInstance(TimeZone.getDefault());
+                Calendar expenseDate = Calendar.getInstance(TimeZone.getDefault());
+                today.setTime(new Date());
+                expenseDate.setTime(expense.getPaymentDate());
+                return today.get(Calendar.YEAR) == expenseDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == expenseDate.get(Calendar.MONTH);
+
+            }).show(getParentFragmentManager(), "");
+        });
+        return view;
+    }
+
+    private void fetchAllExpenses() {
+        ServerRequestsService.getInstance().getExpenses();
     }
 }

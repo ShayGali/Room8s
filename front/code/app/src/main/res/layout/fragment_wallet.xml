@@ -56,7 +56,7 @@
         android:layout_marginTop="300dp"
         android:layout_marginEnd="40dp"
         android:src="@drawable/btn_img_previous_exprnses"
-        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+        app:layout_constraintBottom_toTopOf="@+id/monthly_expenses_btn"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -71,13 +71,13 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/btn_img_my_exprenses"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toStartOf="@+id/imageView10"
+        app:layout_constraintEnd_toStartOf="@+id/monthly_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/monthly_expenses_btn"
         android:layout_width="0dp"
         android:layout_height="111dp"
         android:layout_marginTop="10dp"

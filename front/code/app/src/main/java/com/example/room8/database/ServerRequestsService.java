@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.room8.model.Apartment;
+import com.example.room8.model.Expense;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
@@ -44,6 +45,7 @@ public class ServerRequestsService {
     public static final String USERS_PATH = "/users";
     public static final String APARTMENTS_PATH = "/apartments";
     public static final String TASKS_PATH = "/tasks";
+    public static final String EXPENSES_PATH = "/expenses";
 
     //JSON keys
     public static final String SUCCESS_KEY = "success"; // if the request succeeded
@@ -452,5 +454,28 @@ public class ServerRequestsService {
             navigate.run();
             showToast("remove room8 successfully");
         }));
+    }
+
+
+    public void getExpenses(){
+        Request request = new Request.Builder()
+                .url(HTTP_URL + EXPENSES_PATH)
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject ->{
+            try {
+                JSONArray expenses = jsonObject.getJSONArray(DATA_KEY);
+                for (int i = 0; i < expenses.length(); i++) {
+                    JSONObject expense = expenses.getJSONObject(i);
+                    Apartment.getInstance().addExpense(new Expense(expense));
+                }
+            } catch (JSONException | ParseException e) {
+                e.printStackTrace();
+                handleUnsuccessfulReq("fetch expense failed when try to parse the data", 0, jsonObject);
+
+            }
+        }));
+
     }
 }
