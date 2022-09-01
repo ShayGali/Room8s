@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.ExpensesDialog;
+import com.example.room8.model.User;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -70,18 +71,26 @@ public class WalletFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
         fetchAllExpenses();
 
+        view.findViewById(R.id.create_expense_btn).setOnClickListener(v -> {
+        });
+
+        view.findViewById(R.id.previous_expenses_btn).setOnClickListener(v -> new ExpensesDialog(null).show(getParentFragmentManager(),"previous_expenses"));
+        view.findViewById(R.id.my_expenses_btn).setOnClickListener(v -> new ExpensesDialog(expense -> expense.getUserId() == User.getInstance().getId()).show(getParentFragmentManager(),"my_expenses"));
+
         view.findViewById(R.id.monthly_expenses_btn).setOnClickListener((v) -> new ExpensesDialog(expense -> {
             if (expense.getPaymentDate() == null) return false;
 
             Calendar today = Calendar.getInstance(TimeZone.getDefault());
             Calendar expenseDate = Calendar.getInstance(TimeZone.getDefault());
+
             today.setTime(new Date());
             expenseDate.setTime(expense.getPaymentDate());
             return today.get(Calendar.YEAR) == expenseDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == expenseDate.get(Calendar.MONTH);
 
-        }).show(getParentFragmentManager(), ""));
+        }).show(getParentFragmentManager(), "monthly_expenses"));
         return view;
     }
+
 
     private void fetchAllExpenses() {
         ServerRequestsService.getInstance().getExpenses();
