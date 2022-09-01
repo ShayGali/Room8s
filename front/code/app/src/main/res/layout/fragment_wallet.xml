@@ -35,22 +35,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/create_expense_btn"
         android:layout_width="0dp"
         android:layout_height="111dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="300dp"
         android:src="@drawable/btn_img_new_expens"
-        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintBottom_toTopOf="@+id/my_expenses_btn"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintEnd_toStartOf="@+id/previous_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/previous_expenses_btn"
         android:layout_width="0dp"
         android:layout_height="111dp"
         android:layout_marginTop="300dp"
@@ -60,11 +60,11 @@
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintStart_toEndOf="@+id/create_expense_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/my_expenses_btn"
         android:layout_width="0dp"
         android:layout_height="111dp"
         android:layout_marginStart="40dp"
@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toStartOf="@+id/monthly_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/create_expense_btn" />
 
     <ImageView
         android:id="@+id/monthly_expenses_btn"
@@ -86,7 +86,7 @@
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintStart_toEndOf="@+id/my_expenses_btn"
+        app:layout_constraintTop_toBottomOf="@+id/previous_expenses_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
