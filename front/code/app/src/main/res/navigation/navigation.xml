@@ -20,9 +20,6 @@
             android:id="@+id/action_loginFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_noConnectionFragment"
-            app:destination="@id/noConnectionFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_homePageUserWithoutApartmentFragment"
             app:destination="@id/homePageUserWithoutApartmentFragment" />
     </fragment>
@@ -146,14 +143,4 @@
             android:id="@+id/action_message_Fragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fragment_expenses"
-        android:name="com.example.room8.fragments.wallet_fragments.fragment_expenses"
-        android:label="fragment_expenses"
-        tools:layout="@layout/fragment_expenses" />
-    <fragment
-        android:id="@+id/noConnectionFragment"
-        android:name="com.example.room8.fragments.NoConnectionFragment"
-        android:label="fragment_no_connection"
-        tools:layout="@layout/fragment_no_connection" />
 </navigation>
