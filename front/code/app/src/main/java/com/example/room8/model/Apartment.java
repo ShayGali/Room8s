@@ -1,14 +1,12 @@
 package com.example.room8.model;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Apartment {
 
@@ -121,7 +119,6 @@ public final class Apartment {
     public ArrayList<Task> getTasks() {
         return tasks;
     }
-
 
     public ArrayList<Expense> getExpenses() {
         return expenses;

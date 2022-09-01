@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
 import com.example.room8.adapters.ExpensesAdapter;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Expense;
 
 import java.util.function.Predicate;
@@ -49,7 +50,6 @@ public class ExpensesDialog extends AppCompatDialogFragment {
     private void initRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         ExpensesAdapter adapter = new ExpensesAdapter(getLayoutInflater(), filterMethod);
-//        adapter.registerAdapterDataObserver(); TODO
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
