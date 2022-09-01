@@ -70,18 +70,16 @@ public class WalletFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
         fetchAllExpenses();
 
-        view.findViewById(R.id.monthly_expenses_btn).setOnClickListener((v) -> {
-            new ExpensesDialog(expense -> {
-                if (expense.getPaymentDate() == null) return false;
+        view.findViewById(R.id.monthly_expenses_btn).setOnClickListener((v) -> new ExpensesDialog(expense -> {
+            if (expense.getPaymentDate() == null) return false;
 
-                Calendar today = Calendar.getInstance(TimeZone.getDefault());
-                Calendar expenseDate = Calendar.getInstance(TimeZone.getDefault());
-                today.setTime(new Date());
-                expenseDate.setTime(expense.getPaymentDate());
-                return today.get(Calendar.YEAR) == expenseDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == expenseDate.get(Calendar.MONTH);
+            Calendar today = Calendar.getInstance(TimeZone.getDefault());
+            Calendar expenseDate = Calendar.getInstance(TimeZone.getDefault());
+            today.setTime(new Date());
+            expenseDate.setTime(expense.getPaymentDate());
+            return today.get(Calendar.YEAR) == expenseDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == expenseDate.get(Calendar.MONTH);
 
-            }).show(getParentFragmentManager(), "");
-        });
+        }).show(getParentFragmentManager(), ""));
         return view;
     }
 
