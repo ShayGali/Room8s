@@ -44,14 +44,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ExpenseHolder expenseHolder = (ExpenseHolder) holder;
 
         expenseHolder.title.setText(expense.getTitle());
-        expenseHolder.creatorName.setText(Apartment.getInstance().getRoom8NameById(expense.getUserId()));
-        expenseHolder.type.setText(expense.getType());
-        expenseHolder.amount.setText(expense.getAmount() + "");
+        expenseHolder.creatorName.append(Apartment.getInstance().getRoom8NameById(expense.getUserId()));
+        expenseHolder.type.append(expense.getType());
+        expenseHolder.amount.append(String.valueOf(expense.getAmount()));
         if (expense.getUploadDate() != null)
-            expenseHolder.uploadDate.setText(ServerRequestsService.DATE_FORMAT.format(expense.getUploadDate()));
+            expenseHolder.uploadDate.append(ServerRequestsService.DATE_FORMAT.format(expense.getUploadDate()));
         if (expense.getPaymentDate() != null)
-            expenseHolder.paymentDate.setText(ServerRequestsService.DATE_FORMAT.format(expense.getPaymentDate()));
-        expenseHolder.note.setText(expense.getNote());
+            expenseHolder.paymentDate.append(ServerRequestsService.DATE_FORMAT.format(expense.getPaymentDate()));
+        expenseHolder.note.append(expense.getNote());
     }
 
     @Override
