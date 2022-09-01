@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.room8.model.Apartment;
+import com.example.room8.model.Expense;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
@@ -34,7 +35,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "192.168.1.155";
+    public static final String SERVER_IP_ADDRESS = "192.168.1.158";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -44,6 +45,7 @@ public class ServerRequestsService {
     public static final String USERS_PATH = "/users";
     public static final String APARTMENTS_PATH = "/apartments";
     public static final String TASKS_PATH = "/tasks";
+    public static final String EXPENSES_PATH = "/expenses";
 
     //JSON keys
     public static final String SUCCESS_KEY = "success"; // if the request succeeded
@@ -425,33 +427,9 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> {
-            showToast("change password successfully");
-        }));
+        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
     }
 
-    public void getRoommates() {
-        Request request = new Request.Builder()
-                .url(HTTP_URL + USERS_PATH + "/room8")
-                .addHeader(TOKEN_HEADER_KEY, accessesToken)
-                .get()
-                .build();
-
-        client.newCall(request).enqueue(createCallback("failed get room8s data", jsonObject -> {
-            try {
-                JSONArray room8 = jsonObject.getJSONArray(DATA_KEY);
-                for (int i = 0; i < room8.length(); i++) {
-                    JSONObject roommate = room8.getJSONObject(i);
-                    Apartment.getInstance().addRoommate(new Roommate(roommate));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                handleUnsuccessfulReq("error when parse data", 0, jsonObject);
-            }
-        }));
-
-
-    }
 
     public void removeRoom8(int id) {
         Request request = new Request.Builder()
@@ -476,5 +454,28 @@ public class ServerRequestsService {
             navigate.run();
             showToast("remove room8 successfully");
         }));
+    }
+
+
+    public void getExpenses(){
+        Request request = new Request.Builder()
+                .url(HTTP_URL + EXPENSES_PATH)
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject ->{
+            try {
+                JSONArray expenses = jsonObject.getJSONArray(DATA_KEY);
+                for (int i = 0; i < expenses.length(); i++) {
+                    JSONObject expense = expenses.getJSONObject(i);
+                    Apartment.getInstance().addExpense(new Expense(expense));
+                }
+            } catch (JSONException | ParseException e) {
+                e.printStackTrace();
+                handleUnsuccessfulReq("fetch expense failed when try to parse the data", 0, jsonObject);
+
+            }
+        }));
+
     }
 }

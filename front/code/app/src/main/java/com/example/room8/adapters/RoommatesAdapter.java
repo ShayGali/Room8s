@@ -46,9 +46,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         room8Holder.role.setText("Role: " + roommate.getLevelName());
         room8Holder.delete.setOnClickListener(v -> {
             action.accept(roommate.getId());
-            Apartment.getInstance().setRoommates(
-                    (ArrayList<Roommate>) Apartment.getInstance().getRoommates().stream().filter(r -> roommate.getId() != r.getId()).collect(Collectors.toList())
-            );
+            Apartment.getInstance().getRoommates().removeIf(r -> roommate.getId() == r.getId());
             room8s = Apartment.getInstance().getRoommates();
             notifyDataSetChanged();
         });

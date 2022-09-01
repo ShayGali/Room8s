@@ -129,7 +129,12 @@ INSERT INTO task_type (ID, task_type) VALUES
 (1, 'general task');
 
 INSERT INTO expense_type VALUES
-(1, 'general expense');
+(1, 'general expense'),
+(2,'electric bill'),
+(3,'water bill'),
+(4,'groceries');
+
+
 
 
 

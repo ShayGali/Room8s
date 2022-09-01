@@ -1,14 +1,12 @@
 package com.example.room8.model;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Apartment {
 
@@ -32,8 +30,9 @@ public final class Apartment {
     private String name;
     private int numberOfPeople;
 
-    private ArrayList<Roommate> roommates;
-    private List<Task> tasks;
+    private final ArrayList<Roommate> roommates;
+    private final ArrayList<Task> tasks;
+    private final ArrayList<Expense> expenses;
 
 
     public static void parseDataFromJson(JSONObject apartmentAsJson) throws JSONException {
@@ -47,15 +46,10 @@ public final class Apartment {
 
     }
 
-    public static ArrayList<String> apartmentMembersNames() {
-        List<String> names = Apartment.getInstance().getRoommates().stream().map(Roommate::getUserName).collect(Collectors.toList());
-        names.add(0, User.getInstance().getUserName());
-        return (ArrayList<String>) names;
-    }
-
     private Apartment() {
         this.roommates = new ArrayList<>();
         this.tasks = new ArrayList<>();
+        this.expenses = new ArrayList<>();
     }
 
     public static void resetData() {
@@ -63,6 +57,8 @@ public final class Apartment {
     }
 
     public String getRoom8NameById(int id) {
+        if (id == User.getInstance().getId())
+            return User.getInstance().getUserName();
         for (Roommate r : roommates) {
             if (r.getId() == id) return r.getUserName();
         }
@@ -70,8 +66,28 @@ public final class Apartment {
     }
 
     public void addRoommate(Roommate r) {
-        if (roommates.stream().anyMatch(roommate -> roommate.getId() == r.getId())) return;
+        roommates.removeIf(roommate -> roommate.getId() == r.getId());
         roommates.add(r);
+    }
+
+    public void addTask(Task task) {
+        for (Task t : tasks) {
+            if (t.getId() == task.getId()) {
+                t.updateTask(task);
+                return;
+            }
+        }
+        tasks.add(task);
+    }
+
+    public void addExpense(Expense expense) {
+        for (Expense e : expenses) {
+            if (e.getId() == expense.getId()) {
+                e.update(expense);
+                return;
+            }
+        }
+        expenses.add(expense);
     }
 
     public int getId() {
@@ -102,18 +118,15 @@ public final class Apartment {
         return roommates;
     }
 
-    public void setRoommates(ArrayList<Roommate> roommates) {
-        this.roommates = roommates;
-    }
-
-    public List<Task> getTasks() {
+    public ArrayList<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public ArrayList<Expense> getExpenses() {
+        return expenses;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Apartment{" +
@@ -125,13 +138,5 @@ public final class Apartment {
                 '}';
     }
 
-    public void addTask(Task task) {
-        for (Task t : tasks) {
-            if (t.getId() == task.getId()){
-                t.updateTask(task);
-                return;
-            }
-        }
-        tasks.add(task);
-    }
+
 }
