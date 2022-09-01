@@ -57,6 +57,8 @@ public final class Apartment {
     }
 
     public String getRoom8NameById(int id) {
+        if (id == User.getInstance().getId())
+            return User.getInstance().getUserName();
         for (Roommate r : roommates) {
             if (r.getId() == id) return r.getUserName();
         }
