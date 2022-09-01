@@ -22,12 +22,13 @@ import java.util.stream.Collectors;
 public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater inflater;
     private ArrayList<Expense> expenses;
-    private Predicate<Expense> filterMethod;
 
     public ExpensesAdapter(LayoutInflater inflater, Predicate<Expense> filterMethod) {
         this.inflater = inflater;
-        this.filterMethod = filterMethod;
-        this.expenses = (ArrayList<Expense>) Apartment.getInstance().getExpenses().stream().filter(filterMethod).collect(Collectors.toList());
+        if (filterMethod != null)
+            this.expenses = (ArrayList<Expense>) Apartment.getInstance().getExpenses().stream().filter(filterMethod).collect(Collectors.toList());
+        else
+            this.expenses = Apartment.getInstance().getExpenses();
     }
 
     @NonNull

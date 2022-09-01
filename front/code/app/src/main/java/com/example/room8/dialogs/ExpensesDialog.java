@@ -21,7 +21,7 @@ import com.example.room8.model.Expense;
 import java.util.function.Predicate;
 
 public class ExpensesDialog extends AppCompatDialogFragment {
-    private Predicate<Expense> filterMethod;
+    private final Predicate<Expense> filterMethod;
 
     public ExpensesDialog(Predicate<Expense> filterMethod) {
         this.filterMethod = filterMethod;
