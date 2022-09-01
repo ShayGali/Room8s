@@ -43,12 +43,6 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        try {
-//            Thread.sleep(4000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         sharedPreferenceHandler = SharedPreferenceHandler.getInstance();
         sharedPreferenceHandler.setActivity(this);
@@ -150,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     public void fetchRoom8() {
-        databaseService.getRoommates();
+        databaseService.getRoom8s();
     }
 
     @Override

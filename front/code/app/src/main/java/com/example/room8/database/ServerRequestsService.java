@@ -34,7 +34,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "192.168.1.155";
+    public static final String SERVER_IP_ADDRESS = "192.168.1.158";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -425,33 +425,9 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> {
-            showToast("change password successfully");
-        }));
+        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
     }
 
-    public void getRoommates() {
-        Request request = new Request.Builder()
-                .url(HTTP_URL + USERS_PATH + "/room8")
-                .addHeader(TOKEN_HEADER_KEY, accessesToken)
-                .get()
-                .build();
-
-        client.newCall(request).enqueue(createCallback("failed get room8s data", jsonObject -> {
-            try {
-                JSONArray room8 = jsonObject.getJSONArray(DATA_KEY);
-                for (int i = 0; i < room8.length(); i++) {
-                    JSONObject roommate = room8.getJSONObject(i);
-                    Apartment.getInstance().addRoommate(new Roommate(roommate));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                handleUnsuccessfulReq("error when parse data", 0, jsonObject);
-            }
-        }));
-
-
-    }
 
     public void removeRoom8(int id) {
         Request request = new Request.Builder()
