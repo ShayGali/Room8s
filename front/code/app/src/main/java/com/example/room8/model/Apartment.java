@@ -70,7 +70,7 @@ public final class Apartment {
     }
 
     public void addRoommate(Roommate r) {
-        if (roommates.stream().anyMatch(roommate -> roommate.getId() == r.getId())) return;
+        roommates.removeIf(roommate -> roommate.getId() == r.getId());
         roommates.add(r);
     }
 
@@ -114,6 +114,7 @@ public final class Apartment {
         this.tasks = tasks;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Apartment{" +
@@ -127,7 +128,7 @@ public final class Apartment {
 
     public void addTask(Task task) {
         for (Task t : tasks) {
-            if (t.getId() == task.getId()){
+            if (t.getId() == task.getId()) {
                 t.updateTask(task);
                 return;
             }
