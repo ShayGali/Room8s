@@ -34,7 +34,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "192.168.1.155";
+    public static final String SERVER_IP_ADDRESS = "10.0.0.4";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -51,6 +51,7 @@ public class ServerRequestsService {
     public static final String DATA_KEY = "data"; // the data
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String ACCESS_TOKEN_KEY = "jwtToken";
+    public static final String REFRESH_TOKEN_KEY = "refreshJwtToken";
 
     // formatters for the date and time
     @SuppressLint("SimpleDateFormat") // for parse date time from the server
@@ -93,6 +94,7 @@ public class ServerRequestsService {
     private final OkHttpClient client;
     private Activity activity;
     private String accessesToken;
+    private String refreshToken;
 
     public void setActivity(Activity activity) {
         this.activity = activity;
@@ -181,8 +183,11 @@ public class ServerRequestsService {
                 SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
 
                 String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                String refToken = jsonObject.getString(REFRESH_TOKEN_KEY);
                 sp.saveJwtAccessToken(token);
+                sp.saveJwtRefreshToken(refToken);
                 this.accessesToken = token;
+                this.refreshToken = refToken;
 
                 User.getInstance().setId(jsonObject.getInt("userId"));
                 if (jsonObject.has("apartmentId") && !jsonObject.isNull("apartmentId")) {
@@ -474,7 +479,7 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
             navigate.run();
-            showToast("remove room8 successfully");
+            showToast("remove room8 from apartment successfully");
         }));
     }
 }

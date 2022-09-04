@@ -37,4 +37,13 @@ exports.generateAccessToken = (data) => {
 };
 
 //TODO
-async function generateRefreshToken(data) {}
+exports.generateRefreshToken = (data) => {
+  const refToken = JWT.sign(
+    {
+      ...data,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: REFRESH_TOKEN_EXPIRATION }
+  );
+  return refToken;
+}
