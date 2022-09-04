@@ -53,6 +53,7 @@ public class ServerRequestsService {
     public static final String DATA_KEY = "data"; // the data
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String ACCESS_TOKEN_KEY = "jwtToken";
+    public static final String REFRESH_TOKEN_KEY = "refreshJwtToken";
 
     // formatters for the date and time
     @SuppressLint("SimpleDateFormat") // for parse date time from the server
@@ -98,6 +99,7 @@ public class ServerRequestsService {
     private final OkHttpClient client;
     private Activity activity;
     private String accessesToken;
+    private String refreshToken;
 
     public void setActivity(Activity activity) {
         this.activity = activity;
@@ -186,8 +188,11 @@ public class ServerRequestsService {
                 SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
 
                 String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                String refToken = jsonObject.getString(REFRESH_TOKEN_KEY);
                 sp.saveJwtAccessToken(token);
+                sp.saveJwtRefreshToken(refToken);
                 this.accessesToken = token;
+                this.refreshToken = refToken;
 
                 User.getInstance().setId(jsonObject.getInt("userId"));
                 if (jsonObject.has("apartmentId") && !jsonObject.isNull("apartmentId")) {
@@ -430,7 +435,9 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
+        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> {
+            showToast("change password successfully");
+        }));
     }
 
 
@@ -446,9 +453,8 @@ public class ServerRequestsService {
             showToast("remove room8 successfully");
         }));
     }
-
-    public void leave(Runnable navigate) {
-        Request request = new Request.Builder()
+    public void leave(Runnable navigate){
+         Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + User.getInstance().getId())
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .delete()

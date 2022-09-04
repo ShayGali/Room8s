@@ -28,6 +28,7 @@ public class ProfileFragment extends Fragment {
 
         View changePasswordBtn = view.findViewById(R.id.change_password_btn);
         View openRoom8sDialogBtn = view.findViewById(R.id.rooms_dialog_btn);
+        View leaveRoomBtn = view.findViewById(R.id.leave_room_btn);
 
 
         changePasswordBtn.setOnClickListener(v -> {
@@ -39,6 +40,11 @@ public class ProfileFragment extends Fragment {
             RoommatesDialog dialog = new RoommatesDialog(Apartment.getInstance().getRoommates(), id -> activity.removeRoom8s(id));
             dialog.show(getParentFragmentManager(), "Room8s");
         });
+
+        leaveRoomBtn.setOnClickListener(v -> {
+            activity.leaveApartment();
+        });
+
         return view;
     }
 }

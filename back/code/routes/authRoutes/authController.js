@@ -3,7 +3,7 @@ const userService = require("../../routes/userRoutes/userService");
 
 const bcrypt = require("bcrypt");
 
-const { generateAccessToken } = require("../../utilities/jwtHandler");
+const { generateAccessToken,generateRefreshToken } = require("../../utilities/jwtHandler");
 const { isStrongPassword } = require("../../utilities/passwordHandler");
 const valuesValidate = require("../../utilities/valuesValidate");
 
@@ -47,6 +47,7 @@ exports.register = async (req, res, next) => {
       userId: result.insertId,
       apartmentId: null,
     });
+    
 
     return res.status(201).json({ success: true, msg: "success", jwtToken });
   } catch (err) {
@@ -77,11 +78,16 @@ exports.login = async (req, res, next) => {
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
+    const refreshJwtToken = generateRefreshToken({
+      userId: findUser.ID,
+      apartmentId: apartmentId !== undefined ? apartmentId : null,
+    })
 
     return res.status(200).json({
       success: true,
       msg: "success",
       jwtToken,
+      refreshJwtToken,
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });

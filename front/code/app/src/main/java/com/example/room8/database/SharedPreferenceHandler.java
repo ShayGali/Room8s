@@ -31,6 +31,7 @@ public class SharedPreferenceHandler {
 
     private static final String AUTH_PREFERENCE = "auth_preference";
     private static final String JWT_ACCESS_TOKEN = "access_token";
+    private static final String JWT_REFRESH_TOKEN = "refresh_token";
     private static final String IS_IN_APARTMENT = "is_in_apartment";
 
     Activity activity;
@@ -52,6 +53,16 @@ public class SharedPreferenceHandler {
 
     public String getAccessJwt() {
         return sp.getString(JWT_ACCESS_TOKEN, null);
+    }
+
+    public void saveJwtRefreshToken(String token) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(JWT_REFRESH_TOKEN, token);
+        editor.apply();
+    }
+
+    public String getRefreshJwt() {
+        return sp.getString(JWT_REFRESH_TOKEN, null);
     }
 
     public boolean checkIfJwtAccessTokenExists() {
