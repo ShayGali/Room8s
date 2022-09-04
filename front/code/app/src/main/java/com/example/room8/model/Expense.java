@@ -73,6 +73,9 @@ public class Expense {
         this.note = o.note;
     }
 
+    public Expense() {
+    }
+
     public void update(Expense o) {
         this.userId = o.userId;
         this.title = o.title;
