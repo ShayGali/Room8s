@@ -22,7 +22,7 @@ public class MessageFragment extends Fragment {
 
     View menuBtn;
     MessagesAdapter messageAdapter;
-
+    ChatHandler chatHandler;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -36,7 +36,7 @@ public class MessageFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         // TODO: change the name to the user name
-        ChatHandler chatHandler = new ChatHandler(((MainActivity) getActivity()), view.findViewById(R.id.enter_message_EditText), view.findViewById(R.id.send_btn), recyclerView, messageAdapter);
+        chatHandler = new ChatHandler(((MainActivity) getActivity()), view.findViewById(R.id.enter_message_EditText), view.findViewById(R.id.send_btn), recyclerView, messageAdapter);
         chatHandler.initializeSocketConnection();
 
         menuBtn = view.findViewById(R.id.menu_btn);
@@ -59,6 +59,12 @@ public class MessageFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        chatHandler.closeConnection();
     }
 
 }
