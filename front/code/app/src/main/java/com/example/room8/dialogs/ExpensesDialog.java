@@ -64,7 +64,8 @@ public class ExpensesDialog extends AppCompatDialogFragment {
         // setting height to 90% of display
         layoutParams.height = (int) (displayMetrics.heightPixels * 0.9f);
         dialog.getWindow().setAttributes(layoutParams);
-
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
     }
 

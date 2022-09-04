@@ -77,9 +77,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
 
-        expenseHolder.enterEditModeBtn.setOnClickListener(v -> {
-            enterEditMode(expenseHolder, expense, position);
-        });
+        expenseHolder.enterEditModeBtn.setOnClickListener(v -> enterEditMode(expenseHolder, expense, position));
     }
 
     @Override
@@ -151,6 +149,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 editText.setBackground(defaultColor);
                 openKeyboardFunction.run();
                 editText.requestFocus();
+                editText.setSelection(editText.getText().length());
             } else {
                 isClicked.set(false);
                 editText.setBackgroundColor(Color.TRANSPARENT);
@@ -167,7 +166,12 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (shouldUpdate) {
             tempExpense.setType(holder.type.getSelectedItem().toString());
+            tempExpense.setTitle(holder.title.getText().toString());
+            tempExpense.setAmount(Double.parseDouble(holder.amount.getText().toString()));
+            tempExpense.setNote(holder.note.getText().toString());
+
             originalExpense.update(tempExpense);
+            ServerRequestsService.getInstance().updateExpense(originalExpense);
             if (this.filterMethod != null && !this.filterMethod.test(originalExpense)) {
                 this.expenses.removeIf(expense -> originalExpense.getId() == expense.getId());
             }

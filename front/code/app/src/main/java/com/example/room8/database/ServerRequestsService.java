@@ -59,12 +59,15 @@ public class ServerRequestsService {
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @SuppressLint("SimpleDateFormat") // for format date object to time string
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    @SuppressLint("SimpleDateFormat")
+    public static final SimpleDateFormat DATE_FORMAT_FOR_REQUEST = new SimpleDateFormat("yyyy-MM-dd");
     @SuppressLint("SimpleDateFormat") // for format date object to date string
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
     static { // for initial the timezone
         DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
         DATE_FORMAT.setTimeZone(TimeZone.getDefault());
+        DATE_FORMAT_FOR_REQUEST.setTimeZone(TimeZone.getDefault());
         TIME_FORMAT.setTimeZone(TimeZone.getDefault());
     }
 
@@ -443,8 +446,9 @@ public class ServerRequestsService {
             showToast("remove room8 successfully");
         }));
     }
-    public void leave(Runnable navigate){
-         Request request = new Request.Builder()
+
+    public void leave(Runnable navigate) {
+        Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + User.getInstance().getId())
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .delete()
@@ -457,13 +461,13 @@ public class ServerRequestsService {
     }
 
 
-    public void getExpenses(){
+    public void getExpenses() {
         Request request = new Request.Builder()
                 .url(HTTP_URL + EXPENSES_PATH)
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
-        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject ->{
+        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject -> {
             try {
                 JSONArray expenses = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < expenses.length(); i++) {
@@ -477,5 +481,21 @@ public class ServerRequestsService {
             }
         }));
 
+    }
+
+    public void updateExpense(Expense expense) {
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("title", expense.getTitle());
+        formBody.add("expensesType", expense.getType());
+        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
+        formBody.add("amount", String.valueOf(expense.getAmount()));
+        formBody.add("note", expense.getNote());
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + EXPENSES_PATH + "/" + expense.getId())
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .put(formBody.build())
+                .build();
+        client.newCall(request).enqueue(createCallback("update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
     }
 }
