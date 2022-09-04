@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
+import com.example.room8.dialogs.CreateExpenseDialog;
 import com.example.room8.dialogs.ExpensesDialog;
 import com.example.room8.model.User;
 
@@ -27,6 +28,7 @@ public class WalletFragment extends Fragment {
         fetchAllExpenses();
 
         view.findViewById(R.id.create_expense_btn).setOnClickListener(v -> {
+            new CreateExpenseDialog().show(getParentFragmentManager(),"create_expense");
         });
 
         view.findViewById(R.id.previous_expenses_btn).setOnClickListener(v -> new ExpensesDialog(null, "previous expenses").show(getParentFragmentManager(), "previous_expenses"));

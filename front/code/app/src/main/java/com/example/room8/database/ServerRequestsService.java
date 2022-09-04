@@ -435,9 +435,7 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> {
-            showToast("change password successfully");
-        }));
+        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
     }
 
 
@@ -453,8 +451,9 @@ public class ServerRequestsService {
             showToast("remove room8 successfully");
         }));
     }
-    public void leave(Runnable navigate){
-         Request request = new Request.Builder()
+
+    public void leave(Runnable navigate) {
+        Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + User.getInstance().getId())
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .delete()
@@ -503,5 +502,9 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
         client.newCall(request).enqueue(createCallback("update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
+    }
+
+    public void createExpense(Expense expense) {
+        System.out.println(expense);
     }
 }
