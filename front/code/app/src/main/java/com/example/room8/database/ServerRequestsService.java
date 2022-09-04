@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.room8.model.Apartment;
+import com.example.room8.model.Expense;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
@@ -34,7 +35,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "10.0.0.4";
+    public static final String SERVER_IP_ADDRESS = "192.168.1.155";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -44,6 +45,7 @@ public class ServerRequestsService {
     public static final String USERS_PATH = "/users";
     public static final String APARTMENTS_PATH = "/apartments";
     public static final String TASKS_PATH = "/tasks";
+    public static final String EXPENSES_PATH = "/expenses";
 
     //JSON keys
     public static final String SUCCESS_KEY = "success"; // if the request succeeded
@@ -479,7 +481,8 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
             navigate.run();
-            showToast("remove room8 from apartment successfully");
+            showToast("remove room8 successfully");
         }));
+
     }
 }
