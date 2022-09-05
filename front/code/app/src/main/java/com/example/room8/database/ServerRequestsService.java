@@ -505,7 +505,25 @@ public class ServerRequestsService {
     }
 
     public void createExpense(Expense expense) {
-        }
+        expense.setUploadDate(new Date());
+
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("title", expense.getTitle());
+        formBody.add("expensesType", expense.getType());
+        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate());
+        formBody.add("amount", expense.getAmount());
+        formBody.add("uploadDate", DATE_FORMAT_FOR_REQUEST.format(expense.getUploadDate()));
+        formBody.add("note", expense.getNote());
+
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + EXPENSES_PATH + "/" + add)
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .psot(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> showToast("create expense successfully")));
+    }
 
     public void forgotPassword(String email){
         FormBody.Builder formBody = new FormBody.Builder();
