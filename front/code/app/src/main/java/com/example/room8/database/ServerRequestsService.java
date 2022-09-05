@@ -517,7 +517,7 @@ public class ServerRequestsService {
 
 
         Request request = new Request.Builder()
-                .url(HTTP_URL + EXPENSES_PATH + "/" + add)
+                .url(HTTP_URL + EXPENSES_PATH + "/add")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .psot(formBody.build())
                 .build();
