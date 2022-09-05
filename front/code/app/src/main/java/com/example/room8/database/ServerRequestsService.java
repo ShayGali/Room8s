@@ -505,6 +505,18 @@ public class ServerRequestsService {
     }
 
     public void createExpense(Expense expense) {
-        System.out.println(expense);
+        }
+
+    public void forgotPassword(String email){
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("email", email);
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + AUTH_PATH + "/forgotPassword")
+                .post(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("reset password went wrong", jsonObject -> showToast("Check your email")));
+    
     }
 }
