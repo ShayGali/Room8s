@@ -42,7 +42,7 @@ public class Message implements Comparator<Message> {
     public static final String IS_SENT_KEY = "isSent";
 
     int messageId;
-    UUID uuid; // for identify when the message id came back from the server
+    UUID UUID; // for identify when the message id came back from the server
     String userName;
     String msgContent;
     Date date;
@@ -50,7 +50,7 @@ public class Message implements Comparator<Message> {
     boolean isSent;
 
     public Message(String userName, String msgContent, Date date, int iconID, boolean isSent) {
-        this.uuid = UUID.randomUUID();
+        this.UUID = UUID.randomUUID();
         this.userName = userName;
         this.msgContent = msgContent;
         this.date = date;
@@ -117,7 +117,7 @@ public class Message implements Comparator<Message> {
 
     public String toStringJsonFormat() {
         String str = "{\"" +
-                UUID_KEY + "\":\"" + this.uuid.toString() + "\",\"" +
+                UUID_KEY + "\":\"" + this.UUID.toString() + "\",\"" +
                 USER_NAME_KEY + "\":\"" + this.userName + "\",\"" +
                 MESSAGE_CONTENT_KEY + "\":\"" + this.msgContent + "\",\"" +
                 ICON_ID_KEY + "\":\"" + this.iconID + "\",\"" +
@@ -147,7 +147,7 @@ public class Message implements Comparator<Message> {
     public String toString() {
         return "Message{" +
                 "messageId=" + messageId +
-                ", uuid=" + uuid +
+                ", UUID=" + UUID +
                 ", userName='" + userName + '\'' +
                 ", msgContent='" + msgContent + '\'' +
                 ", date=" + date +
@@ -204,12 +204,12 @@ public class Message implements Comparator<Message> {
         this.messageId = messageId;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getUUID() {
+        return UUID;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setUUID(UUID UUID) {
+        this.UUID = UUID;
     }
 
 
