@@ -76,7 +76,7 @@ public class ChatFragment extends Fragment {
     }
 
     void initHeader(){
-
+        view.findViewById(R.id.apartment_name_TextView).setText(Apartment.getInstance().getName(););
     }
 
     void initMenu(){
