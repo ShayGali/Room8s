@@ -136,7 +136,7 @@
     </fragment>
     <fragment
         android:id="@+id/message_Fragment"
-        android:name="com.example.room8.fragments.message_fragments.MessageFragment"
+        android:name="com.example.room8.fragments.message_fragments.ChatFragment"
         android:label="fragment_message_"
         tools:layout="@layout/fragment_message" >
         <action

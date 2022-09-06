@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_MESSAGE_SENT = 0;
     private static final int TYPE_MESSAGE_RECEIVED = 1;
@@ -29,7 +29,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final LayoutInflater inflater;
     private final List<Message> messages;
 
-    public MessagesAdapter(LayoutInflater inflater) {
+    public ChatAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
         messages = new ArrayList<>();
 
@@ -119,9 +119,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setMessageIdByUUID(int insertedId, String uuidAsStr) {
         UUID uuid = UUID.fromString(uuidAsStr);
-        for(Message m : messages){
-            if(uuid.equals(m.getUUID())){
-                m.setMessageId(insertedId)
+        for (Message m : messages) {
+            if (uuid.equals(m.getUUID())) {
+                m.setMessageId(insertedId);
                 return;
             }
         }

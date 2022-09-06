@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:layoutDirection="ltr"
-    tools:context=".fragments.message_fragments.MessageFragment">
+    tools:context=".fragments.message_fragments.ChatFragment">
 
     <ImageView
         android:id="@+id/menu_btn"

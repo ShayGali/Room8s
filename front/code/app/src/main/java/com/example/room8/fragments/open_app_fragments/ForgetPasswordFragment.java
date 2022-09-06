@@ -3,12 +3,15 @@ package com.example.room8.fragments.open_app_fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 
 public class ForgetPasswordFragment extends Fragment {
 
@@ -25,10 +28,10 @@ public class ForgetPasswordFragment extends Fragment {
         });
 
 
-        //TODO: create this button
-        view.findViewById(R.id.go_to_login_btn).setOnClickListener(v->
-            Navigation.findNavController(view).navigate(R.id.action_forgetPasswordFragment_to_loginFragment)
-        );
+//        //TODO: create this button
+//        view.findViewById(R.id.go_to_login_btn).setOnClickListener(v->
+//            Navigation.findNavController(view).navigate(R.id.action_forgetPasswordFragment_to_loginFragment)
+//        );
 
         return view;
     }

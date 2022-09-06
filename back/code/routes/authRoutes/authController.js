@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+const { v4: uuidv4 } = require("uuid");
 
 const authService = require("./authService");
 const userService = require("../../routes/userRoutes/userService");
@@ -9,7 +9,10 @@ const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../../utilities/jwtHandler");
-const { isStrongPassword, hashPassword } = require("../../utilities/passwordHandler");
+const {
+  isStrongPassword,
+  hashPassword,
+} = require("../../utilities/passwordHandler");
 const valuesValidate = require("../../utilities/valuesValidate");
 
 const resetTokenMap = new Map();
@@ -148,17 +151,16 @@ exports.resetPassword = async (req, res, next) => {
   if (!token)
     return res.status(401).json({ success: false, msg: "send token" });
 
-  if (password===undefined || !isStrongPassword(password)) 
+  if (password === undefined || !isStrongPassword(password))
     return res.status(400).json({ success: false, msg: "password not valid" });
-  
-  const {expirtionTime, email} = resetTokenMap.get(token)
 
-  if(checkIfExpired(expirtionTime))
-    return res.status(410).json({success:false, msg:"token expired"})
+  const { expirtionTime, email } = resetTokenMap.get(token);
 
+  if (checkIfExpired(expirtionTime))
+    return res.status(410).json({ success: false, msg: "token expired" });
 
-  const hashedPassword = await hashPassword(password)
+  const hashedPassword = await hashPassword(password);
   userService.updatePassword(email, hashedPassword); // TODO
 
-  return res.json({success:true, msg:"password changed"})
+  return res.json({ success: true, msg: "password changed" });
 };

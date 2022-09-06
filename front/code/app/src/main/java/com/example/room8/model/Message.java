@@ -2,6 +2,8 @@ package com.example.room8.model;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
 import com.example.room8.R;
 
 import org.json.JSONException;
@@ -50,7 +52,7 @@ public class Message implements Comparator<Message> {
     boolean isSent;
 
     public Message(String userName, String msgContent, Date date, int iconID, boolean isSent) {
-        this.UUID = UUID.randomUUID();
+        this.UUID = java.util.UUID.randomUUID();
         this.userName = userName;
         this.msgContent = msgContent;
         this.date = date;
@@ -143,6 +145,7 @@ public class Message implements Comparator<Message> {
         return TIME_FORMAT.format(this.date);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Message{" +
