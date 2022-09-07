@@ -14,8 +14,15 @@ exports.addExpenses = async (
   uploadDate = null,
   note = null
 ) => {
-  const query = `
-  INSERT INTO ${expensesTable}(
+  if (isNaN(expensesType)) {
+    let [res, _] = await db.execute(
+      `SELECT ID FROM ${expensesTypeTable} WHERE expense_type = ?`,
+      [expensesType]
+    );
+    if (res[0] === undefined) return;
+    expensesType = res[0]?.ID;
+  }
+  const query = `INSERT INTO ${expensesTable}(
     apartment_ID, UserThatUploadID, title, expense_type, payment_date, amount, upload_date, note
   )VALUES( ?, ?, ?, ?, ?, ?, ?, ?)
   `;
@@ -71,6 +78,7 @@ exports.update = async (expense) => {
       `SELECT ID FROM ${expensesTypeTable} WHERE expense_type = ?`,
       [expense.expense_type]
     );
+    if (res[0] === undefined) return;
     expense.expense_type = res[0].ID;
   }
 
