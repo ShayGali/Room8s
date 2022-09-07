@@ -35,7 +35,7 @@ exports.register = async (req, res, next) => {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
-    if ((await userService.findByEmail(email)) !== undefined) {
+    if ((await userService.findByEmailOrUsername(email)) !== undefined) {
       return res
         .status(409)
         .json({ success: false, msg: "email is already exists" });
@@ -74,7 +74,7 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const findUser = await userService.findByEmail(email);
+    const findUser = await userService.findByEmailOrUsername(email);
     if (!findUser) {
       return res.status(401).json({ success: false, msg: "Invalid email" }); //TODO: change the msg
     }
@@ -116,7 +116,7 @@ exports.forgotPassword = async (req, res, next) => {
     return res.status(400).json({ success: false, msg: "send email" });
   }
 
-  if ((await userService.findByEmail(email)) === undefined)
+  if ((await userService.findByEmailOrUsername(email)) === undefined)
     return res
       .status(404)
       .json({ success: false, msg: `user with the email ${email} not found` });

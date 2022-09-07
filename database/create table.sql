@@ -120,6 +120,18 @@ FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE ,
 FOREIGN KEY (sender_ID) REFERENCES users (ID)
 );
 
+
+CREATE TABLE join_requests(
+apartment_ID INT,
+user_ID INT,
+sender_ID INT NOT NULL,
+
+PRIMARY KEY(apartment_ID, user_ID),
+FOREIGN KEY (apartment_ID) REFERENCES apartments(ID) ON DELETE CASCADE,
+FOREIGN KEY (user_ID) REFERENCES users (ID) ON DELETE CASCADE,
+FOREIGN KEY (sender_ID) REFERENCES users (ID) ON DELETE CASCADE
+);
+
 INSERT INTO user_level VALUES
 (1, 'basic user'),
 (2, 'apartment owner'),

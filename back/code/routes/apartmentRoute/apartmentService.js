@@ -1,6 +1,7 @@
 const db = require("../../config/db");
 const apartmentsTable = "apartments";
 const apartmentsUserTable = "user_in_apartment";
+const joinRequestTable = "join_requests";
 
 exports.getData = async (apartmentsId) => {
   const query = `
@@ -23,7 +24,8 @@ exports.getData = async (apartmentsId) => {
  * @param {string} apartmentName
  * @returns new apartment id
  */
-exports.createApartment = async (userId, apartmentName) => { //TODO check number of people
+exports.createApartment = async (userId, apartmentName) => {
+  //TODO check number of people
   const createApartmentQuery = `
     INSERT INTO ${apartmentsTable} (
             apartment_name
@@ -122,4 +124,14 @@ exports.getRoom8Ids = async (apartmentId) => {
 exports.deleteApartment = (apartmentId) => {
   const query = `DELETE FROM ${apartmentsTable} WHERE ID = ?`;
   db.execute(query, [apartmentId]);
+};
+
+exports.sendJoinReq = async (apartmentId, userId, senderId) => {
+  const query = `INSERT INTO ${joinRequestTable} VALUE (?,?,?);`;
+  db.execute(query, [apartmentId, userId, senderId]);
+};
+
+exports.removeJoinReq = async (apartmentId, userId) => {
+  const query = `DELETE FROM ${joinRequestTable} WHERE apartment_ID = ? AND user_ID = ?;`;
+  db.execute(query, [apartmentId, userId, senderId]);
 };

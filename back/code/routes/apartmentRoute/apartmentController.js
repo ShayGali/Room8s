@@ -142,3 +142,37 @@ exports.deleteApartment = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.sendJoinReq = async (req, res, next) => {
+  const { userId: senderId, apartmentId } = req.tokenData;
+  const { email, username } = req.body;
+  if (email === undefined && username === undefined)
+    return res
+      .status(400)
+      .json({ success: false, msg: "send email or username" });
+  try {
+    const user = await userService.findByEmailOrUsername(email || username);
+
+    if (user === undefined)
+      return res.status(404).json({
+        success: false,
+        msg: "the user that you try to add was not found",
+      });
+
+    if (user.ID === senderId)
+      return res.status(400).json({
+        success: false,
+        msg: "you cant send request to yourself",
+      });
+
+    if (userService.findUserApartmentId(user.ID) !== undefined)
+      return res
+        .status(200)
+        .json({ success: false, msg: "user is already in apartment" });
+
+    apartmentService.sendJoinReq(apartmentId, user.ID, senderId);
+    res.status(201).json({ success: true, msg: "request send successfully" });
+  } catch (error) {
+    next(error);
+  }
+};

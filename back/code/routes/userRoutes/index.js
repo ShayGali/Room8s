@@ -10,7 +10,6 @@ router.use(authenticateTokenFromRequest);
 
 router.get("/apartmentId", userController.findUserApartmentId);
 router.get("/findById", userController.findById);
-router.route("/findByEmail").get(userController.findByEmail); //TODO: check roll admin
 router.get("/room8", matchUserToApartment, userController.getRoommatesData);
 router.put("/password", userController.changePassword);
 router.delete("/delete", userController.delete);

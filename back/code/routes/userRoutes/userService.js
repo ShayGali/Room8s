@@ -38,13 +38,13 @@ exports.checkIfUserInApartment = async (userId) => {
   return result !== undefined;
 };
 
-exports.findByEmail = async (email) => {
+exports.findByEmailOrUsername = async (emailOrUsername) => {
   const query = `SELECT ${usersTable}.*,level_name FROM ${usersTable}
     INNER JOIN ${userLevelTable}
     ON ${usersTable}.user_level = ${userLevelTable}.ID
-    WHERE email = ?
+    WHERE email = ? OR user_name = ?;
     `;
-  const [user, _] = await db.execute(query, [email]);
+  const [user, _] = await db.execute(query, [emailOrUsername, emailOrUsername]);
   return user[0];
 };
 

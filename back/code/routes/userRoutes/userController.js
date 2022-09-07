@@ -49,24 +49,6 @@ exports.findById = async (req, res, next) => {
   }
 };
 
-exports.findByEmail = async (req, res, next) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).send({ success: false, msg: "email no send" });
-  }
-  try {
-    const result = await userService.findByEmail(email);
-    if (!result) {
-      return res.status(404).json({ success: false, msg: "User not found" });
-    }
-
-    return res.status(200).json({ success: true, user: result });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.delete = async (req, res, next) => {
   const { userId } = req.tokenData;
   if (!userId) return res.status(403).send({ success: false });
