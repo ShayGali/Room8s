@@ -126,12 +126,13 @@ exports.deleteApartment = (apartmentId) => {
   db.execute(query, [apartmentId]);
 };
 
-exports.sendJoinReq = async (apartmentId, userId, senderId) => {
+exports.sendJoinReq = (apartmentId, userId, senderId) => {
   const query = `INSERT INTO ${joinRequestTable} VALUE (?,?,?);`;
   db.execute(query, [apartmentId, userId, senderId]);
 };
 
 exports.removeJoinReq = async (apartmentId, userId) => {
   const query = `DELETE FROM ${joinRequestTable} WHERE apartment_ID = ? AND user_ID = ?;`;
-  db.execute(query, [apartmentId, userId, senderId]);
+  const res = await db.execute(query, [apartmentId, userId]);
+  return res[0]?.affectedRows === 1;
 };

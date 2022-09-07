@@ -176,3 +176,37 @@ exports.sendJoinReq = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.handleJoinReq = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { apartmentId, join } = req.body;
+
+  if (apartmentId === undefined)
+    return res.status(400).json({ success: false, msg: "send apartmentId" });
+
+  try {
+    const userApartmentId = await userService.findUserApartmentId(userId);
+    if (userApartmentId !== undefined) {
+      const newToken = generateAccessToken({ userId, apartmentId });
+      return res.status(200).json({
+        success: false,
+        msg: "user is already in apartment",
+        jwtToken: newToken,
+      });
+    }
+
+    if (join === true) {
+      // `=== true` because i what to be sure its boolean
+      if (apartmentService.removeJoinReq(apartmentId, userId))
+        apartmentService.addUserToApartment(apartmentId, userId);
+      return res
+        .status(201)
+        .json({ success: true, msg: "user add to the apartment" });
+    } else {
+      apartmentService.removeJoinReq(apartmentId, userId);
+      return res.status(200).json({ success: true, msg: "success" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
