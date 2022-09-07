@@ -78,6 +78,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         expenseHolder.enterEditModeBtn.setOnClickListener(v -> enterEditMode(expenseHolder, expense, position));
+
+        expenseHolder.deleteExpenseBtn.setOnClickListener(v->ServerRequestsService.getInstance().deleteExpense(expense));
     }
 
     @Override
@@ -89,6 +91,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     void enterEditMode(@NonNull ExpenseHolder holder, Expense expense, int position) {
         Expense temp = new Expense(expense);
         holder.enterEditModeBtn.setVisibility(View.INVISIBLE);
+        holder.deleteExpenseBtn.setVisibility(View.INVISIBLE);
+
 
         holder.editTitleBtn.setVisibility(View.VISIBLE);
         holder.editTypeBtn.setVisibility(View.VISIBLE);
@@ -189,6 +193,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemChanged(position);
 
         holder.enterEditModeBtn.setVisibility(View.VISIBLE);
+        holder.deleteExpenseBtn.setVisibility(View.VISIBLE);
+
         holder.editTitleBtn.setVisibility(View.INVISIBLE);
         holder.editTypeBtn.setVisibility(View.INVISIBLE);
         holder.editAmountBtn.setVisibility(View.INVISIBLE);
@@ -214,7 +220,9 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView uploadDate;
         TextView paymentDate;
         EditText note;
+
         FloatingActionButton enterEditModeBtn;
+        FloatingActionButton deleteExpenseBtn;
 
         FloatingActionButton editTitleBtn;
         FloatingActionButton editTypeBtn;
@@ -235,7 +243,9 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             uploadDate = itemView.findViewById(R.id.expense_uplaod_date);
             paymentDate = itemView.findViewById(R.id.expense_payment_date);
             note = itemView.findViewById(R.id.expense_note);
+
             enterEditModeBtn = itemView.findViewById(R.id.edit_expense_btn);
+            deleteExpenseBtn = itemView.findViewById(R.id.delete_expense_btn);
 
             editTitleBtn = itemView.findViewById(R.id.edit_title_btn);
             editTypeBtn = itemView.findViewById(R.id.edit_type_btn);

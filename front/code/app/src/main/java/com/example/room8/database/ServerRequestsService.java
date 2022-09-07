@@ -522,10 +522,24 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> showToast("create expense successfully")));
+        client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> {
+            showToast("create expense successfully");
+            if (jsonObject.has(DATA_KEY)) {
+                try {
+                    expense.setId(jsonObject.getInt(DATA_KEY));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Apartment.getInstance().addExpense(expense);
+        }));
     }
 
-    public void forgotPassword(String email){
+    // TODO
+    public void deleteExpense(Expense expense) {
+    }
+
+    public void forgotPassword(String email) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("email", email);
 
@@ -535,6 +549,8 @@ public class ServerRequestsService {
                 .build();
 
         client.newCall(request).enqueue(createCallback("reset password went wrong", jsonObject -> showToast("Check your email")));
-    
+
     }
+
+
 }

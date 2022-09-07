@@ -68,7 +68,6 @@ public class CreateExpenseDialog extends AppCompatDialogFragment {
             titleInputLayout.setError("fill");
         } else {
             ServerRequestsService.getInstance().createExpense(tempExpense);
-
             dismiss();
         }
     }
