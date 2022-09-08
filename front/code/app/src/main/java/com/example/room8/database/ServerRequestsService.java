@@ -563,4 +563,22 @@ public class ServerRequestsService {
     }
 
 
+    public void getJoinReq(Consumer<JsonArray> displayDialogFunction){
+         Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/joinReq")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch join request went wrong", jsonObject ->{ 
+                if(!jsonObject.has(DATA_KEY))RETURN
+
+                JsonArray data = jsonObject.getJSONArray(DATA_KEY);
+                if(data.length() == 0) return;
+                
+                displayDialogFunction.accept(data);
+            }));
+    }
+
+
 }

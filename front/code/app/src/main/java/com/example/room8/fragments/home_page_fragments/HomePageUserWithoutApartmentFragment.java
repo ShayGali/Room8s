@@ -19,7 +19,6 @@ import com.example.room8.dialogs.CreateApartmentDialog;
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     MainActivity activity;
-    View menuBtn;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -27,19 +26,19 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
-        activity = (MainActivity) requireActivity();
 
         initMenuBtn(view);
         initCreateApartmentButton(view);
         disableBackPress();
 
+        ServerRequestsService.getInstance().getJoinReq(jsonArray ->{}); // TODO
 
         return view;
     }
 
     @SuppressLint("NonConstantResourceId")
     private void initMenuBtn(View view) {
-        menuBtn = view.findViewById(R.id.menu_btn);
+        View menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
             popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
@@ -76,4 +75,5 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
             createApartmentDialog.show(getParentFragmentManager(), "createApartmentDialog");
         });
     }
+
 }
