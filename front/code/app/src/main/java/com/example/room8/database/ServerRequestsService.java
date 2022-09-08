@@ -114,7 +114,7 @@ public class ServerRequestsService {
     }
 
 
-    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
+    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction){
         return new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -138,16 +138,18 @@ public class ServerRequestsService {
                 try {
                     JSONObject responseJOSN = new JSONObject(stringBody);
 
-                    if (!response.isSuccessful()) {
-                        handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
+
+                    if (responseJOSN.has(SUCCESS_KEY)) {
+                        if(responseJOSN.getBoolean(SUCCESS_KEY)){
+                            if (successAction != null) successAction.accept(responseJOSN);
+                        }else {
+                            if (failAction != null) failAction.accept(responseJOSN);
+                            handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
+                        }
                         return;
                     }
 
-                    if (responseJOSN.has(SUCCESS_KEY) && responseJOSN.getBoolean(SUCCESS_KEY)) {
-                        if (successAction != null) {
-                            successAction.accept(responseJOSN);
-                        }
-                    } else {
+                    if (!response.isSuccessful()) {
                         handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
                     }
                 } catch (JSONException e) {
@@ -155,6 +157,14 @@ public class ServerRequestsService {
                 }
             }
         };
+    }
+
+    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
+        this.createCallback(failMsg,successAction,null);
+    }
+
+    private Callback createCallback(String failMsg) {
+        this.createCallback(failMsg,null,null);
     }
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
