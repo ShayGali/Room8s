@@ -109,8 +109,7 @@ public class ServerRequestsService {
         if (msg == null) {
             msg = "null";
         }
-        String finalMsg = msg;
-        activity.runOnUiThread(() -> Toast.makeText(activity, finalMsg, Toast.LENGTH_SHORT).show());
+        activity.runOnUiThread(() -> Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show());
     }
 
 
