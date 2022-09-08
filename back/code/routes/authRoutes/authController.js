@@ -12,6 +12,7 @@ const {
 const {
   isStrongPassword,
   hashPassword,
+  compareHashPassword
 } = require("../../utilities/passwordHandler");
 const valuesValidate = require("../../utilities/valuesValidate");
 
@@ -78,15 +79,17 @@ exports.login = async (req, res, next) => {
     if (!findUser) {
       return res.status(401).json({ success: false, msg: "Invalid email" }); //TODO: change the msg
     }
-    if (!(await bcrypt.compare(password, findUser.user_password))) {
+    if (!(await compareHashPassword(password, findUser.user_password))) {
       return res.status(401).json({ success: false, msg: "Invalid password" });
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
+
     const jwtToken = generateAccessToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
+    
     const refreshJwtToken = generateRefreshToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
