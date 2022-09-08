@@ -197,11 +197,15 @@ exports.handleJoinReq = async (req, res, next) => {
 
     if (join === true) {
       // `=== true` because i what to be sure its boolean
-      if (apartmentService.removeJoinReq(apartmentId, userId))
+      let newToken = undefined;
+      if (apartmentService.removeJoinReq(apartmentId, userId)){
         apartmentService.addUserToApartment(apartmentId, userId);
+        newToken = generateAccessToken({ userId, apartmentId });
+      }
+
       return res
         .status(201)
-        .json({ success: true, msg: "user add to the apartment" });
+        .json({ success: true, msg: "user add to the apartment",jwtToken:newToken });
     } else {
       apartmentService.removeJoinReq(apartmentId, userId);
       return res.status(200).json({ success: true, msg: "success" });

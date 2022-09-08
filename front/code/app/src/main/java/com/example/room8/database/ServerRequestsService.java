@@ -599,7 +599,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong",
+        client.newCall(request).enqueue(createCallback("send join request went wrong",
          jsonObject -> showToast("send request successfully"),
          jsonObject->{
             if(displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)){
@@ -608,4 +608,47 @@ public class ServerRequestsService {
         }));
     }
 
+    public void handleJoinReq(int apartmentId,boolean join, Runnable navigateFunction ){
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("apartmentId", apartmentId);
+        formBody.add("join", join);
+
+         Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/handleJoinReq")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .post(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch join request went wrong",
+         jsonObject -> {
+                if(join){
+                    if(jsonObject.has(ACCESS_TOKEN_KEY)){
+                        String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                        sp.saveJwtAccessToken(token);
+                        this.accessesToken = token;
+                    }
+
+                    User.getInstance().setApartmentId(apartmentId);
+                    sp.setIsInApartment(true);
+
+                    navigateFunction.run();
+            }
+         },
+         jsonObject->{
+            if(jsonObject.has(ACCESS_TOKEN_KEY)){
+                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                sp.saveJwtAccessToken(token);
+                this.accessesToken = token;
+
+                User.getInstance().setApartmentId(apartmentId);
+                sp.setIsInApartment(true);
+    
+                navigateFunction.run();
+            }
+        }));
+    }
+
+
 }
+
+
