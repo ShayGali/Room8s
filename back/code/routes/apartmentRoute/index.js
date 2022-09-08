@@ -20,11 +20,19 @@ router.route("/data").get(apartmentController.getApartmentData);
 //   apartmentController.addUserToApartment
 // );
 
-router.post('/sendJoinReq',matchUserToApartment,isApartmentOwner,apartmentController.sendJoinReq)
-router.post('/handleJoinReq',matchUserToApartment,isApartmentOwner,apartmentController.sendJoinReq)
+router.get("/joinReq", apartmentController.getJoinReq);
+router.post(
+  "/sendJoinReq",
+  matchUserToApartment,
+  isApartmentOwner,
+  apartmentController.sendJoinReq
+);
+router.post("/handleJoinReq", apartmentController.sendJoinReq);
 
 router.delete(
   "/removeUserFromApartment/:userId",
+  matchUserToApartment,
+  isApartmentOwner,
   apartmentController.removeUserFromApartment
 );
 router.delete(

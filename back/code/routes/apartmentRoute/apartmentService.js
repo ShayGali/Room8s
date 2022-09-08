@@ -131,8 +131,25 @@ exports.sendJoinReq = (apartmentId, userId, senderId) => {
   db.execute(query, [apartmentId, userId, senderId]);
 };
 
+/**
+ *
+ * @param {number} apartmentId
+ * @param {number} userId
+ * @returns {number | undefined}
+ */
 exports.removeJoinReq = async (apartmentId, userId) => {
   const query = `DELETE FROM ${joinRequestTable} WHERE apartment_ID = ? AND user_ID = ?;`;
   const res = await db.execute(query, [apartmentId, userId]);
   return res[0]?.affectedRows === 1;
+};
+
+/**
+ *
+ * @param {number} userId
+ * @returns {Promise<Array<{userId:number, apartmentId:number, senderId:number}>>}
+ */
+exports.getJoinReq = async (userId) => {
+  const query = `SELECT * FROM ${joinRequestTable} WHERE userId = ?;`;
+  const [result, _] = await db.execute(query, [apartmentId]);
+  return result;
 };

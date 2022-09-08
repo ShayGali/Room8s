@@ -210,3 +210,17 @@ exports.handleJoinReq = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getJoinReq = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  try {
+    const res = await apartmentService.getJoinReq(userId);
+    return res.json({
+      success: true,
+      msg: `join request for ${userId}`,
+      data: res,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
