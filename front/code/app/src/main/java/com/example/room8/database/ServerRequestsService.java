@@ -535,8 +535,18 @@ public class ServerRequestsService {
         }));
     }
 
-    // TODO
-    public void deleteExpense(Expense expense) {
+    public void deleteExpense(int expenseId) {
+        
+        Request request = new Request.Builder()
+                .url(HTTP_URL + EXPENSES_PATH + "/" + expenseId)
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("delete expense failed", jsonObject -> {
+            Apartment.getInstance().getExpenses().removeIf(e->e.id==expenseId);
+            showToast("The expense has been deleted successfully");
+            }));
     }
 
     public void forgotPassword(String email) {
