@@ -145,13 +145,13 @@ exports.deleteApartment = async (req, res, next) => {
 
 exports.sendJoinReq = async (req, res, next) => {
   const { userId: senderId, apartmentId } = req.tokenData;
-  const { email, username } = req.body;
-  if (email === undefined && username === undefined)
+  const { identify } = req.body;
+  if (identify === undefined)
     return res
       .status(400)
       .json({ success: false, msg: "send email or username" });
   try {
-    const user = await userService.findByEmailOrUsername(email || username);
+    const user = await userService.findByEmailOrUsername(identify);
 
     if (user === undefined)
       return res.status(404).json({

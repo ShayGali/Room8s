@@ -589,5 +589,23 @@ public class ServerRequestsService {
             }));
     }
 
+    public void sendJoinReq(String emailOrUsername, Consumer<String> displayErrorFunction){
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("identify", emailOrUsername);
+
+         Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/joinReq")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .post(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch join request went wrong",
+         jsonObject -> showToast("send request successfully"),
+         jsonObject->{
+            if(displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)){
+                displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
+            }
+        }));
+    }
 
 }
