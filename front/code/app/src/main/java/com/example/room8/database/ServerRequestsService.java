@@ -106,14 +106,11 @@ public class ServerRequestsService {
     }
 
     private void showToast(String msg) {
-        if (msg == null) {
-            msg = "null";
-        }
-        activity.runOnUiThread(() -> Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show());
+        activity.runOnUiThread(() -> Toast.makeText(activity, msg != null ? msg : "null", Toast.LENGTH_SHORT).show());
     }
 
 
-    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction){
+    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         return new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -139,9 +136,9 @@ public class ServerRequestsService {
 
 
                     if (responseJOSN.has(SUCCESS_KEY)) {
-                        if(responseJOSN.getBoolean(SUCCESS_KEY)){
+                        if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
-                        }else {
+                        } else {
                             if (failAction != null) failAction.accept(responseJOSN);
                             handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
                         }
@@ -159,11 +156,11 @@ public class ServerRequestsService {
     }
 
     private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
-        this.createCallback(failMsg,successAction,null);
+        return this.createCallback(failMsg, successAction, null);
     }
 
     private Callback createCallback(String failMsg) {
-        this.createCallback(failMsg,null,null);
+        return this.createCallback(failMsg, null, null);
     }
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
@@ -545,7 +542,7 @@ public class ServerRequestsService {
     }
 
     public void deleteExpense(int expenseId) {
-        
+
         Request request = new Request.Builder()
                 .url(HTTP_URL + EXPENSES_PATH + "/" + expenseId)
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
@@ -553,9 +550,9 @@ public class ServerRequestsService {
                 .build();
 
         client.newCall(request).enqueue(createCallback("delete expense failed", jsonObject -> {
-            Apartment.getInstance().getExpenses().removeIf(e->e.id==expenseId);
+            Apartment.getInstance().getExpenses().removeIf(e -> e.getId() == expenseId);
             showToast("The expense has been deleted successfully");
-            }));
+        }));
     }
 
     public void forgotPassword(String email) {
@@ -572,80 +569,98 @@ public class ServerRequestsService {
     }
 
 
-    public void getJoinReq(Consumer<JsonArray> displayDialogFunction){
-         Request request = new Request.Builder()
+    public void getJoinReq(Consumer<JSONArray> displayDialogFunction) {
+        Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/joinReq")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong", jsonObject ->{ 
-                if(!jsonObject.has(DATA_KEY))RETURN
+        client.newCall(request).enqueue(createCallback("fetch join request went wrong", jsonObject -> {
+            if (!jsonObject.has(DATA_KEY)) return;
 
-                JsonArray data = jsonObject.getJSONArray(DATA_KEY);
-                if(data.length() == 0) return;
-                
+            try {
+                JSONArray data = jsonObject.getJSONArray(DATA_KEY);
+                if (data.length() == 0) return;
                 displayDialogFunction.accept(data);
-            }));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }));
     }
 
-    public void sendJoinReq(String emailOrUsername, Consumer<String> displayErrorFunction){
+    public void sendJoinReq(String emailOrUsername, Consumer<String> displayErrorFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("identify", emailOrUsername);
 
-         Request request = new Request.Builder()
+        Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/joinReq")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .post(formBody.build())
                 .build();
 
         client.newCall(request).enqueue(createCallback("send join request went wrong",
-         jsonObject -> showToast("send request successfully"),
-         jsonObject->{
-            if(displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)){
-                displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
-            }
-        }));
+                jsonObject -> showToast("send request successfully"),
+                jsonObject -> {
+                    try {
+                        if (displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)) {
+                            displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }));
     }
 
-    public void handleJoinReq(int apartmentId,boolean join, Runnable navigateFunction ){
+    public void handleJoinReq(int apartmentId, boolean join, Runnable navigateFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
-        formBody.add("apartmentId", apartmentId);
-        formBody.add("join", join);
+        formBody.add("apartmentId", String.valueOf(apartmentId));
+        formBody.add("join", String.valueOf(join));
 
-         Request request = new Request.Builder()
+        Request request = new Request.Builder()
                 .url(HTTP_URL + APARTMENTS_PATH + "/handleJoinReq")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .post(formBody.build())
                 .build();
 
+        SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
         client.newCall(request).enqueue(createCallback("fetch join request went wrong",
-         jsonObject -> {
-                if(join){
-                    if(jsonObject.has(ACCESS_TOKEN_KEY)){
-                        String token = jsonObject.getString(ACCESS_TOKEN_KEY);
-                        sp.saveJwtAccessToken(token);
-                        this.accessesToken = token;
+                jsonObject -> {
+                    if (join) {
+                        try {
+                            if (jsonObject.has(ACCESS_TOKEN_KEY)) {
+                                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                                sp.saveJwtAccessToken(token);
+                                this.accessesToken = token;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        User.getInstance().setApartmentId(apartmentId);
+                        sp.setIsInApartment(true);
+
+                        navigateFunction.run();
                     }
+                },
+                jsonObject -> {
+                    try {
+                        if (jsonObject.has(ACCESS_TOKEN_KEY)) {
+                            String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                            sp.saveJwtAccessToken(token);
+                            this.accessesToken = token;
 
-                    User.getInstance().setApartmentId(apartmentId);
-                    sp.setIsInApartment(true);
+                            User.getInstance().setApartmentId(apartmentId);
+                            sp.setIsInApartment(true);
 
-                    navigateFunction.run();
-            }
-         },
-         jsonObject->{
-            if(jsonObject.has(ACCESS_TOKEN_KEY)){
-                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
-                sp.saveJwtAccessToken(token);
-                this.accessesToken = token;
-
-                User.getInstance().setApartmentId(apartmentId);
-                sp.setIsInApartment(true);
-    
-                navigateFunction.run();
-            }
-        }));
+                            navigateFunction.run();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }));
     }
 
 

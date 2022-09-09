@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.CreateApartmentDialog;
 
 public class HomePageUserWithoutApartmentFragment extends Fragment {
