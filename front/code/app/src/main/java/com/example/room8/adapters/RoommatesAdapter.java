@@ -51,7 +51,11 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         room8Holder.roleTextView.setText(roommate.getLevelName());
 
-
+        if (User.getInstance().getUserLevel() == 1){
+            room8Holder.editRole.setVisibility(View.INVISIBLE);
+            room8Holder.delete.setVisibility(View.GONE);
+            return;
+        }
         room8Holder.editRole.setOnClickListener(v->{
             if (room8Holder.roleTextView.getVisibility() == View.VISIBLE){
                 room8Holder.roleTextView.setVisibility(View.INVISIBLE);
@@ -75,10 +79,6 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 break;
             }
         }
-        if (User.getInstance().getUserLevel() == 1) {
-            room8Holder.roleSpinner.setClickable(false);
-        }
-
         room8Holder.delete.setOnClickListener(v -> {
             action.accept(roommate.getId());
             Apartment.getInstance().getRoommates().removeIf(r -> roommate.getId() == r.getId());
