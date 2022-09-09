@@ -38,6 +38,11 @@ public class AddRoom8Dialog extends AppCompatDialogFragment {
 
         submitBtn.setOnClickListener(v -> {
             String emailOrUsername = input.getText().toString();
+            if (emailOrUsername.trim().length() ==0){
+                errorMsgTextView.setText("enter email or username");
+                errorMsgTextView.setVisibility(View.VISIBLE);
+                return;
+            }
             ServerRequestsService.getInstance().sendJoinReq(emailOrUsername, errorMsg -> {
                 requireActivity().runOnUiThread(() -> {
                     errorMsgTextView.setText(errorMsg);

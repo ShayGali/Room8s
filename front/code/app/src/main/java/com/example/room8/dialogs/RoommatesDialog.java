@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room8.R;
 import com.example.room8.adapters.RoommatesAdapter;
 import com.example.room8.model.Roommate;
+import com.example.room8.model.User;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -62,6 +64,11 @@ public class RoommatesDialog extends AppCompatDialogFragment {
     }
 
     void initAddRoom8Btn() {
-        view.findViewById(R.id.add_room8_btn).setOnClickListener(v -> new AddRoom8Dialog().show(getParentFragmentManager(),"add_room8"));
+        view.findViewById(R.id.add_room8_btn).setOnClickListener(v -> {
+            if (User.getInstance().getUserLevel() > 1)
+                new AddRoom8Dialog().show(getParentFragmentManager(), "add_room8");
+            else
+                Toast.makeText(requireContext(), "you need an APARTMENT OWNER privileges or above", Toast.LENGTH_SHORT).show();
+        });
     }
 }
