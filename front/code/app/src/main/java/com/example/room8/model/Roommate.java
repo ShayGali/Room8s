@@ -12,6 +12,8 @@ public class Roommate {
     private static final String USER_LEVEL_KEY = "user_level";
     private static final String LEVEL_NAME_KEY = "level_name";
 
+    public static final String[] LEVELS = new String[]{"basic user","apartment owner","admin"};
+
     int id;
     String userName;
     int userLevel;

@@ -663,6 +663,9 @@ public class ServerRequestsService {
     }
 
 
+    public void setRole(int userId, String roleName) {
+        showToast("TODO"); //TODO
+    }
 }
 
 

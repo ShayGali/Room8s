@@ -16,21 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
 import com.example.room8.adapters.RoommatesAdapter;
-import com.example.room8.model.Roommate;
 import com.example.room8.model.User;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class RoommatesDialog extends AppCompatDialogFragment {
 
     View view;
 
-    List<Roommate> roommates;
     Consumer<Integer> action;
 
-    public RoommatesDialog(List<Roommate> roommates, Consumer<Integer> action) {
-        this.roommates = roommates;
+    public RoommatesDialog(Consumer<Integer> action) {
         this.action = action;
     }
 
@@ -58,7 +54,7 @@ public class RoommatesDialog extends AppCompatDialogFragment {
 
     void initRoom8sRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        RoommatesAdapter adapter = new RoommatesAdapter(getLayoutInflater(), roommates, action);
+        RoommatesAdapter adapter = new RoommatesAdapter(getLayoutInflater(), action);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

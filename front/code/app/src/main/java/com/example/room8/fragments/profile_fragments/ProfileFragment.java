@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment {
         });
 
         openRoom8sDialogBtn.setOnClickListener(v -> {
-            RoommatesDialog dialog = new RoommatesDialog(Apartment.getInstance().getRoommates(), id -> activity.removeRoom8s(id));
+            RoommatesDialog dialog = new RoommatesDialog(id -> activity.removeRoom8s(id));
             dialog.show(getParentFragmentManager(), "Room8s");
         });
 
