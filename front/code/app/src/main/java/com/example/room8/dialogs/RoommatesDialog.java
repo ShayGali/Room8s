@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,8 +62,6 @@ public class RoommatesDialog extends AppCompatDialogFragment {
     }
 
     void initAddRoom8Btn() {
-        view.findViewById(R.id.add_room8_btn).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "TODO", Toast.LENGTH_SHORT).show();
-        });
+        view.findViewById(R.id.add_room8_btn).setOnClickListener(v -> new AddRoom8Dialog().show(getParentFragmentManager(),"add_room8"));
     }
 }

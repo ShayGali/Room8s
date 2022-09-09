@@ -140,7 +140,6 @@ public class ServerRequestsService {
                             if (successAction != null) successAction.accept(responseJOSN);
                         } else {
                             if (failAction != null) failAction.accept(responseJOSN);
-                            handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
                         }
                         return;
                     }
@@ -595,7 +594,7 @@ public class ServerRequestsService {
         formBody.add("identify", emailOrUsername);
 
         Request request = new Request.Builder()
-                .url(HTTP_URL + APARTMENTS_PATH + "/joinReq")
+                .url(HTTP_URL + APARTMENTS_PATH + "/sendJoinReq")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .post(formBody.build())
                 .build();

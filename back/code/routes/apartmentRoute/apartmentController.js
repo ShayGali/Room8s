@@ -165,12 +165,18 @@ exports.sendJoinReq = async (req, res, next) => {
         msg: "you cant send request to yourself",
       });
 
-    if (userService.findUserApartmentId(user.ID) !== undefined)
+    if ((await userService.findUserApartmentId(user.ID)) !== undefined)
       return res
         .status(200)
         .json({ success: false, msg: "user is already in apartment" });
 
-    apartmentService.sendJoinReq(apartmentId, user.ID, senderId);
+    if (await apartmentService.checkIfThereAreJoinReq(apartmentId, user.ID))
+      return res.status(500).json({
+        success: false,
+        msg: "A request to join the apartment already exists",
+      });
+
+    // apartmentService.sendJoinReq(apartmentId, user.ID, senderId);
     res.status(201).json({ success: true, msg: "request send successfully" });
   } catch (error) {
     next(error);
@@ -198,14 +204,16 @@ exports.handleJoinReq = async (req, res, next) => {
     if (join === true) {
       // `=== true` because i what to be sure its boolean
       let newToken = undefined;
-      if (apartmentService.removeJoinReq(apartmentId, userId)){
+      if (apartmentService.removeJoinReq(apartmentId, userId)) {
         apartmentService.addUserToApartment(apartmentId, userId);
         newToken = generateAccessToken({ userId, apartmentId });
       }
 
-      return res
-        .status(201)
-        .json({ success: true, msg: "user add to the apartment",jwtToken:newToken });
+      return res.status(201).json({
+        success: true,
+        msg: "user add to the apartment",
+        jwtToken: newToken,
+      });
     } else {
       apartmentService.removeJoinReq(apartmentId, userId);
       return res.status(200).json({ success: true, msg: "success" });

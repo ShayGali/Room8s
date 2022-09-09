@@ -153,3 +153,9 @@ exports.getJoinReq = async (userId) => {
   const [result, _] = await db.execute(query, [apartmentId]);
   return result;
 };
+
+exports.checkIfThereAreJoinReq = async (apartmentId, userId) => {
+  const query = `SELECT * FROM ${joinRequestTable} WHERE apartment_ID = ? AND user_ID = ?;`;
+  const [result, _] = await db.execute(query, [apartmentId, userId]);
+  return result[0] != undefined;
+};

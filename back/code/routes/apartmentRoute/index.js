@@ -21,6 +21,7 @@ router.route("/data").get(apartmentController.getApartmentData);
 // );
 
 router.get("/joinReq", apartmentController.getJoinReq);
+
 router.post(
   "/sendJoinReq",
   matchUserToApartment,
