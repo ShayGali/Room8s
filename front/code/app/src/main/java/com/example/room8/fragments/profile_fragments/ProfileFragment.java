@@ -16,7 +16,6 @@ import com.example.room8.R;
 import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.dialogs.ChangePasswordDialog;
 import com.example.room8.dialogs.RoommatesDialog;
-import com.example.room8.model.Apartment;
 
 public class ProfileFragment extends Fragment {
 
