@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
                     assert navHostFragment != null;
                     navHostFragment.getNavController().navigate(actionID);
                 }
+
         );
     }
 
@@ -170,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService.createApartment(name, () -> navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment));
     }
 
-    public void leaveApartment(){
-        databaseService.leave(()->navigateFragment(R.id.action_profileFragment_to_homePageUserWithoutApartmentFragment));
+    public void leaveApartment() {
+        databaseService.leave(() -> navigateFragment(R.id.action_profileFragment_to_homePageUserWithoutApartmentFragment));
     }
 
     public void changePassword(String password) {

@@ -28,7 +28,7 @@ router.post(
   isApartmentOwner,
   apartmentController.sendJoinReq
 );
-router.post("/handleJoinReq", apartmentController.sendJoinReq);
+router.post("/handleJoinReq", apartmentController.handleJoinReq);
 
 router.delete(
   "/removeUserFromApartment/:userId",
@@ -36,6 +36,9 @@ router.delete(
   isApartmentOwner,
   apartmentController.removeUserFromApartment
 );
+
+router.delete("/leave", matchUserToApartment, apartmentController.leave);
+
 router.delete(
   "/delete",
   matchUserToApartment,

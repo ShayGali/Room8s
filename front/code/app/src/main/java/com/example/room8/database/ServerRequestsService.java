@@ -139,9 +139,12 @@ public class ServerRequestsService {
                         if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
                         } else {
-                            if (failAction != null) failAction.accept(responseJOSN);
+                            if (failAction != null) {
+                                failAction.accept(responseJOSN);
+                                return;
+                            }
                         }
-                        return;
+
                     }
 
                     if (!response.isSuccessful()) {
@@ -459,12 +462,19 @@ public class ServerRequestsService {
 
     public void leave(Runnable navigate) {
         Request request = new Request.Builder()
-                .url(HTTP_URL + APARTMENTS_PATH + "/removeUserFromApartment/" + User.getInstance().getId())
+                .url(HTTP_URL + APARTMENTS_PATH + "/leave")
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .delete()
                 .build();
 
         client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+            SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
+            sp.setIsInApartment(false);
+            try {
+                sp.saveJwtAccessToken(jsonObject.getString(ACCESS_TOKEN_KEY));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             navigate.run();
             showToast("remove room8 successfully");
         }));
@@ -633,6 +643,9 @@ public class ServerRequestsService {
                                 String token = jsonObject.getString(ACCESS_TOKEN_KEY);
                                 sp.saveJwtAccessToken(token);
                                 this.accessesToken = token;
+                            }else{
+                                showToast(jsonObject.getString(MESSAGE_KEY));
+                                return;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

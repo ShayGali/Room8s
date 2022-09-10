@@ -108,6 +108,21 @@ exports.addUserToApartment = async (req, res, next) => {
   }
 };
 
+exports.leave = async (req, res, next) => {
+  const { userId, apartmentId } = req.tokenData;
+  try {
+    await apartmentService.removeUserFromApartment(apartmentId, userId);
+    const newToken = generateAccessToken({ userId, apartmentId: null });
+    res.json({
+      success: true,
+      msg: `user ${userId} has deleted from apartment ${apartmentId}`,
+      jwtToken: newToken,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.removeUserFromApartment = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
   const { userId } = req.params;
@@ -176,7 +191,7 @@ exports.sendJoinReq = async (req, res, next) => {
         msg: "A request to join the apartment already exists",
       });
 
-    // apartmentService.sendJoinReq(apartmentId, user.ID, senderId);
+    apartmentService.sendJoinReq(apartmentId, user.ID, senderId);
     res.status(201).json({ success: true, msg: "request send successfully" });
   } catch (error) {
     next(error);
@@ -201,12 +216,19 @@ exports.handleJoinReq = async (req, res, next) => {
       });
     }
 
-    if (join === true) {
+    if (join === "true") {
       // `=== true` because i what to be sure its boolean
       let newToken = undefined;
       if (apartmentService.removeJoinReq(apartmentId, userId)) {
-        apartmentService.addUserToApartment(apartmentId, userId);
-        newToken = generateAccessToken({ userId, apartmentId });
+        if (
+          (await apartmentService.addUserToApartment(apartmentId, userId)) ===
+          undefined
+        ) {
+          return res
+            .status(500)
+            .json({ success: false, msg: "cant add you to the room" });
+        }
+        newToken = generateAccessToken({ userId, apartmentId: +apartmentId });
       }
 
       return res.status(201).json({
@@ -226,11 +248,11 @@ exports.handleJoinReq = async (req, res, next) => {
 exports.getJoinReq = async (req, res, next) => {
   const { userId } = req.tokenData;
   try {
-    const res = await apartmentService.getJoinReq(userId);
+    const result = await apartmentService.getJoinReq(userId);
     return res.json({
       success: true,
       msg: `join request for ${userId}`,
-      data: res,
+      data: result,
     });
   } catch (error) {
     next(error);

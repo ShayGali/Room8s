@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.model.Apartment;
 
 import java.lang.ref.WeakReference;
@@ -58,7 +59,8 @@ public class HomePageFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.settings:
-                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_settingsFragment);
+                        System.out.println(SharedPreferenceHandler.getInstance().getAccessJwt());
+//                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_settingsFragment);
                         return true;
                     case R.id.logout:
                         ((MainActivity) requireActivity()).logout(R.id.action_homePageFragment_to_loginFragment);

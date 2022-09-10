@@ -1,5 +1,6 @@
 const db = require("../../config/db");
 const apartmentsTable = "apartments";
+const usersTable = "users";
 const apartmentsUserTable = "user_in_apartment";
 const joinRequestTable = "join_requests";
 
@@ -149,8 +150,13 @@ exports.removeJoinReq = async (apartmentId, userId) => {
  * @returns {Promise<Array<{userId:number, apartmentId:number, senderId:number}>>}
  */
 exports.getJoinReq = async (userId) => {
-  const query = `SELECT * FROM ${joinRequestTable} WHERE userId = ?;`;
-  const [result, _] = await db.execute(query, [apartmentId]);
+  const query = `SELECT ${joinRequestTable}.*, apartment_name, user_name,profile_icon_id FROM ${joinRequestTable}
+  INNER JOIN ${apartmentsTable}
+  ON apartment_ID = ${apartmentsTable}.ID
+  INNER JOIN ${usersTable}
+  ON sender_ID = ${usersTable}.ID
+  WHERE user_ID = ?;`;
+  const [result, _] = await db.execute(query, [userId]);
   return result;
 };
 

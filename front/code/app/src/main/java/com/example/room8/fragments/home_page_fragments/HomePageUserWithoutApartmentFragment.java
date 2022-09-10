@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -16,29 +17,44 @@ import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.CreateApartmentDialog;
+import com.example.room8.dialogs.JoinReqDialog;
 
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     MainActivity activity;
-
+    View view;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
-
-        initMenuBtn(view);
-        initCreateApartmentButton(view);
+        view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
+        activity = ((MainActivity) requireActivity());
+        initMenuBtn();
+        initCreateApartmentButton();
+        getJoinReq();
         disableBackPress();
 
-        ServerRequestsService.getInstance().getJoinReq(jsonArray ->{}); // TODO
+        ServerRequestsService.getInstance().getJoinReq(jsonArray -> {
+        }); // TODO
 
         return view;
     }
 
+    private void getJoinReq() {
+        ServerRequestsService.getInstance().getJoinReq(jsonArray -> {
+            if (jsonArray.length() == 0) return;
+            requireActivity().runOnUiThread(() -> {
+                new JoinReqDialog(
+                        jsonArray,
+                        () -> activity.navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment)
+                ).show(getParentFragmentManager(), "JoinReqDialog");
+            });
+        });
+    }
+
     @SuppressLint("NonConstantResourceId")
-    private void initMenuBtn(View view) {
+    private void initMenuBtn() {
         View menuBtn = view.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
@@ -69,10 +85,10 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         });
     }
 
-    private void initCreateApartmentButton(View view){
+    private void initCreateApartmentButton() {
         View createApartmentButton = view.findViewById(R.id.create_apartment_btn);
-        createApartmentButton.setOnClickListener(v->{
-            CreateApartmentDialog createApartmentDialog = new CreateApartmentDialog(str-> activity.createApartment(str));
+        createApartmentButton.setOnClickListener(v -> {
+            CreateApartmentDialog createApartmentDialog = new CreateApartmentDialog(str -> activity.createApartment(str));
             createApartmentDialog.show(getParentFragmentManager(), "createApartmentDialog");
         });
     }

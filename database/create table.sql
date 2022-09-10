@@ -23,7 +23,7 @@ user_name NVARCHAR(100) NOT NULL UNIQUE,
 email NVARCHAR(100) NOT NULL UNIQUE,
 user_level INT DEFAULT 1, -- default to basic user
 user_password NVARCHAR(256) NOT NULL,
-profile_icon_id INT,
+profile_icon_id INT DEFAULT 0,
 
 FOREIGN KEY (user_level) REFERENCES user_level(ID) ON DELETE SET NULL
 );
