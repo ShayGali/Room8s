@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_profileFragment_to_homePageUserWithoutApartmentFragment"
             app:destination="@id/homePageUserWithoutApartmentFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment

@@ -30,13 +30,14 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home_page_user_without_apartment, container, false);
         activity = ((MainActivity) requireActivity());
+
+        view.findViewById(R.id.go_to_profile_btn).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment));
+
         initMenuBtn();
         initCreateApartmentButton();
         getJoinReq();
         disableBackPress();
 
-        ServerRequestsService.getInstance().getJoinReq(jsonArray -> {
-        }); // TODO
 
         return view;
     }
@@ -60,10 +61,9 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
             popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
-
                 switch (item.getItemId()) {
                     case R.id.settings:
-                        Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_settingsFragment);
+                        Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
                         return true;
                     case R.id.logout:
                         ((MainActivity) requireActivity()).logout(R.id.action_homePageUserWithoutApartmentFragment_to_loginFragment);

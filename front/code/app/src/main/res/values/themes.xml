@@ -33,4 +33,9 @@
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
+    <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/btn_color</item>
+    </style>
+
 </resources>
