@@ -24,7 +24,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_layout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="15dp"
@@ -41,7 +41,6 @@
             android:layout_height="135dp"
             android:layout_marginTop="25dp"
             android:src="@drawable/profile_banner"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,6 +49,7 @@
             android:id="@+id/frameLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="25dp"
             android:background="@drawable/style_layout_border_gray"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -112,11 +112,28 @@
             android:paddingVertical="10dp"
             android:text="Rommates"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/leave_room_btn"
+            app:layout_constraintBottom_toTopOf="@+id/log_out_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/change_password_btn" />
+
+        <TextView
+            android:id="@+id/log_out_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/style_layout_border_gray"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="Log Out"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/leave_room_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rooms_dialog_btn" />
 
         <TextView
             android:id="@+id/leave_room_btn"
@@ -125,15 +142,34 @@
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:background="@drawable/style_layout_border_gray"
+            android:backgroundTint="#dc3545"
             android:gravity="center"
             android:paddingVertical="10dp"
             android:text="Leave Room"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/delete_user_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/log_out_btn" />
+
+        <TextView
+            android:id="@+id/delete_user_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/style_layout_border_gray"
+            android:backgroundTint="#dc3545"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="Delete User"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rooms_dialog_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/leave_room_btn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

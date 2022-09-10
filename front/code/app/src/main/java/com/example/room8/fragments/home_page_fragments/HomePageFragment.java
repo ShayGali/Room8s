@@ -59,8 +59,7 @@ public class HomePageFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.settings:
-                        System.out.println(SharedPreferenceHandler.getInstance().getAccessJwt());
-//                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_settingsFragment);
+                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_profileFragment);
                         return true;
                     case R.id.logout:
                         ((MainActivity) requireActivity()).logout(R.id.action_homePageFragment_to_loginFragment);

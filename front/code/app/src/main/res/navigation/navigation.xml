@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="com.example.room8.fragments.open_app_fragments.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
@@ -42,7 +42,7 @@
         android:id="@+id/forgetPasswordFragment"
         android:name="com.example.room8.fragments.open_app_fragments.ForgetPasswordFragment"
         android:label="fragment_forget_password"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_forgot_password">
         <action
             android:id="@+id/action_forgetPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -51,13 +51,11 @@
         android:id="@+id/homePageUserWithoutApartmentFragment"
         android:name="com.example.room8.fragments.home_page_fragments.HomePageUserWithoutApartmentFragment"
         android:label="fragment_home_page_user_without_apartment"
-        tools:layout="@layout/fragment_home_page_user_without_apartment" >
+        tools:layout="@layout/fragment_home_page_user_without_apartment">
         <action
             android:id="@+id/action_homePageUserWithoutApartmentFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_homePageUserWithoutApartmentFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+
         <action
             android:id="@+id/action_homePageUserWithoutApartmentFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -69,13 +67,11 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.room8.fragments.home_page_fragments.HomePageFragment"
         android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" >
+        tools:layout="@layout/fragment_home_page">
         <action
             android:id="@+id/action_homePageFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_homePageFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+
         <action
             android:id="@+id/action_homePageFragment_to_tasksFragment"
             app:destination="@id/tasksFragment" />
@@ -93,43 +89,29 @@
         android:id="@+id/profileFragment"
         android:name="com.example.room8.fragments.profile_fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+        tools:layout="@layout/fragment_profile">
+
         <action
             android:id="@+id/action_profileFragment_to_homePageUserWithoutApartmentFragment"
             app:destination="@id/homePageUserWithoutApartmentFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.room8.fragments.settings_fragments.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_homePageFragment"
-            app:destination="@id/homePageFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/tasksFragment"
         android:name="com.example.room8.fragments.tasks_fragments.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" >
+        tools:layout="@layout/fragment_tasks">
         <action
             android:id="@+id/action_tasksFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
-        <action
-            android:id="@+id/action_tasksFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/walletFragment"
         android:name="com.example.room8.fragments.wallet_fragments.WalletFragment"
         android:label="fragment_wallet"
-        tools:layout="@layout/fragment_wallet" >
-        <action
-            android:id="@+id/action_walletFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+        tools:layout="@layout/fragment_wallet">
+
         <action
             android:id="@+id/action_walletFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
@@ -138,10 +120,8 @@
         android:id="@+id/message_Fragment"
         android:name="com.example.room8.fragments.message_fragments.ChatFragment"
         android:label="fragment_message_"
-        tools:layout="@layout/fragment_message" >
-        <action
-            android:id="@+id/action_message_Fragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+        tools:layout="@layout/fragment_message">
+
         <action
             android:id="@+id/action_message_Fragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
