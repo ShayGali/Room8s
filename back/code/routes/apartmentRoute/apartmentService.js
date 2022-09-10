@@ -105,7 +105,7 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
   const [numberOfPeople, _] = await db.execute(checkNumOfPeopleQuery, [
     apartmentId,
   ]);
-  if (numberOfPeople[0].number_of_people < 0) {
+  if (numberOfPeople[0].number_of_people <= 0) {
     this.deleteApartment(apartmentId);
   }
 };
