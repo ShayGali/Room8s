@@ -89,7 +89,11 @@ public class ProfileFragment extends Fragment {
         deleteUserDtn.setOnClickListener(v -> {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 if (which == DialogInterface.BUTTON_POSITIVE)
-                    Toast.makeText(activity, "TODO", Toast.LENGTH_SHORT).show();
+                    ServerRequestsService.getInstance().deleteUser(()->{
+                        requireActivity().runOnUiThread(()->
+                            Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment)
+                        );
+                    })
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
