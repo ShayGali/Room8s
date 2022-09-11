@@ -2,6 +2,11 @@ const userService = require("./userService");
 const apartmentService = require("../../routes/apartmentRoute/apartmentService");
 
 const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../../utilities/jwtHandler");
+
+const {
   hashPassword,
   isStrongPassword,
 } = require("../../utilities/passwordHandler");
@@ -16,15 +21,30 @@ exports.findUserApartmentId = async (req, res, next) => {
   try {
     const result = await userService.findUserApartmentId(userId);
 
+    const newToken = generateAccessToken({
+      userId,
+      apartmentId: result != undefined ? result : null,
+    });
+
     if (!result) {
       return res
         .status(200)
-        .send({ success: true, msg: "User not in apartment", apartmentId: null });
+        .send({
+          success: true,
+          msg: "User not in apartment",
+          apartmentId: null,
+          jwtToken: newToken,
+        });
     }
 
     return res
       .status(200)
-      .send({ success: true, msg: "success", apartmentId: result });
+      .send({
+        success: true,
+        msg: "success",
+        apartmentId: result,
+        wtToken: newToken,
+      });
   } catch (err) {
     next(err);
   }

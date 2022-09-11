@@ -93,4 +93,16 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         });
     }
 
+    public void refreshData(){
+        ServerRequestsService.getInstance().getApartmentId(()->{
+            ServerRequestsService.getInstance().getUserData();
+            if(SharedPreferenceHandler.getInstance().isInApartment()){
+                Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment);
+            }else{
+                this.getJoinReq();
+            }
+        })
+    }
+
+
 }

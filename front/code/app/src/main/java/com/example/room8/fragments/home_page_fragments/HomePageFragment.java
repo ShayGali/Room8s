@@ -79,4 +79,17 @@ public class HomePageFragment extends Fragment {
         walletBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment));
         return view;
     }
+
+    public void refreshData(){
+        ServerRequestsService.getInstance().getApartmentId(()->{
+            databaseService.getUserData();
+            if(SharedPreferenceHandler.getInstance().isInApartment()){
+                ServerRequestsService.getInstance().getAllTask(null);
+                ServerRequestsService.getInstance().getRoom8s();
+                ServerRequestsService.getInstance().getExpenses();
+            }else{
+                Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+            }
+        })
+    }
 }

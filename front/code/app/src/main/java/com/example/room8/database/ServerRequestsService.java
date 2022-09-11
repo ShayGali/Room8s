@@ -325,7 +325,8 @@ public class ServerRequestsService {
                 for (int i = 0; i < tasks.length(); i++) {
                     JSONObject task = tasks.getJSONObject(i);
                     Apartment.getInstance().addTask(new Task(task));
-                    activity.runOnUiThread(notifyMethod);
+                    if(notifyMethod!=null)
+                        activity.runOnUiThread(notifyMethod);
                 }
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
@@ -702,6 +703,7 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
             try{
+                SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
                 if(jsonObject.has("apartmentId")){
                     if(jsonObject.isNull("apartmentId")){
                         User.getInstance().setApartmentId(0);
@@ -711,6 +713,13 @@ public class ServerRequestsService {
                         sp.setIsInApartment(true);
                     }
                 }
+
+                if(jsonObject.has(ACCESS_TOKEN_KEY)){
+                    String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                    sp.saveJwtAccessToken(token);
+                    this.accessesToken = token;
+                }
+                
                 if(onFinish!=null)onFinish.run();
             }catch(JSONException e){
                 e.printStackTrace();
