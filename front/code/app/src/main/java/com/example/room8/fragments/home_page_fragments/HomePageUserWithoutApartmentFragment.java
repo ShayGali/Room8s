@@ -7,22 +7,29 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
+import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.dialogs.CreateApartmentDialog;
 import com.example.room8.dialogs.JoinReqDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     MainActivity activity;
     View view;
+    SwipeRefreshLayout swipeRefreshLayout;
+    FloatingActionButton refreshBtn;
+    TextView refreshStatus;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -38,6 +45,15 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         getJoinReq();
         disableBackPress();
 
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        refreshBtn = view.findViewById(R.id.refreshBtn);
+        refreshStatus = view.findViewById(R.id.refresh_status);
+
+        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
+        refreshBtn.setOnClickListener(v -> {
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            this.refreshData();
+        });
 
         return view;
     }
@@ -45,12 +61,10 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     private void getJoinReq() {
         ServerRequestsService.getInstance().getJoinReq(jsonArray -> {
             if (jsonArray.length() == 0) return;
-            requireActivity().runOnUiThread(() -> {
-                new JoinReqDialog(
-                        jsonArray,
-                        () -> activity.navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment)
-                ).show(getParentFragmentManager(), "JoinReqDialog");
-            });
+            requireActivity().runOnUiThread(() -> new JoinReqDialog(
+                    jsonArray,
+                    () -> activity.navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment)
+            ).show(getParentFragmentManager(), "JoinReqDialog"));
         });
     }
 
@@ -93,7 +107,9 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void refreshData(){
+        refreshStatus.setText("Refreshing...");
         ServerRequestsService.getInstance().getApartmentId(()->{
             ServerRequestsService.getInstance().getUserData();
             if(SharedPreferenceHandler.getInstance().isInApartment()){
@@ -101,7 +117,9 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
             }else{
                 this.getJoinReq();
             }
-        })
+            swipeRefreshLayout.setRefreshing(false);
+            requireActivity().runOnUiThread(() -> refreshStatus.setText("Refresh Data"));
+        });
     }
 
 
