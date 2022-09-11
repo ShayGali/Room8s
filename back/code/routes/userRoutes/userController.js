@@ -1,4 +1,5 @@
 const userService = require("./userService");
+const apartmentService = require("../../routes/apartmentRoute/apartmentService");
 
 const {
   hashPassword,
@@ -50,13 +51,23 @@ exports.findById = async (req, res, next) => {
 };
 
 exports.delete = async (req, res, next) => {
-  const { userId } = req.tokenData;
-  if (!userId) return res.status(403).send({ success: false });
-  const result = await userService.delete(userId);
-  if (result === 0) {
-    return res.status(200).json({ msg: "user don`t deleted for some reason" });
+  const { userId, apartmentId } = req.tokenData;
+  if (apartmentId) {
+    try {
+      await apartmentService.removeUserFromApartment(apartmentId, userId);
+    } catch (e) {}
   }
-  res.status(200).json({ success: true, msg: "success", data: result });
+  try {
+    const result = await userService.delete(userId);
+    if (result === 0) {
+      return res
+        .status(200)
+        .json({ success: false, msg: "user don`t deleted for some reason" });
+    }
+    res.status(200).json({ success: true, msg: "success", data: result });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getRoommatesData = async (req, res, next) => {
