@@ -19,7 +19,7 @@ exports.findUserApartmentId = async (req, res, next) => {
     if (!result) {
       return res
         .status(200)
-        .send({ msg: "User not in apartment", apartmentId: null });
+        .send({ success: true, msg: "User not in apartment", apartmentId: null });
     }
 
     return res

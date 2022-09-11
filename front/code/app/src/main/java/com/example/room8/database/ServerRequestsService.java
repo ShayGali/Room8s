@@ -679,6 +679,45 @@ public class ServerRequestsService {
     public void setRole(int userId, String roleName) {
         showToast("TODO"); //TODO
     }
+
+
+     public void deleteUser(Runnable navigateFunction) {
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/delete")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("delete data failed", jsonObject -> {
+            navigateFunction.run();
+        }));
+    }
+
+    public void getApartmentId(Runnable onFinish){
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/apartmentId")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+            try{
+                if(jsonObject.has("apartmentId")){
+                    if(jsonObject.isNull("apartmentId")){
+                        User.getInstance().setApartmentId(0);
+                        sp.setIsInApartment(false);
+                    }else{
+                        User.getInstance().setApartmentId(apartmentId);
+                        sp.setIsInApartment(true);
+                    }
+                }
+                if(onFinish!=null)onFinish.run();
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }));
+    }
+    
 }
 
 
