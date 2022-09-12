@@ -56,6 +56,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             room8Holder.delete.setVisibility(View.GONE);
             return;
         }
+
         room8Holder.editRole.setOnClickListener(v->{
             if (room8Holder.roleTextView.getVisibility() == View.VISIBLE){
                 room8Holder.roleTextView.setVisibility(View.INVISIBLE);
@@ -66,15 +67,21 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 room8Holder.roleTextView.setVisibility(View.VISIBLE);
                 room8Holder.roleSpinner.setVisibility(View.INVISIBLE);
                 room8Holder.editRole.setImageResource(R.drawable.ic_baseline_edit_24);
-                if (!room8Holder.roleSpinner.getSelectedItem().toString().equals(roommate.getLevelName())){
-                    ServerRequestsService.getInstance().setRole(roommate.getId(),room8Holder.roleSpinner.getSelectedItem().toString());
+                if (room8Holder.roleSpinner.getSelectedItemPosition()+1 != roommate.getLevelName()){
+                    ServerRequestsService.getInstance().setRole(roommate.getId(),room8Holder.roleSpinner.getSelectedItemPosition()+1, todo);
                 }
             }
         });
-        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(inflater.getContext(), R.layout.view_drop_down_item, Roommate.LEVELS);
+
+        // display just the roles that he can change
+        int[] displayRoles = new int[User.getInstance().getUserLevel()];
+        for(int i =0 ;i < displayRoles.length;i++){
+            displayRoles[i] = Roommate.LEVELS[i];
+        }
+        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(inflater.getContext(), R.layout.view_drop_down_item, displayRoles);
         room8Holder.roleSpinner.setAdapter(roleAdapter);
-        for (int i = 0; i < Roommate.LEVELS.length; i++) {
-            if (Roommate.LEVELS[i].equals(roommate.getLevelName())) {
+        for (int i = 0; i < displayRoles.length; i++) {
+            if (displayRoles[i].equals(roommate.getLevelName())) {
                 room8Holder.roleSpinner.setSelection(i);
                 break;
             }
@@ -99,6 +106,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Spinner roleSpinner;
         FloatingActionButton delete;
         FloatingActionButton editRole;
+        TextView errorMsg;
 
         public Room8Holder(@NonNull View itemView) {
             super(itemView);
