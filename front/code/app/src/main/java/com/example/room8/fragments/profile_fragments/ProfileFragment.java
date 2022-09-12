@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.dialogs.ChangePasswordDialog;
 import com.example.room8.dialogs.RoommatesDialog;
@@ -89,7 +91,9 @@ public class ProfileFragment extends Fragment {
         deleteUserDtn.setOnClickListener(v -> {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 if (which == DialogInterface.BUTTON_POSITIVE)
-                    Toast.makeText(activity, "TODO", Toast.LENGTH_SHORT).show();
+                    ServerRequestsService.getInstance().deleteUser(()-> requireActivity().runOnUiThread(()->
+                        Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment)
+                    ));
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);

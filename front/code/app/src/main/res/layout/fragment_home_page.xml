@@ -8,163 +8,200 @@
     android:clipToPadding="true"
     tools:context=".fragments.home_page_fragments.HomePageFragment">
 
-    <ImageView
-        android:id="@+id/menu_btn"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:contentDescription="@string/menu"
-        android:cropToPadding="true"
-        android:padding="10dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/btn_img_menu"
-        app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.023094688" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/logo"
-        android:src="@drawable/logo_dark_mode"
-        app:layout_constraintDimensionRatio="w,1.16:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
-
-
-    <View
-        android:id="@+id/hr_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        android:background="#BABABA"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_layout" />
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btn_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/hr_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background">
+            <ImageView
+                android:id="@+id/menu_btn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/menu"
+                android:cropToPadding="true"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_img_menu"
+                app:layout_constraintDimensionRatio="w,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
 
 
-        <ImageView
-            android:id="@+id/go_to_tasks_btn"
-            android:layout_width="0dp"
-            android:layout_height="111dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="8dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/go_to_tasks_screen"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.023094688" />
 
-            android:maxWidth="120dp"
-            android:maxHeight="150dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_img_tasks"
-            app:layout_constraintBottom_toTopOf="@+id/go_to_wallet_btn"
-            app:layout_constraintDimensionRatio="w,1.15:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
-            app:layout_constraintTop_toBottomOf="parent" />
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/logo"
+                android:src="@drawable/logo_dark_mode"
+                app:layout_constraintDimensionRatio="w,1.16:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
-        <ImageView
-            android:id="@+id/go_to_profile_btn"
 
-            android:layout_width="0dp"
-            android:layout_height="111dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/go_to_profile_screen"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_img_profile"
-            app:layout_constraintBottom_toTopOf="@+id/go_to_messages_btn"
-            app:layout_constraintDimensionRatio="w,1.15:1"
-            app:layout_constraintEnd_toStartOf="@+id/go_to_tasks_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            <View
+                android:id="@+id/hr_view"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="40dp"
+                android:background="#BABABA"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_layout" />
 
-        <ImageView
-            android:id="@+id/go_to_messages_btn"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="295dp" />
 
-            android:layout_width="0dp"
-            android:layout_height="111dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/go_to_chat_screen"
-            android:maxWidth="120dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/hr_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline17">
 
-            android:maxHeight="150dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_img_messages"
-            app:layout_constraintDimensionRatio="w,1.15:1"
-            app:layout_constraintEnd_toStartOf="@+id/go_to_wallet_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/go_to_profile_btn" />
 
-        <ImageView
-            android:id="@+id/go_to_wallet_btn"
+                <ImageView
+                    android:id="@+id/go_to_tasks_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/go_to_tasks_screen"
 
-            android:layout_width="0dp"
-            android:layout_height="111dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
+                    android:maxWidth="120dp"
+                    android:maxHeight="150dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_img_tasks"
+                    app:layout_constraintBottom_toTopOf="@+id/go_to_wallet_btn"
+                    app:layout_constraintDimensionRatio="w,1.15:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
-            android:contentDescription="@string/go_to_wallet_screen"
-            android:maxWidth="120dp"
-            android:maxHeight="150dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_img_wallet"
-            app:layout_constraintDimensionRatio="w,1.15:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"
-            app:layout_constraintTop_toBottomOf="@+id/go_to_tasks_btn" />
+                <ImageView
+                    android:id="@+id/go_to_profile_btn"
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/go_to_profile_screen"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_img_profile"
+                    app:layout_constraintBottom_toTopOf="@+id/go_to_messages_btn"
+                    app:layout_constraintDimensionRatio="w,1.15:1"
+                    app:layout_constraintEnd_toStartOf="@+id/go_to_tasks_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="295dp" />
+                <ImageView
+                    android:id="@+id/go_to_messages_btn"
+
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/go_to_chat_screen"
+                    android:maxWidth="120dp"
+
+                    android:maxHeight="150dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_img_messages"
+                    app:layout_constraintDimensionRatio="w,1.15:1"
+                    app:layout_constraintEnd_toStartOf="@+id/go_to_wallet_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/go_to_profile_btn" />
+
+                <ImageView
+                    android:id="@+id/go_to_wallet_btn"
+
+                    android:layout_width="0dp"
+                    android:layout_height="111dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+
+                    android:contentDescription="@string/go_to_wallet_screen"
+                    android:maxWidth="120dp"
+                    android:maxHeight="150dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_img_wallet"
+                    app:layout_constraintDimensionRatio="w,1.15:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/go_to_tasks_btn" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/refreshBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:clickable="true"
+                android:src="@drawable/ic_baseline_refresh_24"
+                app:backgroundTint="#909090"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hr_view" />
+
+            <TextView
+                android:id="@+id/refresh_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Refresh Data"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/refreshBtn"
+                app:layout_constraintStart_toStartOf="@+id/refreshBtn"
+                app:layout_constraintTop_toBottomOf="@+id/refreshBtn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

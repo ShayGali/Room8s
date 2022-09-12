@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,33 +16,38 @@ import android.widget.TextView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.model.Apartment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
 
 public class HomePageFragment extends Fragment {
 
-    View menuBtn;
-
+    View view;
+    SwipeRefreshLayout swipeRefreshLayout;
+    FloatingActionButton refreshBtn;
+    TextView refreshStatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) requireActivity()).fetchUserData();
-        ((MainActivity) requireActivity()).fetchRoom8();
+        ServerRequestsService.getInstance().getUserData();
+        ServerRequestsService.getInstance().getRoom8s();
+        ServerRequestsService.getInstance().getApartmentData();
     }
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
 
             }
         });
-        View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+        view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
 
         MainActivity activity = (MainActivity) getActivity();
@@ -51,7 +57,12 @@ public class HomePageFragment extends Fragment {
         View tasksBtn = view.findViewById(R.id.go_to_tasks_btn);
         View messagesBtn = view.findViewById(R.id.go_to_messages_btn);
         View walletBtn = view.findViewById(R.id.go_to_wallet_btn);
-        menuBtn = view.findViewById(R.id.menu_btn);
+        View menuBtn = view.findViewById(R.id.menu_btn);
+
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+        refreshBtn = view.findViewById(R.id.refreshBtn);
+        refreshStatus = view.findViewById(R.id.refresh_status);
+
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
             popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
@@ -77,6 +88,31 @@ public class HomePageFragment extends Fragment {
 
         messagesBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment));
         walletBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment));
+
+        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
+        refreshBtn.setOnClickListener(v -> {
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            this.refreshData();
+        });
         return view;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void refreshData() {
+        refreshStatus.setText("Refreshing...");
+        ServerRequestsService.getInstance().getApartmentId(() -> {
+            ServerRequestsService.getInstance().getUserData();
+            if (SharedPreferenceHandler.getInstance().isInApartment()) {
+                ServerRequestsService.getInstance().getAllTask(null);
+                ServerRequestsService.getInstance().getRoom8s();
+                ServerRequestsService.getInstance().getExpenses();
+                ServerRequestsService.getInstance().getApartmentData();
+
+            } else {
+                Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+            }
+            swipeRefreshLayout.setRefreshing(false);
+            requireActivity().runOnUiThread(() -> refreshStatus.setText("Refresh Data"));
+        });
     }
 }

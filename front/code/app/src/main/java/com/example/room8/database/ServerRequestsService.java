@@ -134,7 +134,6 @@ public class ServerRequestsService {
                 try {
                     JSONObject responseJOSN = new JSONObject(stringBody);
 
-
                     if (responseJOSN.has(SUCCESS_KEY)) {
                         if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
@@ -161,9 +160,6 @@ public class ServerRequestsService {
         return this.createCallback(failMsg, successAction, null);
     }
 
-    private Callback createCallback(String failMsg) {
-        return this.createCallback(failMsg, null, null);
-    }
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
         showToast(failMsg);
@@ -325,7 +321,8 @@ public class ServerRequestsService {
                 for (int i = 0; i < tasks.length(); i++) {
                     JSONObject task = tasks.getJSONObject(i);
                     Apartment.getInstance().addTask(new Task(task));
-                    activity.runOnUiThread(notifyMethod);
+                    if (notifyMethod != null)
+                        activity.runOnUiThread(notifyMethod);
                 }
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
@@ -643,7 +640,7 @@ public class ServerRequestsService {
                                 String token = jsonObject.getString(ACCESS_TOKEN_KEY);
                                 sp.saveJwtAccessToken(token);
                                 this.accessesToken = token;
-                            }else{
+                            } else {
                                 showToast(jsonObject.getString(MESSAGE_KEY));
                                 return;
                             }
@@ -678,6 +675,82 @@ public class ServerRequestsService {
 
     public void setRole(int userId, String roleName) {
         showToast("TODO"); //TODO
+    }
+
+
+    public void deleteUser(Runnable navigateFunction) {
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/delete")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("delete data failed", jsonObject -> navigateFunction.run()));
+    }
+
+    public void getApartmentId(Runnable onFinish) {
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/apartmentId")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+            try {
+                SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
+                if (jsonObject.has("apartmentId")) {
+                    if (jsonObject.isNull("apartmentId")) {
+                        User.getInstance().setApartmentId(0);
+                        sp.setIsInApartment(false);
+                    } else {
+                        User.getInstance().setApartmentId(jsonObject.getInt("apartmentId"));
+                        sp.setIsInApartment(true);
+                    }
+                }
+
+                if (jsonObject.has(ACCESS_TOKEN_KEY)) {
+                    String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                    sp.saveJwtAccessToken(token);
+                    this.accessesToken = token;
+                }
+
+                if (onFinish != null) onFinish.run();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
+
+    public void getApartmentData() {
+        Request request = new Request.Builder()
+                .url(HTTP_URL + APARTMENTS_PATH + "/data")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+            Apartment a = Apartment.getInstance();
+
+            try {
+                if (!jsonObject.has(DATA_KEY) || jsonObject.isNull(DATA_KEY))return;
+                jsonObject = jsonObject.getJSONObject(DATA_KEY);
+
+                if (jsonObject.has("ID") && !jsonObject.isNull("ID"))
+                    a.setId(jsonObject.getInt("ID"));
+
+                if (jsonObject.has("apartment_name")) {
+                    if (jsonObject.isNull("apartment_name"))
+                        a.setName("");
+                    else
+                        a.setName(jsonObject.getString("apartment_name"));
+                }
+
+                if (jsonObject.has("number_of_people") && !jsonObject.isNull("number_of_people"))
+                    a.setNumberOfPeople(jsonObject.getInt("number_of_people"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 }
 
