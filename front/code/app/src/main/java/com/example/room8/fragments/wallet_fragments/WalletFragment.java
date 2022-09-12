@@ -21,11 +21,9 @@ import java.util.TimeZone;
 public class WalletFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
-        fetchAllExpenses();
+        ServerRequestsService.getInstance().getExpenses();
 
         view.findViewById(R.id.create_expense_btn).setOnClickListener(v -> {
             new CreateExpenseDialog().show(getParentFragmentManager(),"create_expense");
@@ -49,7 +47,4 @@ public class WalletFragment extends Fragment {
     }
 
 
-    private void fetchAllExpenses() {
-        ServerRequestsService.getInstance().getExpenses();
-    }
 }

@@ -187,6 +187,7 @@ public class Task implements Comparable<Task> {
         this.expirationDate = o.getExpirationDate();
         this.title = o.title;
         this.note = o.note;
+        this.executorsIds = o.executorsIds;
     }
 
 

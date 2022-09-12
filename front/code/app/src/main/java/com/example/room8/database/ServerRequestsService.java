@@ -380,10 +380,11 @@ public class ServerRequestsService {
         client.newCall(request).enqueue(createCallback("add task failed", jsonObject -> {
             try {
                 if (jsonObject.getJSONObject(DATA_KEY).has("insertedID") && !jsonObject.getJSONObject(DATA_KEY).isNull("insertedID"))
-                    task.setApartmentId(Apartment.getInstance().getId());
+                    task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
+                task.setApartmentId(Apartment.getInstance().getId());
                 task.setCreateDate(new Date());
                 task.setCreatorId(User.getInstance().getId());
-                task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
+                task.setApartmentId(Apartment.getInstance().getId());
                 Apartment.getInstance().getTasks().add(task);
                 showToast("The task has been add successfully");
             } catch (JSONException e) {

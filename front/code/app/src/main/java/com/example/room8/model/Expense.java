@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class Expense {
+
+    //json keys
     private static final String ID_KEY = "ID";
     private static final String USER_ID_KEY = "UserThatUploadID";
     private static final String TITLE_KEY = "title";

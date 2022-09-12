@@ -163,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
 
     @Override
     public void addTask(Task task) {
-        Apartment.getInstance().getTasks().add(task);
-        task.setCreateDate(new Date());
-        task.setCreatorId(User.getInstance().getId());
         task.setApartmentId(Apartment.getInstance().getId());
         databaseService.addTask(task);
     }
