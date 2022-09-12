@@ -32,6 +32,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+For handle HTTP requests to the server useing the okhttp3 lib
+ */
 public class ServerRequestsService {
 
     // Address

@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
-import com.example.room8.dialogs.LoadingAlert;
 import com.example.room8.dialogs.TaskDialogListener;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Task;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
 
     public ServerRequestsService databaseService;
     public SharedPreferenceHandler sharedPreferenceHandler;
-    LoadingAlert loadingAlert = new LoadingAlert(this);
 
     public static boolean isStrongPassword(String password) {
         return password.length() >= 6;
@@ -50,11 +48,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService = ServerRequestsService.getInstance();
         databaseService.setActivity(this);
 
-        loadingAlert.startLoadingDialog();
-
-        if (!checkConnections()) {
-            Toast.makeText(this, "You don't have network connection", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", "You don't have network connection"));
+        String connetionFailCause = checkConnections();
+        if (checkConnections != null) {
+            Toast.makeText(this, connetionFailCause, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connetionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
                 if (SharedPreferenceHandler.getInstance().isInApartment())
@@ -63,12 +60,14 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
                     this.navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
             }
         }
-        loadingAlert.dismissDialog();
     }
 
-    boolean checkConnections() {
-        AtomicBoolean isUp = new AtomicBoolean(true);
+    String checkConnections() {
+        if(!isNetworkAvailable()){
+            return "You don't have network connection";
+        }
 
+        AtomicBoolean isUp = new AtomicBoolean(true);
         // check if the user have connection to the server
         Thread t = new Thread(() -> {
             if (!databaseService.isServerUp()) {
@@ -83,7 +82,11 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return isUp.get() && isNetworkAvailable();
+
+        if(!isUp.get())
+            return "server is down"
+        
+        return  null;
     }
 
 
@@ -103,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     public void navigateFragment(int actionID) {
         runOnUiThread(() -> {
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
-                    assert navHostFragment != null;
-                    navHostFragment.getNavController().navigate(actionID);
+                    if(navHostFragment!=null)
+                        navHostFragment.getNavController().navigate(actionID);
                 }
 
         );

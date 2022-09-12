@@ -1,5 +1,7 @@
 package com.example.room8;
-
+/**
+Factory fot images resources
+ */
 //public final class ImageFactory{
 //
 //

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class NoConnectionActivity extends AppCompatActivity {
-
+    //TODO - refresh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
