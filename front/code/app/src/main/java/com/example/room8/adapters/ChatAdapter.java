@@ -56,11 +56,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Message message = messages.get(position);
         AbstractMessageHolder messageHolder = (AbstractMessageHolder) holder;
 
-        messageHolder.layout.setOnLongClickListener(view -> { //TODO: display dialog for delete message
-            System.out.println(message.toString());
-            return false;
-        });
-
         messageHolder.messageDate.setText(message.getDateFormat());
         messageHolder.messageContent.setText(message.getMsgContent());
         messageHolder.messageTime.setText(message.getTimeFormat());
@@ -113,7 +108,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @SuppressLint("NotifyDataSetChanged")
     public void addMessage(Message message) {
         messages.add(message);
-        messages.sort(message); //TODO: check this
+        messages.sort(message);
         notifyDataSetChanged();
     }
 

@@ -674,7 +674,6 @@ public class ServerRequestsService {
 
 
     public void setRole(int userId, int roleNum, Consumer<String> displayErrorFunction) {
-        showToast("TODO"); //TODO
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("roleNum", String.valueOf(roleNum));
         formBody.add("userId", String.valueOf(userId));

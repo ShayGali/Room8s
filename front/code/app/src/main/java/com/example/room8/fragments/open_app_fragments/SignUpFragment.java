@@ -32,7 +32,6 @@ public class SignUpFragment extends Fragment {
         EditText passwordEditText = view.findViewById(R.id.register_password_EditText);
 
         submitBtn.setOnClickListener(v -> {
-                    //TODO: make register function
                     MainActivity activity = (MainActivity) requireActivity();
                     activity.register(usernameEditText.getText().toString(), emailEditText.getText().toString(), passwordEditText.getText().toString());
                 }

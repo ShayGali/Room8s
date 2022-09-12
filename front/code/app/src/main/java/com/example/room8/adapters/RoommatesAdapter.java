@@ -68,7 +68,9 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 room8Holder.roleSpinner.setVisibility(View.INVISIBLE);
                 room8Holder.editRole.setImageResource(R.drawable.ic_baseline_edit_24);
                 if (room8Holder.roleSpinner.getSelectedItemPosition()+1 != roommate.getLevelName()){
-                    ServerRequestsService.getInstance().setRole(roommate.getId(),room8Holder.roleSpinner.getSelectedItemPosition()+1, todo);
+                    ServerRequestsService.getInstance().setRole(roommate.getId(),room8Holder.roleSpinner.getSelectedItemPosition()+1, errMsg->{
+                        room8Holder.errorMsg.setText(errMsg) // TODO - run on ui thread
+                    });
                 }
             }
         });
@@ -115,6 +117,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             roleSpinner = itemView.findViewById(R.id.role_spinner);
             delete = itemView.findViewById(R.id.delete);
             editRole = itemView.findViewById(R.id.edit_role);
+            errorMsg = itemView.findViewById(R.id.error_msg);
         }
     }
 }

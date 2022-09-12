@@ -28,7 +28,7 @@ public class ForgetPasswordFragment extends Fragment {
         });
 
 
-//        //TODO: create this button
+       // TODO: create this button
 //        view.findViewById(R.id.go_to_login_btn).setOnClickListener(v->
 //            Navigation.findNavController(view).navigate(R.id.action_forgetPasswordFragment_to_loginFragment)
 //        );

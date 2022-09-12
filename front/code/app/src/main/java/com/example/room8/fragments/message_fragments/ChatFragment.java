@@ -48,7 +48,6 @@ public class ChatFragment extends Fragment {
         recyclerView.setAdapter(chatAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        // TODO: change the name to the user name
         chatHandler = new ChatHandler(jsonObject -> requireActivity().runOnUiThread(() -> {
             try {
                 if (jsonObject.has("insertId")) { // if we get back the message id from the data base

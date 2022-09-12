@@ -18,7 +18,6 @@ const valuesValidate = require("../../utilities/valuesValidate");
 
 const resetTokenMap = new Map();
 
-// TODO: check if user name is exist
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -77,10 +76,10 @@ exports.login = async (req, res, next) => {
 
     const findUser = await userService.findByEmailOrUsername(email);
     if (!findUser) {
-      return res.status(401).json({ success: false, msg: "Invalid email" }); //TODO: change the msg
+      return res.status(401).json({ success: false, msg: "Invalid credentials" });
     }
     if (!(await compareHashPassword(password, findUser.user_password))) {
-      return res.status(401).json({ success: false, msg: "Invalid password" });
+      return res.status(401).json({ success: false, msg: "Invalid credentials" });
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);

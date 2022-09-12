@@ -50,7 +50,6 @@ exports.findUserApartmentId = async (req, res, next) => {
   }
 };
 
-//TODO: check rules
 /**
  * get user id from the request body,
  * and return the data of the user with out his password

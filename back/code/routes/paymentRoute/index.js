@@ -10,7 +10,7 @@ router.use(matchUserToApartment);
 
 router
   .route("/")
-  .get(paymentController.findAllPaymentsByFieldName) // TODO: check user
+  .get(paymentController.findAllPaymentsByFieldName) 
   .post(paymentController.add);
 
 router.get("/monthlyPayments", paymentController.getUserMonthlyPayments);
