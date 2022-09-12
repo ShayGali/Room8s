@@ -428,7 +428,6 @@ public class ServerRequestsService {
 
         String failMsg = "delete task " + taskId + " failed";
         client.newCall(request).enqueue(createCallback(failMsg, jsonObject -> {
-            Apartment.getInstance().getTasks().removeIf(task -> task.getId() == taskId);
             showToast("The task has been delete successfully");
         }));
     }

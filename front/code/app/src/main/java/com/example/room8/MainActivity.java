@@ -157,13 +157,12 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     @Override
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) { // TODO delete
         databaseService.deleteTask(taskId);
     }
 
     @Override
-    public void addTask(Task task) {
-        task.setApartmentId(Apartment.getInstance().getId());
+    public void addTask(Task task) { //TODO notifyFunction
         databaseService.addTask(task);
     }
 
