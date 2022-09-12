@@ -20,7 +20,7 @@ public class Expense {
     private static final String UPLOAD_DATE_KEY = "upload_date";
     private static final String NOTE_KEY = "note";
 
-    public static final String[] EXPENSE_TYPES = {"general expense", "electric bill", "water bill", "groceries"};
+    public static final String[] EXPENSE_TYPES = {"general expense", "electric bill", "water bill", "groceries","property tax","house committee"};
 
 
     private int id;
