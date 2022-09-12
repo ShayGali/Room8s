@@ -63,7 +63,6 @@ public class ChatFragment extends Fragment {
         }));
 
         initSendBtn();
-        initMenu();
         initHeader();
         return view;
     }
@@ -94,26 +93,4 @@ public class ChatFragment extends Fragment {
     void initHeader() {
         ((TextView) view.findViewById(R.id.apartment_name_TextView)).setText(Apartment.getInstance().getName());
     }
-
-    @SuppressLint("NonConstantResourceId")
-    void initMenu() {
-        view.findViewById(R.id.menu_btn).setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(getContext(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-
-                switch (item.getItemId()) {
-                    case R.id.settings:
-                        Toast.makeText(getContext(), "item1", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.logout:
-                        Toast.makeText(getContext(), "item2", Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
-    }
-
 }
