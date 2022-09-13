@@ -19,6 +19,7 @@ import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.dialogs.ChangePasswordDialog;
+import com.example.room8.dialogs.ChangeProfileImgDialog;
 import com.example.room8.dialogs.RoommatesDialog;
 import com.example.room8.model.User;
 
@@ -43,6 +44,9 @@ public class ProfileFragment extends Fragment {
 
         profileImage.setImageResource(ImageFactory.profileImageFactory(User.getInstance().getProfileIconId()));
 
+        view.findViewById(R.id.edit_profile_img_btn).setOnClickListener(v -> {
+            new ChangeProfileImgDialog().show(getParentFragmentManager(), "tag");
+        });
         changePasswordBtn.setOnClickListener(v -> {
             ChangePasswordDialog dialog = new ChangePasswordDialog(password -> activity.changePassword(password));
             dialog.show(getParentFragmentManager(), "Change Password");
@@ -54,7 +58,7 @@ public class ProfileFragment extends Fragment {
                     activity.logout(R.id.action_profileFragment_to_loginFragment);
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialog);
 
             builder
                     .setMessage("Are you sure you what to logout?")
@@ -80,7 +84,7 @@ public class ProfileFragment extends Fragment {
                         activity.leaveApartment();
                 };
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialog);
 
                 builder.setMessage("Are you sure you what to leave your apartment?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener);
@@ -96,12 +100,12 @@ public class ProfileFragment extends Fragment {
         deleteUserDtn.setOnClickListener(v -> {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 if (which == DialogInterface.BUTTON_POSITIVE)
-                    ServerRequestsService.getInstance().deleteUser(()-> requireActivity().runOnUiThread(()->
-                        Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment)
+                    ServerRequestsService.getInstance().deleteUser(() -> requireActivity().runOnUiThread(() ->
+                            Navigation.findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment)
                     ));
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialog);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialog);
 
             builder.setMessage("Are you sure you what to delete your user?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener);
