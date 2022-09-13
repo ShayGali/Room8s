@@ -7,21 +7,13 @@ const { generateAccessToken } = require("../../utilities/jwtHandler");
  * if the dont have apartment it will return message
  */
 exports.getApartmentData = async (req, res, next) => {
-  const { userId } = req.tokenData;
+  const { apartmentId } = req.tokenData;
   try {
-    const userApartmentId = await userService.findUserApartmentId(userId);
-
-    if (!userApartmentId) {
-      return res
-        .status(200)
-        .send({ success: false, msg: "dont have apartment" });
-    }
-
-    const apartmentData = await apartmentService.getData(userApartmentId);
+    const apartmentData = await apartmentService.getData(apartmentId);
 
     return res
       .status(200)
-      .send({ success: false, msg: "success", data: apartmentData });
+      .send({ success: true, msg: "success", data: apartmentData });
   } catch (err) {
     next(err);
   }

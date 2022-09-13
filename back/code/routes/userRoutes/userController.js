@@ -27,24 +27,20 @@ exports.findUserApartmentId = async (req, res, next) => {
     });
 
     if (!result) {
-      return res
-        .status(200)
-        .send({
-          success: true,
-          msg: "User not in apartment",
-          apartmentId: null,
-          jwtToken: newToken,
-        });
+      return res.status(200).send({
+        success: true,
+        msg: "User not in apartment",
+        apartmentId: null,
+        jwtToken: newToken,
+      });
     }
 
-    return res
-      .status(200)
-      .send({
-        success: true,
-        msg: "success",
-        apartmentId: result,
-        wtToken: newToken,
-      });
+    return res.status(200).send({
+      success: true,
+      msg: "success",
+      apartmentId: result,
+      wtToken: newToken,
+    });
   } catch (err) {
     next(err);
   }
@@ -99,6 +95,15 @@ exports.getRoommatesData = async (req, res, next) => {
   }
 };
 
+exports.changeRole = async (req, res, next) => {
+  try {
+    const { userId, apartmentId } = req.tokenData;
+    const { userLevel } = req;
+    return res.status(200).json({ success: true, msg: "role changed" });
+  } catch (error) {
+    next(error);
+  }
+};
 exports.changePassword = async (req, res, next) => {
   const { userId } = req.tokenData;
   const { password } = req.body;
