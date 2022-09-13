@@ -29,10 +29,10 @@ webSocketServer.on("request", async (req) => {
   const connection = req.accept();
   console.log(`New connection`);
 
-  if (connections[token.apartmentId] != undefined) {
-    connections[token.apartmentId].push(connection);
-  } else {
+  if (connections[token.apartmentId] === undefined) {
     connections[token.apartmentId] = [connection];
+  } else {
+    connections[token.apartmentId].push(connection);
   }
   (await messagingService.getMessages(token.apartmentId, token.userId)).forEach(
     (msg) => {
