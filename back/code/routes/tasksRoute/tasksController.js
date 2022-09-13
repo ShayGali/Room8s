@@ -228,7 +228,6 @@ exports.deleteById = async (req, res, next) => {
   }
 };
 
-// TODO: change task type
 exports.updateTask = async (req, res, next) => {
   const { userId, apartmentId } = req.tokenData;
   const { taskId } = req.params;

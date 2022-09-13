@@ -32,6 +32,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+For handle HTTP requests to the server useing the okhttp3 lib
+ */
 public class ServerRequestsService {
 
     // Address
@@ -377,10 +380,11 @@ public class ServerRequestsService {
         client.newCall(request).enqueue(createCallback("add task failed", jsonObject -> {
             try {
                 if (jsonObject.getJSONObject(DATA_KEY).has("insertedID") && !jsonObject.getJSONObject(DATA_KEY).isNull("insertedID"))
-                    task.setApartmentId(Apartment.getInstance().getId());
+                    task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
+                task.setApartmentId(Apartment.getInstance().getId());
                 task.setCreateDate(new Date());
                 task.setCreatorId(User.getInstance().getId());
-                task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
+                task.setApartmentId(Apartment.getInstance().getId());
                 Apartment.getInstance().getTasks().add(task);
                 showToast("The task has been add successfully");
             } catch (JSONException e) {
@@ -424,7 +428,6 @@ public class ServerRequestsService {
 
         String failMsg = "delete task " + taskId + " failed";
         client.newCall(request).enqueue(createCallback(failMsg, jsonObject -> {
-            Apartment.getInstance().getTasks().removeIf(task -> task.getId() == taskId);
             showToast("The task has been delete successfully");
         }));
     }
@@ -673,8 +676,29 @@ public class ServerRequestsService {
     }
 
 
-    public void setRole(int userId, String roleName) {
-        showToast("TODO"); //TODO
+    public void setRole(int userId, int roleNum, Consumer<String> displayErrorFunction) {
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("roleNum", String.valueOf(roleNum));
+        formBody.add("userId", String.valueOf(userId));
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/changeRole")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .put(formBody.build())
+                .build();
+                client.newCall(request).enqueue(createCallback(
+                    "fetch join request went wrong",
+                    jsonObject -> showToast("change role successfully"),
+                    jsonObject -> {
+                    try {
+                        if (displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)) {
+                            displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }));
     }
 
 

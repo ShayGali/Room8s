@@ -6,6 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+/**
+class that represents the user that user the app.
+implement singleton design pattren.
+ */
+
 public final class User {
     private static User instance;
 
@@ -19,7 +24,7 @@ public final class User {
         return instance;
     }
 
-
+    //json keys
     private static final String ID_KEY = "ID";
     private static final String USER_NAME_KEY = "user_name";
     private static final String EMAIL_KEY = "email";
@@ -34,7 +39,6 @@ public final class User {
     private String email;
     private int userLevel;
     private String levelName;
-
     private int profileIconId;
 
     private User() {
@@ -53,13 +57,8 @@ public final class User {
             instance.setUserLevel(userAsJson.getInt(USER_LEVEL_KEY));
         if(userAsJson.has(LEVEL_NAME_KEY))
             instance.setLevelName(userAsJson.getString(LEVEL_NAME_KEY));
-        if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) {
-            int iconId = userAsJson.getInt(ICON_ID_KEY);
-            if (iconId == 0)
-                instance.setProfileIconId(R.drawable.ic_launcher_foreground);
-            else
-                instance.setProfileIconId(iconId);
-        }
+        if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) 
+            instance.setProfileIconId(userAsJson.getInt(ICON_ID_KEY));
     }
 
     public static void resetData() {
@@ -105,8 +104,6 @@ public final class User {
     public void setUserLevel(int userLevel) {
         this.userLevel = userLevel;
     }
-
-
 
     public int getProfileIconId() {
         return profileIconId;

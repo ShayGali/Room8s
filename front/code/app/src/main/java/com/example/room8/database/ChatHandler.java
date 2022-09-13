@@ -16,8 +16,11 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
+/**
+handler for the chat.
+have sokcet that connect to the server
+ */
 public class ChatHandler {
-
 
     private static final String PATH = "/messages";
     private static final String SERVER_PATH = "ws://" + ServerRequestsService.SERVER_BASE_URL + PATH; // the url of the server

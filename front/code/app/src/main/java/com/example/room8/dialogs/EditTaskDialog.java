@@ -67,8 +67,9 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
-            adapter.notifyDataSetChanged();
-            listener.deleteTask(tempTask.getId());
+            adapter.notifyDataSetChanged(); 
+            ServerRequestsService.getInstance().deleteTask(tempTask.getId()); // TODO - notify
+            // listener.deleteTask(tempTask.getId()); // TODO - delete
             dismiss();
         });
         builder
@@ -80,7 +81,8 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Edit", (dialog, which) -> {
                     getValuesFromFields();
                     if (originalTask.shouldUpdateTask(tempTask)) {
-                        listener.updateTask(tempTask);
+                        // listener.updateTask(tempTask); // TODO - delete
+                        ServerRequestsService.getInstance().updateTask(tempTask);
                         originalTask.copyValues(tempTask);
                         adapter.notifyDataSetChanged();
                     }
@@ -206,7 +208,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context) { // TODO - delete
         super.onAttach(context);
         listener = (TaskDialogListener) context;
     }

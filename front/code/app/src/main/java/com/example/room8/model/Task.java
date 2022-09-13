@@ -26,7 +26,7 @@ public class Task implements Comparable<Task> {
     public static final String EXECUTORS_IDS = "executors_ids";
     public static final String ICON_PATH_KEY = "icon_path";
 
-    public static final String[] TASK_TYPES = {"general task", "something"};
+    public static final String[] TASK_TYPES = {"general task", "cleaning","dish","laundry","hang laundry","iron","leash"};
 
 
     int id;
@@ -187,6 +187,7 @@ public class Task implements Comparable<Task> {
         this.expirationDate = o.getExpirationDate();
         this.title = o.title;
         this.note = o.note;
+        this.executorsIds = o.executorsIds;
     }
 
 

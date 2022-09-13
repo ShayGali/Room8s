@@ -1,23 +1,25 @@
 package com.example.room8;
+/**
+Factory fot images resources
+ */
+public final class ImageFactory{
 
-//public final class ImageFactory{
-//
-//
+
 //    public static int profileImageFactory(int iconId){
-//        switch (int iconId){
+//        switch (iconId){
 //            case 1:
-//                return ?;
+//                return R.drawable.task_64;
 //            default:
-//                return ?;
+//                return R.drawable.task_64;
 //        }
 //    }
 //
 //    public static int taskImageFactory(int iconId){
-//        swtich(iconID){
+//        switch (iconId){
 //            case 1:
 //                return ?;
 //            default:
 //                return ?;
 //        }
 //    }
-//}
+}

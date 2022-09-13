@@ -26,13 +26,17 @@ public class TasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
+
         MainActivity activity = (MainActivity) requireActivity();
+
         RecyclerView recyclerView = view.findViewById(R.id.tasks_RecyclerView);
         TasksAdapter adapter = new TasksAdapter(getLayoutInflater(), (MainActivity) requireActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         activity.fetchTasks(adapter::notifyDataSetChanged);
+
         View addTaskButton = view.findViewById(R.id.add_task_btn);
+        
         addTaskButton.setOnClickListener(v -> {
             AddTaskDialog addTaskDialog = new AddTaskDialog(adapter);
             addTaskDialog.show(activity.getSupportFragmentManager(), "Add New Task");

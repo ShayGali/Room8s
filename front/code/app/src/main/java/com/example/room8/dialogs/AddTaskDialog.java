@@ -66,7 +66,8 @@ public class AddTaskDialog extends AppCompatDialogFragment {
                 })
                 .setPositiveButton("Add", (dialog, which) -> {
                     getValuesFromFields();
-                    listener.addTask(tempTask);
+                    ServerRequestsService.getInstance().addTask(tempTask); //TODO notifyFunction
+                    // listener.addTask(tempTask); // TODO - delete this line 
                     adapter.notifyDataSetChanged();
                 });
 
@@ -131,6 +132,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         }
     }
 
+// TODO - delete
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

@@ -138,13 +138,21 @@ INSERT INTO user_level VALUES
 (3, 'admin');
 
 INSERT INTO task_type (ID, task_type) VALUES
-(1, 'general task');
+(1, 'general task'),
+(2, 'cleaning'),
+(3, 'dish'),
+(4, 'laundry'),
+(5, 'hang laundry'),
+(6, 'iron'),
+(7, 'leash');
 
 INSERT INTO expense_type VALUES
 (1, 'general expense'),
 (2,'electric bill'),
 (3,'water bill'),
-(4,'groceries');
+(4,'groceries'),
+(5,'property tax'),
+(6,'house committee');
 
 
 

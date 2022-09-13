@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.User;
 
+/**
+fpr handle the Shared Preference
+ */
 public class SharedPreferenceHandler {
 
     @SuppressLint("StaticFieldLeak")

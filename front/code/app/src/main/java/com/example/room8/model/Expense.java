@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class Expense {
+
+    //json keys
     private static final String ID_KEY = "ID";
     private static final String USER_ID_KEY = "UserThatUploadID";
     private static final String TITLE_KEY = "title";
@@ -20,7 +22,7 @@ public class Expense {
     private static final String UPLOAD_DATE_KEY = "upload_date";
     private static final String NOTE_KEY = "note";
 
-    public static final String[] EXPENSE_TYPES = {"general expense", "electric bill", "water bill", "groceries"};
+    public static final String[] EXPENSE_TYPES = {"general expense", "electric bill", "water bill", "groceries","property tax","house committee"};
 
 
     private int id;
