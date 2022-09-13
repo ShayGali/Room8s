@@ -54,6 +54,21 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
     }
 
+    private static class TaskHolder extends RecyclerView.ViewHolder {
+        View layout;
+        TextView name;
+        TextView type;
+        TextView date;
+
+        public TaskHolder(@NonNull View itemView) {
+            super(itemView);
+            layout = itemView.findViewById(R.id.task_layout);
+            name = itemView.findViewById(R.id.task_name);
+            type = itemView.findViewById(R.id.task_type);
+            date = itemView.findViewById(R.id.task_date);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return this.tasks.size();
@@ -78,18 +93,5 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.addTask(new Task(jsonObject));
     }
 
-    private static class TaskHolder extends RecyclerView.ViewHolder {
-        View layout;
-        TextView name;
-        TextView type;
-        TextView date;
 
-        public TaskHolder(@NonNull View itemView) {
-            super(itemView);
-            layout = itemView.findViewById(R.id.task_layout);
-            name = itemView.findViewById(R.id.task_name);
-            type = itemView.findViewById(R.id.task_type);
-            date = itemView.findViewById(R.id.task_date);
-        }
-    }
 }
