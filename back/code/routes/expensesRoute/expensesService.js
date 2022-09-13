@@ -67,8 +67,10 @@ exports.findById = async (expenseId) => {
   `;
 
   const [expense, _] = await db.execute(query, [expenseId]);
-  expense[0].upload_date = formatDateTime(expense[0].upload_date);
-  expense[0].payment_date = formatDateTime(expense[0].payment_date);
+  if (expense[0] !== undefined) {
+    expense[0].upload_date = formatDateTime(expense[0].upload_date);
+    expense[0].payment_date = formatDateTime(expense[0].payment_date);
+  }
   return expense[0];
 };
 
