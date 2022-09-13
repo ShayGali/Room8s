@@ -1,9 +1,7 @@
 package com.example.room8.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +26,11 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final LayoutInflater inflater;
     private List<Roommate> room8s;
     private final Consumer<Integer> action;
+    private final Activity activity;
 
-    public RoommatesAdapter(LayoutInflater inflater, Consumer<Integer> action) {
+    public RoommatesAdapter(Activity activity, LayoutInflater inflater, Consumer<Integer> action) {
         this.inflater = inflater;
+        this.activity = activity;
         this.room8s = Apartment.getInstance().getRoommates();
         this.action = action;
     }
@@ -51,26 +51,30 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         room8Holder.roleTextView.setText(roommate.getLevelName());
 
-        if (User.getInstance().getUserLevel() == 1){
+        if (User.getInstance().getUserLevel() == 1) {
             room8Holder.editRole.setVisibility(View.INVISIBLE);
             room8Holder.delete.setVisibility(View.GONE);
             return;
         }
 
-        room8Holder.editRole.setOnClickListener(v->{
-            if (room8Holder.roleTextView.getVisibility() == View.VISIBLE){
+        room8Holder.editRole.setOnClickListener(v -> {
+            if (room8Holder.roleTextView.getVisibility() == View.VISIBLE) {
                 room8Holder.roleTextView.setVisibility(View.INVISIBLE);
                 room8Holder.roleSpinner.setVisibility(View.VISIBLE);
                 room8Holder.editRole.setImageResource(R.drawable.ic_baseline_done_24);
                 room8Holder.roleSpinner.performClick();
-            }else {
+            } else {
                 room8Holder.roleTextView.setVisibility(View.VISIBLE);
                 room8Holder.roleSpinner.setVisibility(View.INVISIBLE);
                 room8Holder.editRole.setImageResource(R.drawable.ic_baseline_edit_24);
-                if (room8Holder.roleSpinner.getSelectedItemPosition()+1 != roommate.getUserLevel()){
-                    ServerRequestsService.getInstance().setRole(roommate.getId(),room8Holder.roleSpinner.getSelectedItemPosition()+1, errMsg->{
-                        room8Holder.errorMsg.setText(errMsg); // TODO - run on ui thread
-                    });
+                if (room8Holder.roleSpinner.getSelectedItemPosition() + 1 != roommate.getUserLevel()) {
+                    ServerRequestsService.getInstance().setRole(
+                            roommate.getId(), room8Holder.roleSpinner.getSelectedItemPosition() + 1,
+                            () -> activity.runOnUiThread(() -> room8Holder.roleTextView.setText(room8Holder.roleSpinner.getSelectedItem().toString())),
+                            errMsg -> activity.runOnUiThread(() -> {
+                                room8Holder.errorMsg.setText(errMsg);
+                                room8Holder.errorMsg.setVisibility(View.VISIBLE);
+                            }));
                 }
             }
         });
@@ -117,7 +121,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             roleSpinner = itemView.findViewById(R.id.role_spinner);
             delete = itemView.findViewById(R.id.delete);
             editRole = itemView.findViewById(R.id.edit_role);
-//            errorMsg = itemView.findViewById(R.id.error_msg);
+            errorMsg = itemView.findViewById(R.id.error_msg);
         }
     }
 }

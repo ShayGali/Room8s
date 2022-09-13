@@ -12,6 +12,7 @@ router.get("/apartmentId", userController.findUserApartmentId);
 router.get("/findById", userController.findById);
 router.get("/room8", matchUserToApartment, userController.getRoommatesData);
 router.put("/password", userController.changePassword);
+router.put("/changeRole", userController.changeRole);
 router.delete("/delete", userController.delete);
 
 module.exports = router;

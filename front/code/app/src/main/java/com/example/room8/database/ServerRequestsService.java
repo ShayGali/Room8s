@@ -676,7 +676,7 @@ public class ServerRequestsService {
     }
 
 
-    public void setRole(int userId, int roleNum, Consumer<String> displayErrorFunction) {
+    public void setRole(int userId, int roleNum, Runnable displayChangeFunction, Consumer<String> displayErrorFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("roleNum", String.valueOf(roleNum));
         formBody.add("userId", String.valueOf(userId));
@@ -688,7 +688,10 @@ public class ServerRequestsService {
                 .build();
                 client.newCall(request).enqueue(createCallback(
                     "fetch join request went wrong",
-                    jsonObject -> showToast("change role successfully"),
+                    jsonObject -> {
+                        displayChangeFunction.run();
+                        showToast("change role successfully");
+                    },
                     jsonObject -> {
                     try {
                         if (displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)) {

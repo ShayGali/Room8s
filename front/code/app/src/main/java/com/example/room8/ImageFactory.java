@@ -9,8 +9,8 @@ public final class ImageFactory{
     public static final int[] womanImgs = new int[]{};
 
    public static int profileImageFactory(int iconId){
-       if(iconId < 0)
-        return defaultImg;
+//       if(iconId < 0)
+//        return defaultImg;
     
         if(iconId < ungenderAndAnimalsImgs.length)
             return ungenderAndAnimalsImgs[iconId];
@@ -25,7 +25,7 @@ public final class ImageFactory{
         if(iconId < womanImgs.length)
             return womanImgs[iconId];
 
-        return defaultImg;
+        return 0;
 
    }
 //
