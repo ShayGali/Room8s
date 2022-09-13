@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room8.ImageFactory;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.model.Apartment;
@@ -46,6 +48,8 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Roommate roommate = room8s.get(position);
         Room8Holder room8Holder = (Room8Holder) holder;
+
+        room8Holder.profileImg.setImageResource(ImageFactory.profileImageFactory(roommate.getIconId()));
 
         room8Holder.name.setText(roommate.getUserName());
 
@@ -113,6 +117,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         FloatingActionButton delete;
         FloatingActionButton editRole;
         TextView errorMsg;
+        ImageView profileImg;
 
         public Room8Holder(@NonNull View itemView) {
             super(itemView);
@@ -122,6 +127,7 @@ public class RoommatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             delete = itemView.findViewById(R.id.delete);
             editRole = itemView.findViewById(R.id.edit_role);
             errorMsg = itemView.findViewById(R.id.error_msg);
+            profileImg = itemView.findViewById(R.id.profile_img);
         }
     }
 }

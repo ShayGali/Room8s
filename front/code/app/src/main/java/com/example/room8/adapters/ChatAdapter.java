@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room8.ImageFactory;
 import com.example.room8.R;
 import com.example.room8.model.Message;
 
@@ -62,7 +63,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!message.isSent()) {
             ReceivedMessageHolder receivedMessageHolder = (ReceivedMessageHolder) holder;
             receivedMessageHolder.senderName.setText(message.getUserName());
-            receivedMessageHolder.senderImg.setImageResource(message.getIconID());
+            receivedMessageHolder.senderImg.setImageResource(ImageFactory.profileImageFactory(message.getIconID()));
         }
     }
 

@@ -59,7 +59,7 @@
             android:maxHeight="80dp"
             android:minWidth="25dp"
             android:minHeight="25dp"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             app:srcCompat="@drawable/icon_default_task" />
     </LinearLayout>
 

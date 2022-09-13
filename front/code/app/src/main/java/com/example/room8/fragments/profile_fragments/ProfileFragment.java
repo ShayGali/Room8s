@@ -10,14 +10,17 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.room8.ImageFactory;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 import com.example.room8.dialogs.ChangePasswordDialog;
 import com.example.room8.dialogs.RoommatesDialog;
+import com.example.room8.model.User;
 
 public class ProfileFragment extends Fragment {
 
@@ -36,7 +39,9 @@ public class ProfileFragment extends Fragment {
         View logOut = view.findViewById(R.id.log_out_btn);
         View leaveRoomBtn = view.findViewById(R.id.leave_room_btn);
         View deleteUserDtn = view.findViewById(R.id.delete_user_btn);
+        ImageView profileImage = view.findViewById(R.id.profile_img);
 
+        profileImage.setImageResource(ImageFactory.profileImageFactory(User.getInstance().getProfileIconId()));
 
         changePasswordBtn.setOnClickListener(v -> {
             ChangePasswordDialog dialog = new ChangePasswordDialog(password -> activity.changePassword(password));
