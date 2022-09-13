@@ -18,14 +18,13 @@ exports.isApartmentOwner = async (req, res, next) => {
     }
 
     if (user.user_level >= 2) {
+      req.userLevel = user.user_level;
       next();
     } else {
-      return res
-        .status(403)
-        .send({
-          success: false,
-          msg: "you cant do that, you need an apartment owner(level 2) privileges or above",
-        });
+      return res.status(403).send({
+        success: false,
+        msg: "you cant do that, you need an apartment owner(level 2) privileges or above",
+      });
     }
   } catch (e) {
     return next(e);
@@ -49,6 +48,7 @@ exports.isAdmin = async (req, res, next) => {
     }
 
     if (user.user_level >= 3) {
+      req.userLevel = user.user_level;
       next();
     } else {
       return res.status(403).send({
