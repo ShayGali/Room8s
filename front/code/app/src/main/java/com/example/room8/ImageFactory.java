@@ -4,14 +4,19 @@ Factory fot images resources
  */
 public final class ImageFactory{
 
+    public static final int[] ungenderAndAnimalsImgs = new int[]{};
     public static final int[] manImgs = new int[]{};
     public static final int[] womanImgs = new int[]{};
-    public static final int[] ungenderAndAnimalsImgs = new int[]{};
 
    public static int profileImageFactory(int iconId){
        if(iconId < 0)
         return defaultImg;
     
+        if(iconId < ungenderAndAnimalsImgs.length)
+            return ungenderAndAnimalsImgs[iconId];
+
+        iconId = iconId - ungenderAndAnimalsImgs.length;
+
         if(iconId < manImgs.length)
             return manImgs[iconId];
 
@@ -19,11 +24,6 @@ public final class ImageFactory{
 
         if(iconId < womanImgs.length)
             return womanImgs[iconId];
-
-        iconId = iconId - womanImgs.length;
-
-        if(iconId < ungenderAndAnimalsImgs.length)
-            return ungenderAndAnimalsImgs[iconId];
 
         return defaultImg;
 
