@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService = ServerRequestsService.getInstance();
         databaseService.setActivity(this);
 
-        String connetionFailCause = checkConnections();
-        if (checkConnections != null) {
-            Toast.makeText(this, connetionFailCause, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connetionFailCause));
+        String connectionFailCause = checkConnections();
+        if (connectionFailCause != null) {
+            Toast.makeText(this, connectionFailCause, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connectionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
                 if (SharedPreferenceHandler.getInstance().isInApartment())
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         }
 
         if(!isUp.get())
-            return "server is down"
+            return "server is down";
         
         return  null;
     }

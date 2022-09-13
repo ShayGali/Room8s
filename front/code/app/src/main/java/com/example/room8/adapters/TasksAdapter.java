@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.room8.ImageFactory;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
@@ -47,6 +49,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.name.setText(task.getTitle() != null ? task.getTitle() : "task don't have title");
         taskHolder.date.setText(task.getExpirationDate() != null ? ServerRequestsService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
+//        taskHolder.img.setImageResource(ImageFactory.taskImageFactory(task.getTaskTypeId())); //TODO
 
         taskHolder.layout.setOnClickListener(v -> {
             EditTaskDialog dialog = new EditTaskDialog(task, this);
@@ -83,6 +86,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView name;
         TextView type;
         TextView date;
+        ImageView img;
 
         public TaskHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +94,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             name = itemView.findViewById(R.id.task_name);
             type = itemView.findViewById(R.id.task_type);
             date = itemView.findViewById(R.id.task_date);
+            img = itemView.findViewById(R.id.task_img);
         }
     }
 }

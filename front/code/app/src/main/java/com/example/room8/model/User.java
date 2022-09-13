@@ -58,7 +58,7 @@ public final class User {
         if(userAsJson.has(LEVEL_NAME_KEY))
             instance.setLevelName(userAsJson.getString(LEVEL_NAME_KEY));
         if (userAsJson.has(ICON_ID_KEY) && !userAsJson.isNull(ICON_ID_KEY)) 
-            int iconId = userAsJson.getInt(ICON_ID_KEY);
+            instance.setProfileIconId(userAsJson.getInt(ICON_ID_KEY));
     }
 
     public static void resetData() {

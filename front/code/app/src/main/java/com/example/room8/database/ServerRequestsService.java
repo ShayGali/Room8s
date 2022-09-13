@@ -698,7 +698,7 @@ public class ServerRequestsService {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                })
+                }));
     }
 
 
