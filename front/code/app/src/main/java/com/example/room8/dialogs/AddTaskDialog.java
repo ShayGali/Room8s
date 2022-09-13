@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AddTaskDialog extends AppCompatDialogFragment {
-    private TaskDialogListener listener;
     private final Task tempTask;
 
     private TextView executorsTextView;
@@ -66,8 +65,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
                 })
                 .setPositiveButton("Add", (dialog, which) -> {
                     getValuesFromFields();
-                    ServerRequestsService.getInstance().addTask(tempTask); //TODO notifyFunction
-                    // listener.addTask(tempTask); // TODO - delete this line 
+                    ServerRequestsService.getInstance().addTask(tempTask, () -> requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged()));
                     adapter.notifyDataSetChanged();
                 });
 
@@ -117,7 +115,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         if (!noteTextView.getText().toString().trim().equals(""))
             tempTask.setNote(noteTextView.getText().toString());
 
-        if (names!=null){
+        if (names != null) {
             ArrayList<Roommate> room8 = Apartment.getInstance().getRoommates();
             List<Integer> executorsIds = names.stream().map(name -> {
                 if (User.getInstance().getUserName().equals(name))
@@ -132,12 +130,6 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         }
     }
 
-// TODO - delete
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (TaskDialogListener) context;
-    }
 
     private void showDateTimeDialogs(View v) {
         Calendar calendar = Calendar.getInstance();

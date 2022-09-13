@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 
 public class EditTaskDialog extends AppCompatDialogFragment {
 
-    private TaskDialogListener listener;
     private final Task tempTask;
     private final Task originalTask;
 
@@ -67,9 +66,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
-            adapter.notifyDataSetChanged(); 
-            ServerRequestsService.getInstance().deleteTask(tempTask.getId()); // TODO - notify
-            // listener.deleteTask(tempTask.getId()); // TODO - delete
+            ServerRequestsService.getInstance().deleteTask(tempTask.getId(), () -> requireActivity().runOnUiThread(() -> adapter.notifyDataSetChanged()));
             dismiss();
         });
         builder
@@ -81,7 +78,6 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Edit", (dialog, which) -> {
                     getValuesFromFields();
                     if (originalTask.shouldUpdateTask(tempTask)) {
-                        // listener.updateTask(tempTask); // TODO - delete
                         ServerRequestsService.getInstance().updateTask(tempTask);
                         originalTask.copyValues(tempTask);
                         adapter.notifyDataSetChanged();
@@ -204,13 +200,6 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         if (tempTask.getNote() != null) {
             note.setText(tempTask.getNote());
         }
-    }
-
-
-    @Override
-    public void onAttach(@NonNull Context context) { // TODO - delete
-        super.onAttach(context);
-        listener = (TaskDialogListener) context;
     }
 
     public void setDateTimeDialogs(View v) {

@@ -33,7 +33,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
-For handle HTTP requests to the server useing the okhttp3 lib
+ * For handle HTTP requests to the server useing the okhttp3 lib
  */
 public class ServerRequestsService {
 
@@ -356,7 +356,7 @@ public class ServerRequestsService {
         }));
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, Runnable notifyFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
         if (task.getTaskType() != null)
             formBody.add("taskType", task.getTaskType());
@@ -386,6 +386,7 @@ public class ServerRequestsService {
                 task.setCreatorId(User.getInstance().getId());
                 task.setApartmentId(Apartment.getInstance().getId());
                 Apartment.getInstance().getTasks().add(task);
+                notifyFunction.run();
                 showToast("The task has been add successfully");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -419,7 +420,7 @@ public class ServerRequestsService {
         ));
     }
 
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId, Runnable notifyFunction) {
         Request request = new Request.Builder()
                 .url(HTTP_URL + TASKS_PATH + "/" + taskId)
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
@@ -429,6 +430,7 @@ public class ServerRequestsService {
         String failMsg = "delete task " + taskId + " failed";
         client.newCall(request).enqueue(createCallback(failMsg, jsonObject -> {
             showToast("The task has been delete successfully");
+            notifyFunction.run();
         }));
     }
 
@@ -525,7 +527,8 @@ public class ServerRequestsService {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("title", expense.getTitle());
         formBody.add("expensesType", expense.getType());
-        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
+        if (expense.getPaymentDate() != null)
+            formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
         formBody.add("amount", String.valueOf(expense.getAmount()));
         formBody.add("uploadDate", DATE_FORMAT_FOR_REQUEST.format(expense.getUploadDate()));
         formBody.add("note", expense.getNote());
@@ -539,18 +542,19 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> {
             showToast("create expense successfully");
-            if (jsonObject.has(DATA_KEY)) {
-                try {
-                    expense.setId(jsonObject.getInt(DATA_KEY));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                if (jsonObject.has(DATA_KEY) && jsonObject.getJSONObject(DATA_KEY).has("insertedID")) {
+                    expense.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
             Apartment.getInstance().addExpense(expense);
         }));
     }
 
-    public void deleteExpense(int expenseId) {
+    public void deleteExpense(int expenseId, Runnable notifyFunction) {
 
         Request request = new Request.Builder()
                 .url(HTTP_URL + EXPENSES_PATH + "/" + expenseId)
@@ -560,6 +564,7 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("delete expense failed", jsonObject -> {
             Apartment.getInstance().getExpenses().removeIf(e -> e.getId() == expenseId);
+            notifyFunction.run();
             showToast("The expense has been deleted successfully");
         }));
     }
@@ -686,13 +691,13 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .put(formBody.build())
                 .build();
-                client.newCall(request).enqueue(createCallback(
-                    "fetch join request went wrong",
-                    jsonObject -> {
-                        displayChangeFunction.run();
-                        showToast("change role successfully");
-                    },
-                    jsonObject -> {
+        client.newCall(request).enqueue(createCallback(
+                "fetch join request went wrong",
+                jsonObject -> {
+                    displayChangeFunction.run();
+                    showToast("change role successfully");
+                },
+                jsonObject -> {
                     try {
                         if (displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)) {
                             displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
@@ -759,7 +764,7 @@ public class ServerRequestsService {
             Apartment a = Apartment.getInstance();
 
             try {
-                if (!jsonObject.has(DATA_KEY) || jsonObject.isNull(DATA_KEY))return;
+                if (!jsonObject.has(DATA_KEY) || jsonObject.isNull(DATA_KEY)) return;
                 jsonObject = jsonObject.getJSONObject(DATA_KEY);
 
                 if (jsonObject.has("ID") && !jsonObject.isNull("ID"))

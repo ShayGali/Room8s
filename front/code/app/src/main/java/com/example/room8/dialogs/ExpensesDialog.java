@@ -71,7 +71,7 @@ public class ExpensesDialog extends AppCompatDialogFragment {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        ExpensesAdapter adapter = new ExpensesAdapter(getLayoutInflater(), filterMethod, () -> {
+        ExpensesAdapter adapter = new ExpensesAdapter(requireActivity(), getLayoutInflater(), filterMethod, () -> {
             InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         });
