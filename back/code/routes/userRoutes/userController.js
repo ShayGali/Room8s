@@ -96,9 +96,32 @@ exports.getRoommatesData = async (req, res, next) => {
 };
 
 exports.changeRole = async (req, res, next) => {
+  //TODO better error msg
   try {
-    const { userId, apartmentId } = req.tokenData;
-    const { userLevel } = req;
+    const { userId: senderId, apartmentId } = req.tokenData;
+    const { userId, roleNum } = req.body;
+    const [user, sender] = await Promise.all([
+      userService.findById(userId),
+      userService.findById(senderId),
+    ]);
+
+    if (sender.user_level < user.user_level) {
+      return res
+        .status(403)
+        .json({ success: false, msg: "you have less role than him" });
+    }
+
+    if (roleNum > sender.user_level) {
+      return res
+        .status(403)
+        .json({ success: false, msg: "you cant give that role" });
+    }
+
+    if ((await userService.changeRole(userId, roleNum)) == undefined) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "role id not in range" });
+    }
     return res.status(200).json({ success: true, msg: "role changed" });
   } catch (error) {
     next(error);

@@ -49,7 +49,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.name.setText(task.getTitle() != null ? task.getTitle() : "task don't have title");
         taskHolder.date.setText(task.getExpirationDate() != null ? ServerRequestsService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
-//        taskHolder.img.setImageResource(ImageFactory.taskImageFactory(task.getTaskTypeId())); //TODO
+        taskHolder.img.setImageResource(ImageFactory.taskImageFactory(task.getTaskType()));
 
         taskHolder.layout.setOnClickListener(v -> {
             EditTaskDialog dialog = new EditTaskDialog(task, this);
