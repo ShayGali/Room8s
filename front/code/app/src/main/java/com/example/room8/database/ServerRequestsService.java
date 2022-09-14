@@ -784,7 +784,7 @@ public class ServerRequestsService {
             }
         }));
     }
-}
+
 
 
 
@@ -800,3 +800,4 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("change profile icon failed", jsonObject -> onSuccess.run(), jsonObject -> onFailure.run()));
     }
+}

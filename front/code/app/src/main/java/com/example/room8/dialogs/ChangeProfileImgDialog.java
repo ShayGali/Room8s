@@ -10,18 +10,23 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.ImageFactory;
 import com.example.room8.R;
 import com.example.room8.adapters.ChangeProfileImgAdapter;
+import com.example.room8.database.ServerRequestsService;
+import com.example.room8.model.User;
+
+import java.util.function.Consumer;
 
 public class ChangeProfileImgDialog extends AppCompatDialogFragment {
     private View view;
-    private final Cunsumer<Integetr> chageImgFunction;
+    private final Consumer<Integer> chageImgFunction;
 
-    public ChangeProfileImgDialog(Cunsumer<Integetr> chageImgFunction){
+    public ChangeProfileImgDialog(Consumer<Integer> chageImgFunction){
         this.chageImgFunction= chageImgFunction;
     }
 
@@ -41,17 +46,17 @@ public class ChangeProfileImgDialog extends AppCompatDialogFragment {
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), numOgCul, GridLayoutManager.HORIZONTAL, false));
 
         view.findViewById(R.id.save_change_btn).setOnClickListener(v ->{
-            if(User.getInstance().getIconID() != adapter.getSelectedPosition()){
+            if(User.getInstance().getProfileIconId() != adapter.getSelectedPosition()){
 
                 int temp = adapter.getSelectedPosition();
 
                 ServerRequestsService.getInstance().ChangeProfileImg(
                     adapter.getSelectedPosition(),
                     ()->{
-                        User.getInstance().setIconID(temp);
+                        User.getInstance().setProfileIconId(temp);
                     }, 
                     ()->{
-                        requireActivity().runOnUiThread(()-> chageImgFunction.accept(ImageFactory.profileImageFactory(User.getInstance().getIconID())));
+                        requireActivity().runOnUiThread(()-> chageImgFunction.accept(ImageFactory.profileImageFactory(User.getInstance().getProfileIconId())));
                     }
                 );
 

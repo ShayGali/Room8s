@@ -14,12 +14,11 @@ router.get("/findById", userController.findById);
 router.get("/room8", matchUserToApartment, userController.getRoommatesData);
 router.put("/password", userController.changePassword);
 router.put(
-  "/role",
+  "/changeRole",
   matchUserToApartment,
   isApartmentOwner,
   userController.changeRole
 );
-router.put("/changeRole", userController.changeRole);
 router.put("/ChangeProfileImg", userController.ChangeProfileImg);
 router.delete("/delete", userController.delete);
 
