@@ -45,7 +45,7 @@ public class ChangeProfileImgDialog extends AppCompatDialogFragment {
 
                 int temp = adapter.getSelectedPosition();
 
-                ServerRequestsService.ChangeProfileImg(
+                ServerRequestsService.getInstance().ChangeProfileImg(
                     adapter.getSelectedPosition(),
                     ()->{
                         User.getInstance().setIconID(temp);

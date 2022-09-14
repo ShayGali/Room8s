@@ -787,3 +787,16 @@ public class ServerRequestsService {
 }
 
 
+
+    public void ChangeProfileImg(int iconId,Runnable onSuccess,Runnable onFailure) {
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("iconId", String.valueOf(iconId));
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/changeProfileImg")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .put(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback("change profile icon failed", jsonObject -> onSuccess.run(), jsonObject -> onFailure.run()));
+    }
