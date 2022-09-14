@@ -18,11 +18,12 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
     private final LayoutInflater inflater;
     private final Context context;
     private final int[] imgs;
-
+    private int selectedPosition;
     public ChangeProfileImgAdapter(LayoutInflater inflater, Context context, int[] imgs) {
         this.inflater = inflater;
         this.context = context;
         this.imgs = imgs;
+        this.selectedPosition = User.getInstance().getProfileIconId();
     }
 
     @NonNull
@@ -34,14 +35,26 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
     @Override
     public void onBindViewHolder(@NonNull ProfileImgHolder holder, int position) {
         holder.imageView.setImageResource(imgs[position]);
-        holder.imageView.setOnClickListener(v -> {
+        if(position == selectedPosition){
             holder.layout.setBackground(ContextCompat.getDrawable(context, R.drawable.style_layout_border_gray));
+        }else{
+            holder.layout.setBackgroundResource(0);
+        }
+        holder.imageView.setOnClickListener(v -> {
+            int temp = selectedPosition;
+            selectedPosition = position;
+            notifyDataSetChanged(temp);
+            notifyDataSetChanged(selectedPosition);
         });
     }
 
     @Override
     public int getItemCount() {
         return imgs.length;
+    }
+
+    public int getSelectedPosition(){
+        return this.selectedPosition;
     }
 
     protected static class ProfileImgHolder extends RecyclerView.ViewHolder {

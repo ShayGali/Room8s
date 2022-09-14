@@ -18,7 +18,12 @@ import com.example.room8.R;
 import com.example.room8.adapters.ChangeProfileImgAdapter;
 
 public class ChangeProfileImgDialog extends AppCompatDialogFragment {
-    View view;
+    private View view;
+    private final Cunsumer<Integetr> chageImgFunction;
+
+    public ChangeProfileImgDialog(Cunsumer<Integetr> chageImgFunction){
+        this.chageImgFunction= chageImgFunction;
+    }
 
     @SuppressLint("InflateParams")
     @NonNull
@@ -27,9 +32,33 @@ public class ChangeProfileImgDialog extends AppCompatDialogFragment {
         view = inflater.inflate(R.layout.dialog_change_profile_img, null);
 
         view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> dismiss());
-        initAnimalsRecyclerView();
-        initManRecyclerView();
-        initWomanRecyclerView();
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.imgs_recyclerView);
+        ChangeProfileImgAdapter adapter = new ChangeProfileImgAdapter(getLayoutInflater(), requireContext(), ImageFactory.imgs);
+        recyclerView.setAdapter(adapter);
+        int numOgCul = 3;
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), numOgCul, GridLayoutManager.HORIZONTAL, false));
+
+        view.findViewById(R.id.save_change_btn).setOnClickListener(v ->{
+            if(User.getInstance().getIconID() != adapter.getSelectedPosition()){
+
+                int temp = adapter.getSelectedPosition();
+
+                ServerRequestsService.ChangeProfileImg(
+                    adapter.getSelectedPosition(),
+                    ()->{
+                        User.getInstance().setIconID(temp);
+                    }, 
+                    ()->{
+                        requireActivity().runOnUiThread(()-> chageImgFunction.accept(ImageFactory.profileImageFactory(User.getInstance().getIconID())));
+                    }
+                );
+
+            chageImgFunction.accept(ImageFactory.profileImageFactory(temp));
+            }
+            dismiss();
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(view);
@@ -38,25 +67,4 @@ public class ChangeProfileImgDialog extends AppCompatDialogFragment {
         return dialog;
     }
 
-
-    private void initAnimalsRecyclerView() {
-        RecyclerView recyclerView = view.findViewById(R.id.animal_recyclerView);
-        ChangeProfileImgAdapter adapter = new ChangeProfileImgAdapter(getLayoutInflater(), requireContext(), ImageFactory.ungenderAndAnimalsImgs);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-    }
-
-    private void initManRecyclerView() {
-        RecyclerView recyclerView = view.findViewById(R.id.man_recyclerView);
-        ChangeProfileImgAdapter adapter = new ChangeProfileImgAdapter(getLayoutInflater(), requireContext(), ImageFactory.manImgs);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-    }
-
-    private void initWomanRecyclerView() {
-        RecyclerView recyclerView = view.findViewById(R.id.woman_recyclerView);
-        ChangeProfileImgAdapter adapter = new ChangeProfileImgAdapter(getLayoutInflater(), requireContext(), ImageFactory.womanImgs);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-    }
 }
