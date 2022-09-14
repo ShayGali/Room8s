@@ -11,7 +11,6 @@ app.use("/users", require("./routes/userRoutes"));
 app.use("/apartments", require("./routes/apartmentRoute"));
 app.use("/tasks", require("./routes/tasksRoute"));
 app.use("/expenses", require("./routes/expensesRoute"));
-app.use("/payments", require("./routes/paymentRoute"));
 
 // Global Error handler
 app.use(errorHandler);
