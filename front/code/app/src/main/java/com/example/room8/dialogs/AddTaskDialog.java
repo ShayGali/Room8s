@@ -39,7 +39,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
     private TextView titleTextView;
     private TextView noteTextView;
 
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+    private final RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
     ArrayList<String> names;
 
