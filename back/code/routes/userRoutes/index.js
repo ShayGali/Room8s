@@ -13,6 +13,7 @@ router.get("/findById", userController.findById);
 router.get("/room8", matchUserToApartment, userController.getRoommatesData);
 router.put("/password", userController.changePassword);
 router.put("/changeRole", userController.changeRole);
+router.put("/ChangeProfileImg", userController.ChangeProfileImg);
 router.delete("/delete", userController.delete);
 
 module.exports = router;

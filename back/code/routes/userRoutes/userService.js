@@ -109,3 +109,11 @@ exports.changePassword = (userId, password) => {
    `;
   db.execute(query, [password, userId]);
 };
+
+exports.ChangeProfileImg = (userId, iconId) => {
+  const query = `UPDATE ${usersTable}
+   SET profile_icon_id = ?
+   WHERE ID = ?
+   `;
+  db.execute(query, [iconId, userId]);
+}

@@ -154,3 +154,20 @@ exports.changePassword = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.ChangeProfileImg = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { iconId } = req.body;
+
+  if(iconId == undefined)
+    return res.status(400).json({ success: false, msg: "send icodId" });
+
+    if(isNaN(iconId))
+      return res.status(400).json({ success: false, msg: "icodId need to be number" });
+      try {
+        ChangeProfileImg(userId, iconId);
+        return res.json({success:true, msg:"iconId changed successfuly"})
+      } catch (error) {
+        next(error)
+      }
+}
