@@ -83,12 +83,18 @@ exports.getRoommatesData = async (apartmentId, userId) => {
   return result;
 };
 
-exports.changeRole = (userId, roleId) => {
+exports.changeRole = async (userId, roleId) => {
+  const [r, _] = await db.execute(
+    `SELECT * FROM ${userLevelTable} WHERE ID = ?`,
+    [roleId]
+  );
+  if (r[0] === undefined) return;
   const query = `UPDATE ${usersTable}
    SET user_level = ?
    WHERE ID = ?
    `;
-  db.execute(query, [roleId, userId]);
+  const res = await db.execute(query, [roleId, userId]);
+  return res;
 };
 
 /**
@@ -103,3 +109,11 @@ exports.changePassword = (userId, password) => {
    `;
   db.execute(query, [password, userId]);
 };
+
+exports.ChangeProfileImg = (userId, iconId) => {
+  const query = `UPDATE ${usersTable}
+   SET profile_icon_id = ?
+   WHERE ID = ?
+   `;
+  db.execute(query, [iconId, userId]);
+}

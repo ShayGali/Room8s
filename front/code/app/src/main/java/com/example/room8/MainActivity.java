@@ -22,11 +22,7 @@ import com.example.room8.model.User;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MainActivity extends AppCompatActivity implements TaskDialogListener {
-
-    public static final String SHARED_PREFERENCE = "shared preference";
-    public static final String JWT_TOKEN = "jwt token";
-
+public class MainActivity extends AppCompatActivity {
 
     public ServerRequestsService databaseService;
     public SharedPreferenceHandler sharedPreferenceHandler;
@@ -48,10 +44,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService = ServerRequestsService.getInstance();
         databaseService.setActivity(this);
 
-        String connetionFailCause = checkConnections();
-        if (checkConnections != null) {
-            Toast.makeText(this, connetionFailCause, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connetionFailCause));
+        String connectionFailCause = checkConnections();
+        if (connectionFailCause != null) {
+            Toast.makeText(this, connectionFailCause, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connectionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
                 if (SharedPreferenceHandler.getInstance().isInApartment())
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     String checkConnections() {
-        if(!isNetworkAvailable()){
+        if (!isNetworkAvailable()) {
             return "You don't have network connection";
         }
 
@@ -83,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
             e.printStackTrace();
         }
 
-        if(!isUp.get())
-            return "server is down"
-        
-        return  null;
+        if (!isUp.get())
+            return "server is down";
+
+        return null;
     }
 
 
@@ -106,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     public void navigateFragment(int actionID) {
         runOnUiThread(() -> {
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
-                    if(navHostFragment!=null)
+                    if (navHostFragment != null)
                         navHostFragment.getNavController().navigate(actionID);
                 }
 
@@ -139,31 +135,8 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         );
     }
 
-    public void fetchUserData() {
-        databaseService.getUserData();
-    }
-
     public void fetchTasks(Runnable notifyFunction) {
         databaseService.getAllTask(notifyFunction);
-    }
-
-    public void fetchRoom8() {
-        databaseService.getRoom8s();
-    }
-
-    @Override
-    public void updateTask(Task t) {
-        databaseService.updateTask(t);
-    }
-
-    @Override
-    public void deleteTask(int taskId) { // TODO delete
-        databaseService.deleteTask(taskId);
-    }
-
-    @Override
-    public void addTask(Task task) { //TODO notifyFunction
-        databaseService.addTask(task);
     }
 
     public void createApartment(String name) {

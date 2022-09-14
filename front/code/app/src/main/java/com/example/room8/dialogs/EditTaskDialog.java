@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 
 public class EditTaskDialog extends AppCompatDialogFragment {
 
-    private TaskDialogListener listener;
     private final Task tempTask;
     private final Task originalTask;
 
@@ -45,7 +43,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
     private TextView title;
     private TextView note;
 
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+    private final RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
     ArrayList<String> names;
 
@@ -67,21 +65,16 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
-            adapter.notifyDataSetChanged(); 
-            ServerRequestsService.getInstance().deleteTask(tempTask.getId()); // TODO - notify
-            // listener.deleteTask(tempTask.getId()); // TODO - delete
+            ServerRequestsService.getInstance().deleteTask(tempTask.getId(), () -> requireActivity().runOnUiThread(adapter::notifyDataSetChanged));
             dismiss();
         });
         builder
                 .setView(view)
                 .setTitle("Edit Task")
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    tempTask.copyValues(originalTask);
-                })
+                .setNegativeButton("Cancel", (dialog, which) -> tempTask.copyValues(originalTask))
                 .setPositiveButton("Edit", (dialog, which) -> {
                     getValuesFromFields();
                     if (originalTask.shouldUpdateTask(tempTask)) {
-                        // listener.updateTask(tempTask); // TODO - delete
                         ServerRequestsService.getInstance().updateTask(tempTask);
                         originalTask.copyValues(tempTask);
                         adapter.notifyDataSetChanged();
@@ -174,7 +167,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
 
         associate.setOnClickListener(v -> {
-            CheckBoxDialog checkBoxDialog = new CheckBoxDialog("Select Executors", room8Name, isChecklist, strings -> {
+            @SuppressLint("SetTextI18n") CheckBoxDialog checkBoxDialog = new CheckBoxDialog("Select Executors", room8Name, isChecklist, strings -> {
                 names = strings;
                 if (strings.size() == 0) {
                     associate.setText("Click To Select");
@@ -204,13 +197,6 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         if (tempTask.getNote() != null) {
             note.setText(tempTask.getNote());
         }
-    }
-
-
-    @Override
-    public void onAttach(@NonNull Context context) { // TODO - delete
-        super.onAttach(context);
-        listener = (TaskDialogListener) context;
     }
 
     public void setDateTimeDialogs(View v) {

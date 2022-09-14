@@ -11,21 +11,15 @@ public class Roommate {
     private static final String USER_NAME_KEY = "user_name";
     private static final String USER_LEVEL_KEY = "user_level";
     private static final String LEVEL_NAME_KEY = "level_name";
+    private static final String ICON_ID_KEY = "profile_icon_id";
 
-    public static final String[] LEVELS = new String[]{"basic user","apartment owner","admin"};
+    public static final String[] LEVELS = new String[]{"basic user", "apartment owner", "admin"};
 
-    int id;
-    String userName;
-    int userLevel;
-    String levelName;
-
-    public Roommate(int id, String userName, int userLevel, String levelName) {
-        this.id = id;
-        this.userName = userName;
-        this.userLevel = userLevel;
-        this.levelName = levelName;
-    }
-
+    private int id;
+    private String userName;
+    private int userLevel;
+    private String levelName;
+    private int iconId;
 
     public Roommate(JSONObject roommateAsJson) throws JSONException {
         if (roommateAsJson.has(ID_KEY) && !roommateAsJson.isNull(ID_KEY))
@@ -36,6 +30,9 @@ public class Roommate {
             this.userLevel = roommateAsJson.getInt(USER_LEVEL_KEY);
         if (roommateAsJson.has(LEVEL_NAME_KEY))
             levelName = roommateAsJson.getString(LEVEL_NAME_KEY);
+
+        if (roommateAsJson.has(ICON_ID_KEY) && !roommateAsJson.isNull(ICON_ID_KEY))
+            iconId = roommateAsJson.getInt(ICON_ID_KEY);
     }
 
     public int getId() {
@@ -69,6 +66,14 @@ public class Roommate {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public int getIconId() {
+        return iconId;
+    }
+
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
     }
 
     @NonNull

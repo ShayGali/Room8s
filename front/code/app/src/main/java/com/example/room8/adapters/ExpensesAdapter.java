@@ -1,6 +1,7 @@
 package com.example.room8.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -19,7 +20,6 @@ import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Expense;
-import com.example.room8.model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -29,12 +29,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final Activity activity;
     private final LayoutInflater inflater;
     private final ArrayList<Expense> expenses;
     private final Runnable openKeyboardFunction;
     private final Predicate<Expense> filterMethod;
 
-    public ExpensesAdapter(LayoutInflater inflater, Predicate<Expense> filterMethod, Runnable openKeyboardFunction) {
+    public ExpensesAdapter(Activity activity, LayoutInflater inflater, Predicate<Expense> filterMethod, Runnable openKeyboardFunction) {
+        this.activity = activity;
         this.inflater = inflater;
         if (filterMethod != null)
             this.expenses = (ArrayList<Expense>) Apartment.getInstance().getExpenses().stream().filter(filterMethod).collect(Collectors.toList());
@@ -79,7 +81,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         expenseHolder.enterEditModeBtn.setOnClickListener(v -> enterEditMode(expenseHolder, expense, position));
 
-        expenseHolder.deleteExpenseBtn.setOnClickListener(v->ServerRequestsService.getInstance().deleteExpense(expense.getId()));
+        expenseHolder.deleteExpenseBtn.setOnClickListener(v -> ServerRequestsService.getInstance().deleteExpense(expense.getId(), () -> activity.runOnUiThread(() -> notifyItemRemoved(position))));
     }
 
     @Override

@@ -54,7 +54,7 @@ public class RoommatesDialog extends AppCompatDialogFragment {
 
     void initRoom8sRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        RoommatesAdapter adapter = new RoommatesAdapter(getLayoutInflater(), action);
+        RoommatesAdapter adapter = new RoommatesAdapter(requireActivity(), getLayoutInflater(), action);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
