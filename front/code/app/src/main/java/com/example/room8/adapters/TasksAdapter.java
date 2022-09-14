@@ -52,7 +52,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         taskHolder.img.setImageResource(ImageFactory.taskImageFactory(task.getTaskType()));
 
         taskHolder.layout.setOnClickListener(v -> {
-            EditTaskDialog dialog = new EditTaskDialog(task, this);
+            EditTaskDialog dialog = new EditTaskDialog(task, activity, this);
             dialog.show(activity.getSupportFragmentManager(), "task dialog");
         });
     }

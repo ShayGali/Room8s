@@ -14,9 +14,6 @@ import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
 import com.example.room8.dialogs.AddTaskDialog;
-import com.example.room8.model.Apartment;
-
-import java.lang.ref.WeakReference;
 
 public class TasksFragment extends Fragment {
 
@@ -38,7 +35,7 @@ public class TasksFragment extends Fragment {
         View addTaskButton = view.findViewById(R.id.add_task_btn);
         
         addTaskButton.setOnClickListener(v -> {
-            AddTaskDialog addTaskDialog = new AddTaskDialog(adapter);
+            AddTaskDialog addTaskDialog = new AddTaskDialog(activity, adapter);
             addTaskDialog.show(activity.getSupportFragmentManager(), "Add New Task");
         });
         return view;

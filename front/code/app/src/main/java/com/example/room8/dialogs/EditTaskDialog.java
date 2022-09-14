@@ -1,6 +1,7 @@
 package com.example.room8.dialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -33,7 +34,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
     private final Task tempTask;
     private final Task originalTask;
-
+    private final Activity activity;
 
     private TextView creatorName;
     private TextView associate;
@@ -47,9 +48,10 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
     ArrayList<String> names;
 
-    public EditTaskDialog(Task task, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    public EditTaskDialog(Task task, Activity activity, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         this.originalTask = task;
         this.tempTask = new Task(task);
+        this.activity = activity;
         this.adapter = adapter;
     }
 
@@ -65,7 +67,7 @@ public class EditTaskDialog extends AppCompatDialogFragment {
 
         view.findViewById(R.id.task_delete_btn).setOnClickListener(v -> {
             Apartment.getInstance().getTasks().removeIf(task -> task.getId() == tempTask.getId());
-            ServerRequestsService.getInstance().deleteTask(tempTask.getId(), () -> requireActivity().runOnUiThread(adapter::notifyDataSetChanged));
+            ServerRequestsService.getInstance().deleteTask(tempTask.getId(), () -> activity.runOnUiThread(adapter::notifyDataSetChanged));
             dismiss();
         });
         builder
