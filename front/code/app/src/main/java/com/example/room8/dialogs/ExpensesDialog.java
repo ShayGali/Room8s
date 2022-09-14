@@ -50,7 +50,7 @@ public class ExpensesDialog extends AppCompatDialogFragment {
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
         initRecyclerView();
-        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> System.out.println(Apartment.getInstance().getExpenses()));
+        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> dismiss());
 
 
         dialog.show();
