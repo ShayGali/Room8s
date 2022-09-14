@@ -1,7 +1,6 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
@@ -14,12 +13,7 @@ import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
-import com.example.room8.dialogs.TaskDialogListener;
-import com.example.room8.model.Apartment;
-import com.example.room8.model.Task;
-import com.example.room8.model.User;
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {

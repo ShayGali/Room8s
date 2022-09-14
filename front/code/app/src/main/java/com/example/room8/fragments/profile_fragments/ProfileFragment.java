@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.room8.ImageFactory;
 import com.example.room8.MainActivity;
@@ -44,9 +43,7 @@ public class ProfileFragment extends Fragment {
 
         profileImage.setImageResource(ImageFactory.profileImageFactory(User.getInstance().getProfileIconId()));
 
-        view.findViewById(R.id.edit_profile_img_btn).setOnClickListener(v -> {
-            new ChangeProfileImgDialog().show(getParentFragmentManager(), "tag");
-        });
+        view.findViewById(R.id.edit_profile_img_btn).setOnClickListener(v -> new ChangeProfileImgDialog(profileImage::setImageResource, activity).show(getParentFragmentManager(), "tag"));
         changePasswordBtn.setOnClickListener(v -> {
             ChangePasswordDialog dialog = new ChangePasswordDialog(password -> activity.changePassword(password));
             dialog.show(getParentFragmentManager(), "Change Password");

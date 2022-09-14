@@ -155,19 +155,21 @@ exports.changePassword = async (req, res, next) => {
   }
 };
 
-exports.ChangeProfileImg = async (req, res, next) => {
+exports.changeProfileImg = async (req, res, next) => {
   const { userId } = req.tokenData;
   const { iconId } = req.body;
 
-  if(iconId == undefined)
+  if (iconId == undefined)
     return res.status(400).json({ success: false, msg: "send icodId" });
 
-    if(isNaN(iconId))
-      return res.status(400).json({ success: false, msg: "icodId need to be number" });
-      try {
-        ChangeProfileImg(userId, iconId);
-        return res.json({success:true, msg:"iconId changed successfuly"})
-      } catch (error) {
-        next(error)
-      }
-}
+  if (isNaN(iconId))
+    return res
+      .status(400)
+      .json({ success: false, msg: "icodId need to be number" });
+  try {
+    userService.changeProfileImg(userId, iconId);
+    return res.json({ success: true, msg: "iconId changed successfuly" });
+  } catch (error) {
+    next(error);
+  }
+};

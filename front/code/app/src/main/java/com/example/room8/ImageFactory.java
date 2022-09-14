@@ -21,13 +21,13 @@ public final class ImageFactory {
             R.drawable.icon_man_13, R.drawable.icon_man_14, R.drawable.icon_man_15, R.drawable.icon_man_16,
             R.drawable.icon_woman_13, R.drawable.icon_woman_14, R.drawable.icon_woman_15, R.drawable.icon_woman_16,
             R.drawable.icon_snake_1, R.drawable.icon_tiger, R.drawable.icon_turtle, R.drawable.icon_wild_boar,
-            R.drawable.icon_woman_17, R.drawable.icon_woman_18
-            
+            R.drawable.icon_woman_17, R.drawable.icon_woman_18, R.drawable.icon_bat, R.drawable.icon_puffer_fish
+
     };
-  
+
 
     public static int profileImageFactory(int iconId) {
-        if (iconId < 0 || iconId > img.length)
+        if (iconId < 0 || iconId > imgs.length)
             return imgs[0];
 
         return imgs[iconId];

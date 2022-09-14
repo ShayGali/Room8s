@@ -19,7 +19,7 @@ router.put(
   isApartmentOwner,
   userController.changeRole
 );
-router.put("/ChangeProfileImg", userController.ChangeProfileImg);
+router.put("/ChangeProfileImg", userController.changeProfileImg);
 router.delete("/delete", userController.delete);
 
 module.exports = router;

@@ -13,12 +13,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
+import com.example.room8.model.User;
 
 public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileImgAdapter.ProfileImgHolder> {
     private final LayoutInflater inflater;
     private final Context context;
     private final int[] imgs;
     private int selectedPosition;
+
     public ChangeProfileImgAdapter(LayoutInflater inflater, Context context, int[] imgs) {
         this.inflater = inflater;
         this.context = context;
@@ -35,16 +37,16 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
     @Override
     public void onBindViewHolder(@NonNull ProfileImgHolder holder, int position) {
         holder.imageView.setImageResource(imgs[position]);
-        if(position == selectedPosition){
+        if (position == selectedPosition) {
             holder.layout.setBackground(ContextCompat.getDrawable(context, R.drawable.style_layout_border_gray));
-        }else{
+        } else {
             holder.layout.setBackgroundResource(0);
         }
         holder.imageView.setOnClickListener(v -> {
             int temp = selectedPosition;
-            selectedPosition = position;
-            notifyDataSetChanged(temp);
-            notifyDataSetChanged(selectedPosition);
+            selectedPosition = holder.getAdapterPosition();
+            notifyItemChanged(temp);
+            notifyItemChanged(selectedPosition);
         });
     }
 
@@ -53,12 +55,12 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
         return imgs.length;
     }
 
-    public int getSelectedPosition(){
+    public int getSelectedPosition() {
         return this.selectedPosition;
     }
 
     protected static class ProfileImgHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout  layout;
+        ConstraintLayout layout;
         ImageView imageView;
 
 
