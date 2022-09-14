@@ -29,9 +29,10 @@ public class Message implements Comparator<Message> {
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
     static { // for initial the timezone
-        DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+        DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
         DATE_FORMAT.setTimeZone(TimeZone.getDefault());
         TIME_FORMAT.setTimeZone(TimeZone.getDefault());
+
     }
 
     // the keys of the json object
@@ -90,8 +91,9 @@ public class Message implements Comparator<Message> {
         else
             this.msgContent = "";
 
-        if (jsonMessage.has(DATE_KEY))
+        if (jsonMessage.has(DATE_KEY)) {
             this.date = DATE_TIME_FORMAT.parse(jsonMessage.getString(DATE_KEY));
+        }
         else
             this.date = new Date();
         if (jsonMessage.has(ICON_ID_KEY) && !jsonMessage.isNull(ICON_ID_KEY))
@@ -104,18 +106,6 @@ public class Message implements Comparator<Message> {
             this.isSent = false;
     }
 
-    public JSONObject parseToJson() throws JSONException {
-        JSONObject messageAsJson = new JSONObject();
-        messageAsJson.put(USER_NAME_KEY, this.userName);
-        messageAsJson.put(MESSAGE_CONTENT_KEY, this.msgContent);
-        messageAsJson.put(ICON_ID_KEY, this.iconID);
-        messageAsJson.put(IS_SENT_KEY, this.isSent);
-
-        if (this.date != null)
-            messageAsJson.put(DATE_KEY, this.date);
-
-        return messageAsJson;
-    }
 
     public String toStringJsonFormat() {
         String str = "{\"" +
@@ -124,9 +114,6 @@ public class Message implements Comparator<Message> {
                 MESSAGE_CONTENT_KEY + "\":\"" + this.msgContent + "\",\"" +
                 ICON_ID_KEY + "\":\"" + this.iconID + "\",\"" +
                 IS_SENT_KEY + "\":" + this.isSent;
-        if (this.date != null) {
-            str += ",\"" + DATE_KEY + "\":\"" + DATE_TIME_FORMAT.format(this.date) + "\"";
-        }
         return str + "}";
     }
 
@@ -163,17 +150,11 @@ public class Message implements Comparator<Message> {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getMsgContent() {
         return msgContent;
     }
 
-    public void setMsgContent(String msgContent) {
-        this.msgContent = msgContent;
-    }
 
     public Date getDate() {
         return date;
@@ -187,21 +168,11 @@ public class Message implements Comparator<Message> {
         return iconID;
     }
 
-    public void setIconID(int iconID) {
-        this.iconID = iconID;
-    }
 
     public boolean isSent() {
         return isSent;
     }
 
-    public void setSent(boolean sent) {
-        isSent = sent;
-    }
-
-    public int getMessageId() {
-        return messageId;
-    }
 
     public void setMessageId(int messageId) {
         this.messageId = messageId;
@@ -209,10 +180,6 @@ public class Message implements Comparator<Message> {
 
     public UUID getUUID() {
         return UUID;
-    }
-
-    public void setUUID(UUID UUID) {
-        this.UUID = UUID;
     }
 
 
