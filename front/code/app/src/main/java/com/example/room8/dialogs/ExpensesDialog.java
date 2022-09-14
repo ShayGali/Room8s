@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room8.R;
 import com.example.room8.adapters.ExpensesAdapter;
+import com.example.room8.model.Apartment;
 import com.example.room8.model.Expense;
 
 import java.util.function.Predicate;
@@ -49,7 +50,7 @@ public class ExpensesDialog extends AppCompatDialogFragment {
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
         initRecyclerView();
-        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> dismiss());
+        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> System.out.println(Apartment.getInstance().getExpenses()));
 
 
         dialog.show();

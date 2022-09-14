@@ -81,7 +81,13 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         expenseHolder.enterEditModeBtn.setOnClickListener(v -> enterEditMode(expenseHolder, expense, position));
 
-        expenseHolder.deleteExpenseBtn.setOnClickListener(v -> ServerRequestsService.getInstance().deleteExpense(expense.getId(), () -> activity.runOnUiThread(() -> notifyItemRemoved(position))));
+        expenseHolder.deleteExpenseBtn.setOnClickListener(v ->
+                ServerRequestsService.getInstance().deleteExpense(
+                        expense.getId(),
+                        () -> {
+                            if (filterMethod != null) this.expenses.remove(position);
+                            activity.runOnUiThread(() -> notifyItemRemoved(position));
+                        }));
     }
 
     @Override
