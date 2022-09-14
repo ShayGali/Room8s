@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.model.Expense;
+import com.example.room8.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -67,6 +68,7 @@ public class CreateExpenseDialog extends AppCompatDialogFragment {
         if ("".equals(tempExpense.getTitle())) {
             titleInputLayout.setError("fill");
         } else {
+            tempExpense.setUserId(User.getInstance().getId());
             ServerRequestsService.getInstance().createExpense(tempExpense);
             dismiss();
         }
