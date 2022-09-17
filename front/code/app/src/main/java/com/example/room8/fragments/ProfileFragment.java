@@ -1,4 +1,4 @@
-package com.example.room8.fragments.profile_fragments;
+package com.example.room8.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.room8.ImageFactory;
 import com.example.room8.MainActivity;
@@ -40,6 +41,16 @@ public class ProfileFragment extends Fragment {
         View leaveRoomBtn = view.findViewById(R.id.leave_room_btn);
         View deleteUserDtn = view.findViewById(R.id.delete_user_btn);
         ImageView profileImage = view.findViewById(R.id.profile_img);
+
+        if (User.getInstance().getUserName() != null)
+            ((TextView) view.findViewById(R.id.user_username_textView)).setText(User.getInstance().getUserName());
+        else
+            view.findViewById(R.id.user_username_textView).setVisibility(View.GONE);
+
+        if (User.getInstance().getEmail() != null)
+            ((TextView) view.findViewById(R.id.user_email_textView)).setText(User.getInstance().getEmail());
+        else
+            view.findViewById(R.id.user_email_textView).setVisibility(View.GONE);
 
         profileImage.setImageResource(ImageFactory.profileImageFactory(User.getInstance().getProfileIconId()));
 

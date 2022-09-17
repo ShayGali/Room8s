@@ -16,19 +16,15 @@ webSocketServer.on("request", async (req) => {
   const token = authenticateToken(req.httpRequest.headers["x-auth-token"]);
 
   if (!token) {
-    console.log("reject connection - token invalid");
     req.reject(401, "invalid token");
     return;
   }
   if (!token.apartmentId) {
-    console.log("reject connection - user dont have apartment");
     req.reject(403, "user dont have apartment");
     return;
   }
 
   const connection = req.accept();
-  console.log(`New connection`);
-
   if (connections[token.apartmentId] === undefined) {
     connections[token.apartmentId] = [connection];
   } else {
@@ -66,8 +62,6 @@ webSocketServer.on("request", async (req) => {
   });
 
   connection.on("close", (resCode, desc) => {
-    console.log(`connection closed. resCode:${resCode}, description: ${desc}`);
-
     currentApartmentConnections = connections[token.apartmentId];
 
     currentApartmentConnections = currentApartmentConnections.filter(

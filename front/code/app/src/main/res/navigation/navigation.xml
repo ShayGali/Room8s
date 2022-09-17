@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.room8.fragments.profile_fragments.ProfileFragment"
+        android:name="com.example.room8.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
 
