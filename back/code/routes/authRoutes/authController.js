@@ -9,15 +9,20 @@ const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../../utilities/jwtHandler");
+
 const {
   isStrongPassword,
   hashPassword,
   compareHashPassword
 } = require("../../utilities/passwordHandler");
+
 const valuesValidate = require("../../utilities/valuesValidate");
 
 const resetTokenMap = new Map();
 
+/**
+ * handler for create new user request
+ */
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -27,13 +32,13 @@ exports.register = async (req, res, next) => {
   if (!valuesValidate.validateEmail(email)) {
     return res.status(400).json({ success: false, msg: "email not valid" });
   }
+
   if (!isStrongPassword(password)) {
-    return res.status(400).json({ success: false, msg: "password not valid" });
+    return res.status(400).json({ success: false, msg: "password not strong enough" });
   }
 
   try {
-    const salt = await bcrypt.genSalt();
-    const hashPassword = await bcrypt.hash(password, salt);
+    const hashedPassword =  await hashPassword(password);
 
     if ((await userService.findByEmailOrUsername(email)) !== undefined) {
       return res
@@ -50,7 +55,7 @@ exports.register = async (req, res, next) => {
     const result = await authService.register({
       username,
       email,
-      password: hashPassword,
+      password: hashedPassword,
     });
 
     jwtToken = generateAccessToken({
@@ -74,10 +79,16 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    if(!email || !password){
+      return res.status(400).json({ success: false, msg: "send email and password" });
+    }
+
     const findUser = await userService.findByEmailOrUsername(email);
+
     if (!findUser) {
       return res.status(401).json({ success: false, msg: "Invalid credentials" });
     }
+
     if (!(await compareHashPassword(password, findUser.user_password))) {
       return res.status(401).json({ success: false, msg: "Invalid credentials" });
     }
@@ -107,10 +118,11 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.hello = async (req, res, next) => {
+exports.hello = async (req, res, next) => { //TODO - delete
   return res.send({ success: true, msg: "hello", jwtToken: req.tokenData });
 };
 
+//TODO
 exports.forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
@@ -133,13 +145,20 @@ exports.forgotPassword = async (req, res, next) => {
   return res.send({ success: true, msg: "reset token send to ypur email" });
 };
 
-// genrate a expirtion time
+/**
+ * genrate a expirtion time
+ * @returns {number} 
+ */
 function generateExprityTime() {
   const EXPIRATION_TIME_IN_MINUTES = 15;
   return new Date().getTime() + EXPIRATION_TIME_IN_MINUTES * 60000;
 }
 
-// check if the token of the email expired
+/**
+ * check if the time is expired
+ * @param {number} time 
+ * @returns {boolean}
+ */
 function checkIfExpired(time) {
   return time - Date.now() < 0;
 }
