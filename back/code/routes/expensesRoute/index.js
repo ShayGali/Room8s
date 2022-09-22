@@ -7,8 +7,8 @@ const { authenticateTokenFromRequest } = require("../../middleware/auth");
 const { matchUserToApartment } = require("../../middleware/validate");
 
 // middleware
-router.use(authenticateTokenFromRequest);
-router.use(matchUserToApartment);
+router.use(authenticateTokenFromRequest); // all the requests need to have JWT token
+router.use(matchUserToApartment); // all the requests need to be by user that ahve apartment
 
 // requests
 router.get("/", expensesController.getAll);
