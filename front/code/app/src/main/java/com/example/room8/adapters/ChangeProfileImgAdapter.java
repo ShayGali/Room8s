@@ -37,12 +37,12 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
     @Override
     public void onBindViewHolder(@NonNull ProfileImgHolder holder, int position) {
         holder.imageView.setImageResource(imgs[position]);
-        if (position == selectedPosition) {
+        if (position == selectedPosition) { // add background to the user icon img
             holder.layout.setBackground(ContextCompat.getDrawable(context, R.drawable.style_layout_border_gray));
         } else {
             holder.layout.setBackgroundResource(0);
         }
-        holder.imageView.setOnClickListener(v -> {
+        holder.imageView.setOnClickListener(v -> { // change the current selected icon
             int temp = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
             notifyItemChanged(temp);

@@ -12,6 +12,9 @@ import com.example.room8.R;
 
 import java.util.ArrayList;
 
+/**
+apapter for check box recycler view
+*/
 public class CheckBoxRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final LayoutInflater inflater;

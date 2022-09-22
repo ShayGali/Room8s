@@ -33,7 +33,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public ChatAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
         messages = new ArrayList<>();
-
     }
 
     @NonNull
