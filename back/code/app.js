@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config(); // for using environment variables
 
 const restServer = require("./rest control");
 

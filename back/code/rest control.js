@@ -19,11 +19,6 @@ app.all("/isAlive", (req, res) => {
   res.status(200).send({ success: true, msg: "Server Alive" });
 });
 
-app.get("/msg", async (req, res) => {
-  res
-    .status(200)
-    .send({ data: await require("./service/messagingService").getMessages(1) });
-});
 
 // Global 404 Error handler
 app.all("/*", (req, res) => {
@@ -35,7 +30,7 @@ app.all("/*", (req, res) => {
 module.exports = app;
 
 /**
- *
+ * global Error handler
  * @param {Error} err
  * @param {Request} req
  * @param {Response} res
