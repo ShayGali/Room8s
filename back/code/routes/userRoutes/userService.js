@@ -93,11 +93,11 @@ exports.getRoommatesData = async (apartmentId, userId) => {
 exports.changeRole = async (userId, roleId) => {
 
   // check if the role is exists
-  const [r, _] = await db.execute(
+  const [rool, _] = await db.execute(
     `SELECT * FROM ${userLevelTable} WHERE ID = ?`,
     [roleId]
   );
-  if (r[0] === undefined) return;
+  if (rool[0] === undefined) return;
   const query = `UPDATE ${usersTable}
    SET user_level = ?
    WHERE ID = ?
