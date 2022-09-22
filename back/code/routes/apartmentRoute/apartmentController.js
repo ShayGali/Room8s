@@ -2,6 +2,7 @@ const apartmentService = require("./apartmentService");
 const userService = require("../userRoutes/userService");
 
 const { generateAccessToken } = require("../../utilities/jwtHandler");
+
 /**
  * get the data of the apartment of the user
  * if the dont have apartment it will return message
@@ -34,21 +35,22 @@ exports.createApartment = async (req, res, next) => {
       .send({ success: false, msg: "need to send a apartment name" });
   }
 
-  if (await userService.findUserApartmentId(userId)) {
+  if (await userService.findUserApartmentId(userId) !== undefined) { // check if the user already in apartment
     return res
       .status(200)
       .send({ success: false, msg: "user are already in apartment" });
   }
+
   try {
     const apartmentId = await apartmentService.createApartment(userId, name);
-    userService.changeRole(userId, 2);
+    userService.changeRole(userId, 2); // cahnge his role to apartemnt owner
 
     res.status(201).send({
       success: true,
       msg: "success",
       data: {
         apartmentId,
-        jwtToken: generateAccessToken({ userId, apartmentId }),
+        jwtToken: generateAccessToken({ userId, apartmentId }), // create new token
       },
     });
   } catch (err) {
@@ -70,7 +72,6 @@ exports.createApartment = async (req, res, next) => {
 
 exports.addUserToApartment = async (req, res, next) => {
   const { apartmentId } = req.tokenData;
-
   const { newUserId } = req.body;
 
   if (!newUserId) {
@@ -100,11 +101,14 @@ exports.addUserToApartment = async (req, res, next) => {
   }
 };
 
+/**
+ * handler for user that request to leave his apartment
+ */
 exports.leave = async (req, res, next) => {
   const { userId, apartmentId } = req.tokenData;
   try {
     await apartmentService.removeUserFromApartment(apartmentId, userId);
-    const newToken = generateAccessToken({ userId, apartmentId: null });
+    const newToken = generateAccessToken({ userId, apartmentId: null }); // the user need new token without the apartmentId
     res.json({
       success: true,
       msg: `user ${userId} has deleted from apartment ${apartmentId}`,
@@ -123,6 +127,13 @@ exports.removeUserFromApartment = async (req, res, next) => {
     return res.status(400).json({
       success: false,
       msg: "you need to send userId in the request params",
+    });
+  }
+
+  if(isNaN(userId)){
+    return res.status(400).json({
+      success: false,
+      msg: "userId need to be number",
     });
   }
 

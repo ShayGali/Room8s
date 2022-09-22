@@ -1,5 +1,8 @@
 const userService = require("../routes/userRoutes/userService");
 
+/**
+ * middleware fore validate that the user is still in his apartement.
+ */
 exports.matchUserToApartment = async (req, res, next) => {
   const { apartmentId, userId } = req.tokenData;
   if (userId === undefined) {
@@ -10,6 +13,7 @@ exports.matchUserToApartment = async (req, res, next) => {
     return res
       .status(403)
       .send({ success: false, msg: "user not in apartment" });
+      
   try {
     const userApartmentId = await userService.findUserApartmentId(userId);
 
