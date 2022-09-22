@@ -12,7 +12,7 @@ exports.hashPassword = async (password) => {
 };
 
 /**
- *
+ * 
  * @param {string} password
  * @param {string} hash
  * @returns {Promise<boolean>}
@@ -23,7 +23,7 @@ exports.compareHashPassword = async (password, hash) => {
 };
 
 /**
- *
+ * check if password is strong
  * @param {string} password
  * @returns {boolean}
  * @throws {TypeError}

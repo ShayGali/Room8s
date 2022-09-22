@@ -4,7 +4,7 @@ const ACCESS_TOKEN_EXPIRATION = "365d";
 const REFRESH_TOKEN_EXPIRATION = "365d";
 
 /**
- *
+ * check if the token is valid
  * @param {string} token
  * @returns {undefined | {userId: number, apartmentId: number, iat: number, exp: number}}
  */
@@ -21,7 +21,7 @@ exports.authenticateToken = (token) => {
 };
 
 /**
- *
+ * generate ner JWT access token with the data in the body of the token
  * @param {any} data
  * @returns {string}
  */
@@ -36,7 +36,7 @@ exports.generateAccessToken = (data) => {
   return token;
 };
 
-//TODO
+// generate ner JWT refresh token with the data in the body of the token
 exports.generateRefreshToken = (data) => {
   const refToken = JWT.sign(
     {
