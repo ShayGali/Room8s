@@ -96,7 +96,6 @@ exports.getRoommatesData = async (req, res, next) => {
 };
 
 exports.changeRole = async (req, res, next) => {
-  //TODO better error msg
   try {
     const { userId: senderId, apartmentId } = req.tokenData;
     const { userId, roleNum } = req.body;
@@ -122,6 +121,7 @@ exports.changeRole = async (req, res, next) => {
         .status(400)
         .json({ success: false, msg: "role id not in range" });
     }
+    
     return res.status(200).json({ success: true, msg: "role changed" });
   } catch (error) {
     next(error);
