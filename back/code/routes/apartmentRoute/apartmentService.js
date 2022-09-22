@@ -4,11 +4,13 @@ const usersTable = "users";
 const apartmentsUserTable = "user_in_apartment";
 const joinRequestTable = "join_requests";
 
+/**
+ * query the database for the apartemnt data
+ * @param {number} apartmentsId 
+ * @returns {Promise<{}>} //TODO
+ */
 exports.getData = async (apartmentsId) => {
-  const query = `
-    SELECT * FROM ${apartmentsTable}
-    WHERE ID = ?;
-    `;
+  const query = `SELECT * FROM ${apartmentsTable}WHERE ID = ?;`;
 
   const [apartment, _] = await db.execute(query, [apartmentsId]);
 
@@ -23,15 +25,12 @@ exports.getData = async (apartmentsId) => {
  *    user_in_apartment -> create the relationship between the user and his apartment
  * @param {number} userId
  * @param {string} apartmentName
- * @returns new apartment id
+ * @returns {number} new apartment id
  */
 exports.createApartment = async (userId, apartmentName) => {
-  const createApartmentQuery = `
-    INSERT INTO ${apartmentsTable} (
-            apartment_name
-        )
-        VALUE (?);
-    `;
+  const createApartmentQuery = `INSERT INTO ${apartmentsTable}
+        (apartment_name)
+        VALUE (?);`;
   let result = await db.execute(createApartmentQuery, [apartmentName]);
   const apartmentsId = result[0].insertId;
 
@@ -42,7 +41,8 @@ exports.createApartment = async (userId, apartmentName) => {
   VALUE (?, ?);
   `;
 
-  result = await db.execute(createRelationQuery, [apartmentsId, userId]);
+  db.execute(createRelationQuery, [apartmentsId, userId]);
+
   return apartmentsId;
 };
 
@@ -75,7 +75,7 @@ INSERT INTO ${apartmentsUserTable} (
 };
 
 /**
- *
+ * remove the user from the apatment : remove the connction , and decrease the number of people, if the number of people is less the 0, we delete the apartment
  * @param {number} apartmentId
  * @param {number} userId
  * @returns
@@ -110,6 +110,7 @@ exports.removeUserFromApartment = async (apartmentId, userId) => {
 };
 
 /**
+ * get the roommates id's in the apartment
  * @param {number} apartmentId
  * @returns {Promise<Array<number>>}
  */
@@ -121,11 +122,22 @@ exports.getRoom8Ids = async (apartmentId) => {
   return result.map((obj) => obj.user_ID);
 };
 
+
+/**
+ * delete the apartemnt from the DB
+ * @param {number} apartmentId 
+ */
 exports.deleteApartment = (apartmentId) => {
   const query = `DELETE FROM ${apartmentsTable} WHERE ID = ?`;
   db.execute(query, [apartmentId]);
 };
 
+/**
+ * 
+ * @param {number} apartmentId 
+ * @param {number} userId 
+ * @param {number} senderId 
+ */
 exports.sendJoinReq = (apartmentId, userId, senderId) => {
   const query = `INSERT INTO ${joinRequestTable} VALUE (?,?,?);`;
   db.execute(query, [apartmentId, userId, senderId]);

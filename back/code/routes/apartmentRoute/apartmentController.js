@@ -58,48 +58,6 @@ exports.createApartment = async (req, res, next) => {
   }
 };
 
-/**
- * add new user to the apartment of the user that send the request
- *
- * we check:
- *  if the sender dont send the new user id, we will return 400
- *  if we dont find the new user we will return 200 with message
- *  if the user that send the request is not in a apartment
- *  if the new user that we try to add is already in apartment
- *
- * else we will return 201
- */
-
-exports.addUserToApartment = async (req, res, next) => {
-  const { apartmentId } = req.tokenData;
-  const { newUserId } = req.body;
-
-  if (!newUserId) {
-    return res
-      .status(400)
-      .send({ success: false, msg: "new user id is required" });
-  }
-
-  try {
-    if (await userService.findUserApartmentId(newUserId)) {
-      return res
-        .status(200)
-        .send({ success: false, msg: "user are already in apartment" });
-    }
-
-    const result = await apartmentService.addUserToApartment(
-      apartmentId,
-      newUserId
-    );
-    if (result)
-      return res.status(201).send({
-        success: true,
-        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
-      });
-  } catch (err) {
-    next(err);
-  }
-};
 
 /**
  * handler for user that request to leave his apartment
@@ -220,7 +178,6 @@ exports.handleJoinReq = async (req, res, next) => {
     }
 
     if (join === "true") {
-      // `=== true` because i what to be sure its boolean
       let newToken = undefined;
       if (apartmentService.removeJoinReq(apartmentId, userId)) {
         if (

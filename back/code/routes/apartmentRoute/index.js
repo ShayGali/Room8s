@@ -7,20 +7,12 @@ const { authenticateTokenFromRequest } = require("../../middleware/auth");
 const { matchUserToApartment } = require("../../middleware/validate");
 const { isApartmentOwner } = require("../../middleware/rolesCheck");
 
-router.use(authenticateTokenFromRequest);
+router.use(authenticateTokenFromRequest); //all the requests need to have a valid JWT token
 
 router.post("/create", apartmentController.createApartment);
 
-router
-  .route("/data")
-  .get(matchUserToApartment, apartmentController.getApartmentData);
+router.get("/data",matchUserToApartment, apartmentController.getApartmentData);
 
-// router.post(
-//   "/addUser",
-//   matchUserToApartment,
-//   isApartmentOwner,
-//   apartmentController.addUserToApartment
-// );
 
 router.get("/joinReq", apartmentController.getJoinReq);
 
