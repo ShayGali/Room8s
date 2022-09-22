@@ -5,6 +5,7 @@ const tasksController = require("./tasksController");
 const { authenticateTokenFromRequest } = require("../../middleware/auth");
 const { matchUserToApartment } = require("../../middleware/validate");
 
+// middlewares
 router.use(authenticateTokenFromRequest);
 router.use(matchUserToApartment);
 
@@ -23,7 +24,7 @@ router
 
 router.get("/types", tasksController.getTypes);
 
-// need to be last
+// need to be last, if not all the request will go to here because the params
 router
   .route("/:taskId")
   .get(tasksController.findById)
