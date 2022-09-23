@@ -6,11 +6,13 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +42,7 @@ public class JoinReqDialog extends AppCompatDialogFragment {
         // close button
         view.findViewById(R.id.close_dialog_btn).setOnClickListener((v -> dismiss()));
 
+
         ((TextView) view.findViewById(R.id.recycler_title)).setText("You have " + jsonArray.length() + " invite requests");
         // init
         initRecyclerView();
@@ -53,13 +56,32 @@ public class JoinReqDialog extends AppCompatDialogFragment {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        @SuppressLint("SetTextI18n") JoinReqAdapter adapter = new JoinReqAdapter(requireActivity().getLayoutInflater(), jsonArray,
-                (apartmentId, join) -> ServerRequestsService.getInstance().handleJoinReq(apartmentId, join, navigateFunction),
-                length -> {
-                    if (length == 0) dismiss();
-                    requireActivity().runOnUiThread(() -> ((TextView) view.findViewById(R.id.recycler_title)).setText("You have " + jsonArray.length() + " invite requests"));
-                }
-        );
+        if (jsonArray.length() < 3) { // reduce diminution of size
+            Constraints.LayoutParams params = new Constraints.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.bottomToBottom = R.id.parent;
+            params.endToEnd = R.id.parent;
+            params.startToStart = R.id.parent;
+            params.topToBottom = R.id.recycler_title;
+            params.leftMargin = 8;
+            params.rightMargin = 8;
+            params.topMargin = 16;
+            params.bottomMargin = 16;
+            recyclerView.setLayoutParams(params);
+        }
+        @SuppressLint("SetTextI18n") JoinReqAdapter adapter =
+                new JoinReqAdapter(
+                        requireActivity().getLayoutInflater(),
+                        jsonArray,
+                        (apartmentId, join) -> ServerRequestsService.getInstance().handleJoinReq(apartmentId, join, navigateFunction),
+                        length -> {
+                            if (length == 0) dismiss();
+                            requireActivity().runOnUiThread(() -> {
+                                ((TextView) view.findViewById(R.id.recycler_title)).setText("You have " + jsonArray.length() + " invite requests");
+
+
+                            });
+                        }
+                );
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

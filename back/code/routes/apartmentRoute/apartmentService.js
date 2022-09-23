@@ -6,11 +6,11 @@ const joinRequestTable = "join_requests";
 
 /**
  * query the database for the apartemnt data
- * @param {number} apartmentsId 
+ * @param {number} apartmentsId
  * @returns {Promise<{}>} //TODO
  */
 exports.getData = async (apartmentsId) => {
-  const query = `SELECT * FROM ${apartmentsTable}WHERE ID = ?;`;
+  const query = `SELECT * FROM ${apartmentsTable} WHERE ID = ?;`;
 
   const [apartment, _] = await db.execute(query, [apartmentsId]);
 
@@ -122,10 +122,9 @@ exports.getRoom8Ids = async (apartmentId) => {
   return result.map((obj) => obj.user_ID);
 };
 
-
 /**
  * delete the apartemnt from the DB
- * @param {number} apartmentId 
+ * @param {number} apartmentId
  */
 exports.deleteApartment = (apartmentId) => {
   const query = `DELETE FROM ${apartmentsTable} WHERE ID = ?`;
@@ -133,10 +132,10 @@ exports.deleteApartment = (apartmentId) => {
 };
 
 /**
- * 
- * @param {number} apartmentId 
- * @param {number} userId 
- * @param {number} senderId 
+ *
+ * @param {number} apartmentId
+ * @param {number} userId
+ * @param {number} senderId
  */
 exports.sendJoinReq = (apartmentId, userId, senderId) => {
   const query = `INSERT INTO ${joinRequestTable} VALUE (?,?,?);`;

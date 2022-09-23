@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -85,7 +86,9 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ServerRequestsService.getInstance().deleteExpense(
                         expense.getId(),
                         () -> {
-                            if (filterMethod != null) this.expenses.remove(position);
+                            if (filterMethod != null) {
+                                this.expenses.remove(position);
+                            }
                             activity.runOnUiThread(() -> notifyItemRemoved(position));
                         }));
     }
