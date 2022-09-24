@@ -79,38 +79,41 @@
             app:layout_constraintTop_toBottomOf="@+id/login_email_EditText"
             tools:ignore="RtlSymmetry" />
 
-        <ImageView
+
+        <TextView
             android:id="@+id/login_btn"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
             android:layout_marginBottom="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/style_login_btn"
             android:clickable="true"
-            android:contentDescription="@string/login"
-            android:src="@drawable/btn_img_login"
+            android:contentDescription="@string/login_button"
+            android:gravity="center"
+            android:text="@string/login"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/go_to_register_btn"
-            app:layout_constraintDimensionRatio="w,2.87:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_password_EditText" />
 
-        <ImageView
+        <TextView
             android:id="@+id/go_to_register_btn"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/style_white_btn"
             android:clickable="true"
-            android:contentDescription="@string/sign_up"
-            android:src="@drawable/btn_img_sign_up"
+            android:gravity="center"
+            android:text="@string/sign_up"
+            android:textColor="#5ac8fa"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/go_to_forgot_password_btn"
-            app:layout_constraintDimensionRatio="w,2.87:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_btn"
-            tools:ignore="ImageContrastCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/login_btn" />
+
 
         <TextView
             android:id="@+id/go_to_forgot_password_btn"
@@ -127,6 +130,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/go_to_register_btn" />
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
