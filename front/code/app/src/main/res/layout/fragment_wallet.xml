@@ -19,59 +19,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <TextView
         android:id="@+id/create_expense_btn"
-        android:layout_width="0dp"
-        android:layout_height="111dp"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="300dp"
-        android:src="@drawable/btn_img_new_expens"
+        android:background="@drawable/style_home_page_btns"
+        android:gravity="center"
+        android:text="New Expense"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/my_expenses_btn"
-        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/previous_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="591dp" />
 
-    <ImageView
+
+    <TextView
         android:id="@+id/previous_expenses_btn"
-        android:layout_width="0dp"
-        android:layout_height="111dp"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
         android:layout_marginTop="300dp"
         android:layout_marginEnd="40dp"
-        android:src="@drawable/btn_img_previous_exprnses"
+        android:background="@drawable/style_home_page_btns"
+        android:gravity="center"
+        android:text="Previous Expenses"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/monthly_expenses_btn"
-        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/create_expense_btn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="267dp"
+        tools:layout_editor_absoluteY="641dp" />
 
-    <ImageView
+
+    <TextView
         android:id="@+id/my_expenses_btn"
-        android:layout_width="0dp"
-        android:layout_height="111dp"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/btn_img_my_exprenses"
-        app:layout_constraintDimensionRatio="w,1:1"
+        android:background="@drawable/style_home_page_btns"
+        android:gravity="center"
+        android:text="My Expenses"
+        android:textSize="20sp"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/monthly_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_expense_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/create_expense_btn"
+        tools:layout_editor_absoluteX="92dp"
+        tools:layout_editor_absoluteY="775dp" />
 
-    <ImageView
+    <TextView
         android:id="@+id/monthly_expenses_btn"
-        android:layout_width="0dp"
-        android:layout_height="111dp"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"
-        android:src="@drawable/btn_img_monthly_expenses"
-        app:layout_constraintDimensionRatio="w,1:1"
+        android:background="@drawable/style_home_page_btns"
+        android:gravity="center"
+        android:text="Monthly Expenses"
+        android:textSize="20sp"
+        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/my_expenses_btn"
-        app:layout_constraintTop_toBottomOf="@+id/previous_expenses_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/previous_expenses_btn"
+        tools:layout_editor_absoluteX="225dp"
+        tools:layout_editor_absoluteY="795dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

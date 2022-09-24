@@ -4,7 +4,7 @@
 
     <solid android:color="@color/done_button"/>
 
-    <corners android:radius="10dp" />
+    <corners android:radius="20dp" />
 
     <padding
         android:bottom="10dp"
