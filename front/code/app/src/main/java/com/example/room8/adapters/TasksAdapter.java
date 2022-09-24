@@ -41,12 +41,15 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return new TaskHolder(inflater.inflate(R.layout.view_single_task_layout, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Task task = tasks.get(position);
         TaskHolder taskHolder = (TaskHolder) holder;
-
-        taskHolder.name.setText(task.getTitle() != null ? task.getTitle() : "task don't have title");
+        if (task.getTitle() == null || task.getTitle().trim().equals(""))
+            taskHolder.name.setText("task don't have title");
+        else
+            taskHolder.name.setText(task.getTitle());
         taskHolder.date.setText(task.getExpirationDate() != null ? ServerRequestsService.DATE_FORMAT.format(task.getExpirationDate()) : "task don't have expiration");
         taskHolder.type.setText(task.getTaskType());
         taskHolder.img.setImageResource(ImageFactory.taskImageFactory(task.getTaskType()));
@@ -66,7 +69,7 @@ public class TasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @SuppressLint("NotifyDataSetChanged")
     public void addTask(Task task) {
         for (Task t : tasks) {
-            if (t.getId() == task.getId()){
+            if (t.getId() == task.getId()) {
                 t.updateTask(task);
                 notifyDataSetChanged();
                 return;

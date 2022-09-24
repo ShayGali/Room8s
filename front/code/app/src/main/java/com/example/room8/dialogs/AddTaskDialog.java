@@ -66,7 +66,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
                 })
                 .setPositiveButton("Add", (dialog, which) -> {
                     getValuesFromFields();
-                    ServerRequestsService.getInstance().addTask(tempTask, () -> activity.runOnUiThread(() -> adapter.notifyDataSetChanged()));
+                    ServerRequestsService.getInstance().addTask(tempTask, () -> activity.runOnUiThread(adapter::notifyDataSetChanged));
                     adapter.notifyDataSetChanged();
                 });
 

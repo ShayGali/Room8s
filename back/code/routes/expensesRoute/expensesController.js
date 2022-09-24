@@ -113,13 +113,11 @@ exports.update = async (req, res, next) => {
         msg: "paymentDate need to be is the format of YYYY-MM-DD",
       });
     }
-
     expense.title = title || expense.title;
     expense.expense_type = expensesType || expense.expense_type;
     expense.payment_date = paymentDate || expense.payment_date;
     expense.amount = amount || expense.amount;
     expense.note = note || expense.note;
-
     await expensesService.update(expense);
     return res.status(200).send({ success: true, msg: "success" });
   } catch (error) {
