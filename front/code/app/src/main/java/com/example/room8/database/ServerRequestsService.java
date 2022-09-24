@@ -511,7 +511,8 @@ public class ServerRequestsService {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("title", expense.getTitle());
         formBody.add("expensesType", expense.getType());
-        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
+        if ((expense.getPaymentDate() != null))
+            formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
         formBody.add("amount", String.valueOf(expense.getAmount()));
         formBody.add("note", expense.getNote());
 

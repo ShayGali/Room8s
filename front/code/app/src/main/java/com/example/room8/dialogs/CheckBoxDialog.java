@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +30,7 @@ public class CheckBoxDialog extends AppCompatDialogFragment {
     String title;
     Consumer<ArrayList<String>> action;
 
-    public CheckBoxDialog(String title,ArrayList<String> list,  ArrayList<Boolean> isChecklist,Consumer<ArrayList<String>> action) {
+    public CheckBoxDialog(String title, ArrayList<String> list, ArrayList<Boolean> isChecklist, Consumer<ArrayList<String>> action) {
         this.list = list;
         this.isChecklist = isChecklist;
         this.title = title;
@@ -44,13 +45,16 @@ public class CheckBoxDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_recycler_view, null);
 
-        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v->dismiss());
+        view.findViewById(R.id.close_dialog_btn).setOnClickListener(v -> dismiss());
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        CheckBoxRecyclerAdapter adapter = new CheckBoxRecyclerAdapter(getLayoutInflater(), list,isChecklist);
+        CheckBoxRecyclerAdapter adapter = new CheckBoxRecyclerAdapter(getLayoutInflater(), list, isChecklist);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        builder.setView(view).setTitle(title);
+
+        ((TextView) view.findViewById(R.id.recycler_title)).setText(title);
+
+        builder.setView(view);
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
         return dialog;
