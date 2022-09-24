@@ -57,10 +57,11 @@ public class ServerRequestsService {
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String ACCESS_TOKEN_KEY = "jwtToken";
     public static final String REFRESH_TOKEN_KEY = "refreshJwtToken";
-
     // formatters for the date and time
-    @SuppressLint("SimpleDateFormat") // for parse date time from the server
+    @SuppressLint("SimpleDateFormat") // for format date time from the server
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @SuppressLint("SimpleDateFormat") // for parse date time from the server
+    public static final SimpleDateFormat DATE_TIME_PARSER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @SuppressLint("SimpleDateFormat") // for format date object to time string
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     @SuppressLint("SimpleDateFormat")
@@ -69,6 +70,7 @@ public class ServerRequestsService {
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
     static { // for initial the timezone
+        DATE_TIME_PARSER.setTimeZone(TimeZone.getTimeZone("UTC"));
         DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
         DATE_FORMAT.setTimeZone(TimeZone.getDefault());
         DATE_FORMAT_FOR_REQUEST.setTimeZone(TimeZone.getDefault());
@@ -361,7 +363,7 @@ public class ServerRequestsService {
         if (task.getTaskType() != null)
             formBody.add("taskType", task.getTaskType());
         if (task.getExpirationDate() != null)
-            formBody.add("expirationDate", DATE_TIME_FORMAT.format(task.getExpirationDate()));
+            formBody.add("expirationDate", DATE_TIME_PARSER.format(task.getExpirationDate()));
         if (task.getTitle() != null)
             formBody.add("title", task.getTitle());
         if (task.getNote() != null)
@@ -786,9 +788,7 @@ public class ServerRequestsService {
     }
 
 
-
-
-    public void ChangeProfileImg(int iconId,Runnable onSuccess,Runnable onFailure) {
+    public void ChangeProfileImg(int iconId, Runnable onSuccess, Runnable onFailure) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("iconId", String.valueOf(iconId));
 

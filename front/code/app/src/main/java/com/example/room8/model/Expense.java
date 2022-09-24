@@ -54,11 +54,11 @@ public class Expense {
 
         if (expenseAsJson.has(PAYMENT_DATE_KEY) && !expenseAsJson.isNull(PAYMENT_DATE_KEY))
             this.paymentDate =
-                    ServerRequestsService.DATE_TIME_FORMAT.parse(expenseAsJson.getString(PAYMENT_DATE_KEY));
+                    ServerRequestsService.DATE_TIME_PARSER.parse(expenseAsJson.getString(PAYMENT_DATE_KEY));
 
         if (expenseAsJson.has(UPLOAD_DATE_KEY) && !expenseAsJson.isNull(UPLOAD_DATE_KEY))
             this.uploadDate =
-                    ServerRequestsService.DATE_TIME_FORMAT.parse(expenseAsJson.getString(UPLOAD_DATE_KEY));
+                    ServerRequestsService.DATE_TIME_PARSER.parse(expenseAsJson.getString(UPLOAD_DATE_KEY));
 
         if (expenseAsJson.has(NOTE_KEY) && !expenseAsJson.isNull(NOTE_KEY))
             this.note = expenseAsJson.getString(NOTE_KEY);

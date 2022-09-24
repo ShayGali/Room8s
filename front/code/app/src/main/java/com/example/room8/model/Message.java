@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,20 +21,6 @@ import java.util.UUID;
  * This class represent a message for the chat
  */
 public class Message implements Comparator<Message> {
-    // formatters for the date and time
-    @SuppressLint("SimpleDateFormat") // for parse date time from the server
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    @SuppressLint("SimpleDateFormat") // for format date object to time string
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    @SuppressLint("SimpleDateFormat") // for format date object to date string
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
-
-    static { // for initial the timezone
-        DATE_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-        DATE_FORMAT.setTimeZone(TimeZone.getDefault());
-        TIME_FORMAT.setTimeZone(TimeZone.getDefault());
-
-    }
 
     // the keys of the json object
     private static final String MESSAGE_ID_KEY = "messageId";
@@ -92,9 +79,8 @@ public class Message implements Comparator<Message> {
             this.msgContent = "";
 
         if (jsonMessage.has(DATE_KEY)) {
-            this.date = DATE_TIME_FORMAT.parse(jsonMessage.getString(DATE_KEY));
-        }
-        else
+            this.date = ServerRequestsService.DATE_TIME_PARSER.parse(jsonMessage.getString(DATE_KEY));
+        } else
             this.date = new Date();
         if (jsonMessage.has(ICON_ID_KEY) && !jsonMessage.isNull(ICON_ID_KEY))
             this.iconID = jsonMessage.getInt(ICON_ID_KEY);
@@ -121,7 +107,7 @@ public class Message implements Comparator<Message> {
      * @return Only the date from the DateTime object
      */
     public String getDateFormat() {
-        return DATE_FORMAT.format(this.date);
+        return ServerRequestsService.DATE_FORMAT.format(this.date);
     }
 
 
@@ -129,7 +115,7 @@ public class Message implements Comparator<Message> {
      * @return Only the time from the DateTime object
      */
     public String getTimeFormat() {
-        return TIME_FORMAT.format(this.date);
+        return ServerRequestsService.TIME_FORMAT.format(this.date);
     }
 
     @NonNull
