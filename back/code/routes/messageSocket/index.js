@@ -2,7 +2,7 @@ const SocketServer = require("websocket").server;
 
 const { server } = require("../../app"); // the server, fot open the socket
 
-const { authenticateToken } = require("../../utilities/jwtHandler");
+const { authenticateAccessToken } = require("../../utilities/jwtHandler");
 
 const messagingService = require("./messagingService");
 
@@ -22,7 +22,9 @@ const connections = {};
 // handel each request
 webSocketServer.on("request", async (req) => {
   // get the token from the request header
-  const token = authenticateToken(req.httpRequest.headers["x-auth-token"]);
+  const token = authenticateAccessToken(
+    req.httpRequest.headers["x-auth-token"]
+  );
 
   if (!token) {
     req.reject(401, "invalid token");

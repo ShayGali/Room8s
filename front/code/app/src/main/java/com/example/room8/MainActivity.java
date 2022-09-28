@@ -1,6 +1,9 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
@@ -13,7 +16,11 @@ import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
+import com.example.room8.fragments.home_page_fragments.HomePageFragment;
+import com.example.room8.fragments.open_app_fragments.LoginFragment;
+import com.example.room8.fragments.open_app_fragments.SignUpFragment;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +38,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//
+//        try {
+//            Thread.sleep(4000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         sharedPreferenceHandler = SharedPreferenceHandler.getInstance();
         sharedPreferenceHandler.setActivity(this);
 
@@ -147,5 +159,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void removeRoom8s(Integer id) {
         databaseService.removeRoom8(id);
+    }
+
+    public void goToLogin() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.main_nav_host_fragment, new LoginFragment(), null);
+        ft.addToBackStack(LoginFragment.class.getName()); // you can use a string here, using the class name is just convenient
+        ft.commit();
+        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

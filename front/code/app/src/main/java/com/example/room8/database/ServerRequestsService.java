@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.room8.MainActivity;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Expense;
 import com.example.room8.model.Roommate;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.function.Consumer;
@@ -33,7 +35,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
- * For handle HTTP requests to the server useing the okhttp3 lib
+ * For handle HTTP requests to the server using the okhttp3 lib
  */
 public class ServerRequestsService {
 
@@ -52,6 +54,7 @@ public class ServerRequestsService {
 
     //JSON keys
     public static final String SUCCESS_KEY = "success"; // if the request succeeded
+    public static final String TOKEN_EXPIRED_KEY = "expired"; // if the request succeeded
     public static final String MESSAGE_KEY = "msg"; // response message
     public static final String DATA_KEY = "data"; // the data
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
@@ -102,11 +105,12 @@ public class ServerRequestsService {
     }
 
     private final OkHttpClient client;
-    private Activity activity;
+    private MainActivity activity;
     private String accessesToken;
     private String refreshToken;
+    private Date refreshTimeOut;
 
-    public void setActivity(Activity activity) {
+    public void setActivity(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -115,7 +119,7 @@ public class ServerRequestsService {
     }
 
 
-    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+    private Callback createCallback(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         return new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -142,6 +146,9 @@ public class ServerRequestsService {
                     if (responseJOSN.has(SUCCESS_KEY)) {
                         if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
+                        }
+                        if (responseJOSN.has(TOKEN_EXPIRED_KEY) && responseJOSN.getBoolean(TOKEN_EXPIRED_KEY)) {
+                            refreshToken(originalReq, failMsg, successAction, failAction);
                         } else {
                             if (failAction != null) {
                                 failAction.accept(responseJOSN);
@@ -161,10 +168,17 @@ public class ServerRequestsService {
         };
     }
 
+    private Callback createCallback(Request originalReq, String failMsg, Consumer<JSONObject> successAction) {
+        return this.createCallback(originalReq, failMsg, successAction, null);
+    }
+
+    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        return this.createCallback(null, failMsg, successAction, failAction);
+    }
+
     private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
         return this.createCallback(failMsg, successAction, null);
     }
-
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
         showToast(failMsg);
@@ -178,6 +192,42 @@ public class ServerRequestsService {
         System.err.println(failMsg);
         System.err.println("response code: " + responseCode);
         System.err.println("msg: " + responseJOSN);
+    }
+
+    private synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant()) || originalReq == null) {
+            activity.goToLogin();
+            return;
+        }
+        refreshTimeOut = new Date(Calendar.getInstance().getTimeInMillis() + ((10 * 60 * 5))); // expired in 5 minutes
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + AUTH_PATH + "/refresh")
+                .addHeader(TOKEN_HEADER_KEY, refreshToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("",
+                jsonObject -> {
+            showToast("1");
+                    if (jsonObject.has(ACCESS_TOKEN_KEY) && !jsonObject.isNull(ACCESS_TOKEN_KEY)) {
+                        showToast("2");
+                        try {
+                            String newToken = jsonObject.getString(ACCESS_TOKEN_KEY);
+                            this.accessesToken = newToken;
+                            SharedPreferenceHandler.getInstance().saveJwtAccessToken(newToken);
+                            client.newCall(originalReq).enqueue(createCallback(failMsg, successAction, failAction));
+                            showToast("3");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                jsonObject -> {
+                    System.out.println(jsonObject);
+                    showToast("4");
+                    activity.goToLogin();
+                }));
     }
 
 
@@ -273,7 +323,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("create apartment failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "create apartment failed", jsonObject -> {
             try {
                 if (jsonObject.has(DATA_KEY)) {
                     JSONObject data = jsonObject.getJSONObject(DATA_KEY);
@@ -303,7 +353,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             try {
                 User.parseDataFromJson(jsonObject.getJSONObject(DATA_KEY));
             } catch (JSONException e) {
@@ -320,7 +370,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch tasks failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch tasks failed", jsonObject -> {
             try {
                 JSONArray tasks = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < tasks.length(); i++) {
@@ -343,7 +393,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
-        client.newCall(request).enqueue(createCallback("fetch room8s data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch room8s data failed", jsonObject -> {
             try {
                 JSONArray room8 = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < room8.length(); i++) {
@@ -379,7 +429,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("add task failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "add task failed", jsonObject -> {
             try {
                 if (jsonObject.getJSONObject(DATA_KEY).has("insertedID") && !jsonObject.getJSONObject(DATA_KEY).isNull("insertedID"))
                     task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
@@ -417,7 +467,7 @@ public class ServerRequestsService {
                 .build();
 
         String failMsg = "update task " + task.getId() + " failed";
-        client.newCall(request).enqueue(createCallback(failMsg, jsonObject ->
+        client.newCall(request).enqueue(createCallback(request, failMsg, jsonObject ->
                 showToast("The task has been updated successfully")
         ));
     }
@@ -430,7 +480,7 @@ public class ServerRequestsService {
                 .build();
 
         String failMsg = "delete task " + taskId + " failed";
-        client.newCall(request).enqueue(createCallback(failMsg, jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, failMsg, jsonObject -> {
             showToast("The task has been delete successfully");
             notifyFunction.run();
         }));
@@ -447,7 +497,7 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
+        client.newCall(request).enqueue(createCallback(request, "change password failed", jsonObject -> showToast("change password successfully")));
     }
 
 
@@ -458,7 +508,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "remove user failed", jsonObject -> {
             Apartment.getInstance().getRoommates().removeIf(r -> id == r.getId());
             showToast("remove room8 successfully");
         }));
@@ -471,7 +521,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "remove user failed", jsonObject -> {
             SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
             sp.setIsInApartment(false);
             try {
@@ -491,7 +541,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
-        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch expenses failed", jsonObject -> {
             try {
                 JSONArray expenses = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < expenses.length(); i++) {
@@ -521,7 +571,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .put(formBody.build())
                 .build();
-        client.newCall(request).enqueue(createCallback("update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
+        client.newCall(request).enqueue(createCallback(request, "update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
     }
 
     public void createExpense(Expense expense) {
@@ -543,7 +593,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "create expense went wrong", jsonObject -> {
             showToast("create expense successfully");
             try {
                 if (jsonObject.has(DATA_KEY) && jsonObject.getJSONObject(DATA_KEY).has("insertedID")) {
@@ -565,7 +615,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("delete expense failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "delete expense failed", jsonObject -> {
             Apartment.getInstance().getExpenses().removeIf(e -> e.getId() == expenseId);
             notifyFunction.run();
             showToast("The expense has been deleted successfully");
@@ -593,7 +643,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch join request went wrong", jsonObject -> {
             if (!jsonObject.has(DATA_KEY)) return;
 
             try {
@@ -617,7 +667,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("send join request went wrong",
+        client.newCall(request).enqueue(createCallback(request, "send join request went wrong",
                 jsonObject -> showToast("send request successfully"),
                 jsonObject -> {
                     try {
@@ -643,7 +693,7 @@ public class ServerRequestsService {
                 .build();
 
         SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong",
+        client.newCall(request).enqueue(createCallback(request, "fetch join request went wrong",
                 jsonObject -> {
                     if (join) {
                         try {
@@ -695,6 +745,7 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
         client.newCall(request).enqueue(createCallback(
+                request,
                 "fetch join request went wrong",
                 jsonObject -> {
                     displayChangeFunction.run();
@@ -720,7 +771,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("delete data failed", jsonObject -> navigateFunction.run()));
+        client.newCall(request).enqueue(createCallback(request, "delete data failed", jsonObject -> navigateFunction.run()));
     }
 
     public void getApartmentId(Runnable onFinish) {
@@ -730,7 +781,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             try {
                 SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
                 if (jsonObject.has("apartmentId")) {
@@ -763,7 +814,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             Apartment a = Apartment.getInstance();
 
             try {
@@ -799,6 +850,6 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change profile icon failed", jsonObject -> onSuccess.run(), jsonObject -> onFailure.run()));
+        client.newCall(request).enqueue(createCallback(request, "change profile icon failed", jsonObject -> onSuccess.run(), jsonObject -> onFailure.run()));
     }
 }

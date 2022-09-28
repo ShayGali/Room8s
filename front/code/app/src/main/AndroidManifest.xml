@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.Room8"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".NoConnectionActivity"
             android:exported="false" />

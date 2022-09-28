@@ -13,7 +13,7 @@ const {
 const {
   isStrongPassword,
   hashPassword,
-  compareHashPassword
+  compareHashPassword,
 } = require("../../utilities/passwordHandler");
 
 const valuesValidate = require("../../utilities/valuesValidate");
@@ -34,11 +34,13 @@ exports.register = async (req, res, next) => {
   }
 
   if (!isStrongPassword(password)) {
-    return res.status(400).json({ success: false, msg: "password not strong enough" });
+    return res
+      .status(400)
+      .json({ success: false, msg: "password not strong enough" });
   }
 
   try {
-    const hashedPassword =  await hashPassword(password);
+    const hashedPassword = await hashPassword(password);
 
     if ((await userService.findByEmailOrUsername(email)) !== undefined) {
       return res
@@ -79,18 +81,24 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    if(!email || !password){
-      return res.status(400).json({ success: false, msg: "send email and password" });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "send email and password" });
     }
 
     const findUser = await userService.findByEmailOrUsername(email);
 
     if (!findUser) {
-      return res.status(401).json({ success: false, msg: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, msg: "Invalid credentials" });
     }
 
     if (!(await compareHashPassword(password, findUser.user_password))) {
-      return res.status(401).json({ success: false, msg: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, msg: "Invalid credentials" });
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
@@ -99,7 +107,7 @@ exports.login = async (req, res, next) => {
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
-    
+
     const refreshJwtToken = generateRefreshToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
@@ -116,10 +124,6 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
-
-exports.hello = async (req, res, next) => { //TODO - delete
-  return res.send({ success: true, msg: "hello", jwtToken: req.tokenData });
 };
 
 //TODO
@@ -147,7 +151,7 @@ exports.forgotPassword = async (req, res, next) => {
 
 /**
  * genrate a expirtion time
- * @returns {number} 
+ * @returns {number}
  */
 function generateExprityTime() {
   const EXPIRATION_TIME_IN_MINUTES = 15;
@@ -156,7 +160,7 @@ function generateExprityTime() {
 
 /**
  * check if the time is expired
- * @param {number} time 
+ * @param {number} time
  * @returns {boolean}
  */
 function checkIfExpired(time) {
@@ -184,4 +188,15 @@ exports.resetPassword = async (req, res, next) => {
   userService.updatePassword(email, hashedPassword); // TODO
 
   return res.json({ success: true, msg: "password changed" });
+};
+
+exports.refreshToken = async (req, res, next) => {
+  const tokenData = req.tokenData;
+  const refreshJwtToken = generateRefreshToken(tokenData);
+
+  return res.status(200).json({
+    success: true,
+    msg: "success",
+    refreshJwtToken,
+  });
 };

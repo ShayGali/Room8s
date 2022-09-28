@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".fragments.open_app_fragments.LoginFragment">
+    tools:context=".fragments.open_app_fragments.SignUpFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-const { authenticateToken } = require("../utilities/jwtHandler");
+const { authenticateAccessToken } = require("../utilities/jwtHandler");
 /** Global middleware function to validate JWT token
  * will return:
  * 401 if token not send
@@ -13,10 +13,14 @@ exports.authenticateTokenFromRequest = (req, res, next) => {
       .status(401)
       .send({ success: false, msg: "Send JWT token to make this request" }); // TODO: make better error message
 
-  const tokenData = authenticateToken(token);
-
+  const tokenData = authenticateAccessToken(token);
   if (tokenData === undefined)
     return res.status(403).send({ success: false, msg: "Token is Invalid" });
+
+  if (tokenData.expired)
+    return res
+      .status(401)
+      .send({ success: false, msg: "Token is expired", expired: true });
 
   req.tokenData = tokenData;
   next();
