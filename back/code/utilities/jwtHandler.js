@@ -1,25 +1,30 @@
 const JWT = require("jsonwebtoken");
 
-const ACCESS_TOKEN_EXPIRATION = "365d";
+const ACCESS_TOKEN_EXPIRATION = "5s";
 const REFRESH_TOKEN_EXPIRATION = "365d";
 
 /**
  * check if the token is valid
  * @param {string} token
+ * @param {string} key
  * @returns {undefined | {userId: number, apartmentId: number, iat: number, exp: number}}
  */
-exports.authenticateToken = (token) => {
+function authenticateToken(token, key) {
   if (!token) return;
-  return JWT.verify(
-    token,
-    process.env.ACCESS_TOKEN_SECRET,
-    (err, tokenData) => {
-      if (err) return;
-      return tokenData;
+  return JWT.verify(token, key, (err, tokenData) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") return { expired: true };
     }
-  );
-};
+    return tokenData;
+  });
+}
 
+exports.authenticateAccessToken = (token) => {
+  authenticateToken(token, process.env.ACCESS_TOKEN_SECRET);
+};
+exports.authenticateRefreshToken = (token) => {
+  authenticateToken(token, process.env.REFRESH_TOKEN_SECRET);
+};
 /**
  * generate ner JWT access token with the data in the body of the token
  * @param {any} data
@@ -38,6 +43,7 @@ exports.generateAccessToken = (data) => {
 
 // generate ner JWT refresh token with the data in the body of the token
 exports.generateRefreshToken = (data) => {
+  console.log("now");
   const refToken = JWT.sign(
     {
       ...data,
@@ -46,4 +52,4 @@ exports.generateRefreshToken = (data) => {
     { expiresIn: REFRESH_TOKEN_EXPIRATION }
   );
   return refToken;
-}
+};
