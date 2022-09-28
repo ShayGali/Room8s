@@ -162,11 +162,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToLogin() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.main_nav_host_fragment, new LoginFragment(), null);
-        ft.addToBackStack(LoginFragment.class.getName()); // you can use a string here, using the class name is just convenient
-        ft.commit();
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_homePageUserWithoutApartmentFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            logout(R.id.action_homePageFragment_to_loginFragment);
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            logout(R.id.action_profileFragment_to_loginFragment);
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            logout(R.id.action_tasksFragment_to_loginFragment);
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            logout(R.id.action_message_Fragment_to_loginFragment);
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            logout(R.id.action_walletFragment_to_loginFragment);
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+        this.finish();
     }
 }

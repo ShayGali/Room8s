@@ -3,9 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 const authService = require("./authService");
 const userService = require("../../routes/userRoutes/userService");
 
-const bcrypt = require("bcrypt");
-
 const {
+  authenticateRefreshToken,
   generateAccessToken,
   generateRefreshToken,
 } = require("../../utilities/jwtHandler");
@@ -191,12 +190,30 @@ exports.resetPassword = async (req, res, next) => {
 };
 
 exports.refreshToken = async (req, res, next) => {
-  const tokenData = req.tokenData;
-  const refreshJwtToken = generateRefreshToken(tokenData);
+  const token = req.header("x-auth-token");
+  if (!token)
+    return res
+      .status(401)
+      .send({ success: false, msg: "Send JWT token to make this request" });
 
+  const tokenData = authenticateRefreshToken(token);
+
+  if (tokenData === undefined)
+    return res.status(403).send({ success: false, msg: "Token is Invalid" });
+
+  if (tokenData.expired)
+    return res
+      .status(401)
+      .send({ success: false, msg: "Token is expired", expired: true });
+
+  delete tokenData["iat"];
+  delete tokenData["exp"];
+
+  const newAccessToken = generateAccessToken(tokenData);
+  console.log("da");
   return res.status(200).json({
     success: true,
     msg: "success",
-    refreshJwtToken,
+    jwtToken: newAccessToken,
   });
 };

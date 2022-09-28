@@ -1,6 +1,6 @@
 const JWT = require("jsonwebtoken");
 
-const ACCESS_TOKEN_EXPIRATION = "5s";
+const ACCESS_TOKEN_EXPIRATION = "30m";
 const REFRESH_TOKEN_EXPIRATION = "365d";
 
 /**
@@ -20,10 +20,10 @@ function authenticateToken(token, key) {
 }
 
 exports.authenticateAccessToken = (token) => {
-  authenticateToken(token, process.env.ACCESS_TOKEN_SECRET);
+  return authenticateToken(token, process.env.ACCESS_TOKEN_SECRET);
 };
 exports.authenticateRefreshToken = (token) => {
-  authenticateToken(token, process.env.REFRESH_TOKEN_SECRET);
+  return authenticateToken(token, process.env.REFRESH_TOKEN_SECRET);
 };
 /**
  * generate ner JWT access token with the data in the body of the token
@@ -43,7 +43,6 @@ exports.generateAccessToken = (data) => {
 
 // generate ner JWT refresh token with the data in the body of the token
 exports.generateRefreshToken = (data) => {
-  console.log("now");
   const refToken = JWT.sign(
     {
       ...data,

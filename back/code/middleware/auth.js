@@ -11,7 +11,7 @@ exports.authenticateTokenFromRequest = (req, res, next) => {
   if (!token)
     return res
       .status(401)
-      .send({ success: false, msg: "Send JWT token to make this request" }); // TODO: make better error message
+      .send({ success: false, msg: "Send JWT token to make this request" });
 
   const tokenData = authenticateAccessToken(token);
   if (tokenData === undefined)

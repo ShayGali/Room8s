@@ -102,6 +102,7 @@ public class ServerRequestsService {
     private ServerRequestsService() {
         client = new OkHttpClient();
         accessesToken = SharedPreferenceHandler.getInstance().getAccessJwt();
+        refreshToken = SharedPreferenceHandler.getInstance().getRefreshJwt();
     }
 
     private final OkHttpClient client;
@@ -142,12 +143,13 @@ public class ServerRequestsService {
                 }
                 try {
                     JSONObject responseJOSN = new JSONObject(stringBody);
-
+                    System.out.println(responseJOSN);
                     if (responseJOSN.has(SUCCESS_KEY)) {
                         if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
-                        }
-                        if (responseJOSN.has(TOKEN_EXPIRED_KEY) && responseJOSN.getBoolean(TOKEN_EXPIRED_KEY)) {
+
+                        } else if (responseJOSN.has(TOKEN_EXPIRED_KEY) && responseJOSN.getBoolean(TOKEN_EXPIRED_KEY)) {
+                            System.out.println("here");
                             refreshToken(originalReq, failMsg, successAction, failAction);
                         } else {
                             if (failAction != null) {
@@ -155,9 +157,8 @@ public class ServerRequestsService {
                                 return;
                             }
                         }
-
+                        return;
                     }
-
                     if (!response.isSuccessful()) {
                         handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
                     }
@@ -196,7 +197,8 @@ public class ServerRequestsService {
 
     private synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant()) || originalReq == null) {
-            activity.goToLogin();
+
+//            activity.goToLogin(); //לבדוק אם יש כמה בקשות במקביל
             return;
         }
         refreshTimeOut = new Date(Calendar.getInstance().getTimeInMillis() + ((10 * 60 * 5))); // expired in 5 minutes
@@ -209,15 +211,20 @@ public class ServerRequestsService {
 
         client.newCall(request).enqueue(createCallback("",
                 jsonObject -> {
-            showToast("1");
                     if (jsonObject.has(ACCESS_TOKEN_KEY) && !jsonObject.isNull(ACCESS_TOKEN_KEY)) {
-                        showToast("2");
                         try {
                             String newToken = jsonObject.getString(ACCESS_TOKEN_KEY);
                             this.accessesToken = newToken;
                             SharedPreferenceHandler.getInstance().saveJwtAccessToken(newToken);
-                            client.newCall(originalReq).enqueue(createCallback(failMsg, successAction, failAction));
-                            showToast("3");
+
+                            Request newRequest = new Request.Builder()
+                                    .url(originalReq.url())
+                                    .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                                    .headers(originalReq.headers())
+                                    .method(originalReq.method(), originalReq.body())
+                                    .build();
+
+                            client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -225,7 +232,6 @@ public class ServerRequestsService {
                 },
                 jsonObject -> {
                     System.out.println(jsonObject);
-                    showToast("4");
                     activity.goToLogin();
                 }));
     }

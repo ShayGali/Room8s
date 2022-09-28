@@ -14,11 +14,9 @@ app.use("/expenses", require("./routes/expensesRoute"));
 
 // Global Error handler
 app.use(errorHandler);
-
 app.all("/isAlive", (req, res) => {
   res.status(200).send({ success: true, msg: "Server Alive" });
 });
-
 
 // Global 404 Error handler
 app.all("/*", (req, res) => {
