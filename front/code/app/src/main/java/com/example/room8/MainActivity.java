@@ -22,6 +22,7 @@ import com.example.room8.fragments.open_app_fragments.SignUpFragment;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -153,10 +154,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void leaveApartment() {
         databaseService.leave(() -> navigateFragment(R.id.action_profileFragment_to_homePageUserWithoutApartmentFragment));
-    }
-
-    public void changePassword(String password) {
-        databaseService.changePassword(password);
     }
 
     public void removeRoom8s(Integer id) {

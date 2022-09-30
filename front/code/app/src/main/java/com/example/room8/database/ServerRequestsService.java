@@ -503,8 +503,9 @@ public class ServerRequestsService {
         }));
     }
 
-    public void changePassword(String password) {
+    public void changePassword(String prevPassword, String password, Runnable successAction, Consumer<String> showError) {
         FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("prevPassword", prevPassword);
         formBody.add("password", password);
 
 
@@ -514,7 +515,18 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback(request, "change password failed", jsonObject -> showToast("change password successfully")));
+        client.newCall(request).enqueue(createCallback(request, "change password failed", jsonObject -> {
+            showToast("change password successfully");
+            successAction.run();
+        }, jsonObject -> {
+            if (jsonObject.has(MESSAGE_KEY)) {
+                try {
+                    showError.accept(jsonObject.getString(MESSAGE_KEY));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
     }
 
 

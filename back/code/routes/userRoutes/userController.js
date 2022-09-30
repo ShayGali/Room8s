@@ -9,6 +9,7 @@ const {
 const {
   hashPassword,
   isStrongPassword,
+  compareHashPassword,
 } = require("../../utilities/passwordHandler");
 
 /**
@@ -121,7 +122,7 @@ exports.changeRole = async (req, res, next) => {
         .status(400)
         .json({ success: false, msg: "role id not in range" });
     }
-    
+
     return res.status(200).json({ success: true, msg: "role changed" });
   } catch (error) {
     next(error);
@@ -129,7 +130,20 @@ exports.changeRole = async (req, res, next) => {
 };
 exports.changePassword = async (req, res, next) => {
   const { userId } = req.tokenData;
-  const { password } = req.body;
+  const { prevPassword, password } = req.body;
+  if (prevPassword === undefined) {
+    return res.status(400).json({ success: false, msg: "send prev password" });
+  }
+
+  try {
+    const user = await userService.findById(userId);
+    if (!(await compareHashPassword(prevPassword, user.user_password))) {
+      return res.status(401).json({ success: false, msg: "Wrong password" });
+    }
+  } catch (error) {
+    next(error);
+  }
+
   if (password === undefined) {
     return res.status(400).json({ success: false, msg: "send new password" });
   }

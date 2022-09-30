@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
 
         view.findViewById(R.id.edit_profile_img_btn).setOnClickListener(v -> new ChangeProfileImgDialog(profileImage::setImageResource, activity).show(getParentFragmentManager(), "tag"));
         changePasswordBtn.setOnClickListener(v -> {
-            ChangePasswordDialog dialog = new ChangePasswordDialog(password -> activity.changePassword(password));
+            ChangePasswordDialog dialog = new ChangePasswordDialog();
             dialog.show(getParentFragmentManager(), "Change Password");
         });
 
