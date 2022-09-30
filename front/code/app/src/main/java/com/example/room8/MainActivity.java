@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connectionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
+                ServerRequestsService.getInstance().refreshToken(null, "", i -> goToLogin(), i -> goToLogin());
+
                 if (SharedPreferenceHandler.getInstance().isInApartment())
                     this.navigateFragment(R.id.action_loginFragment_to_homePageFragment);
                 else

@@ -195,8 +195,8 @@ public class ServerRequestsService {
         System.err.println("msg: " + responseJOSN);
     }
 
-    private synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
-        if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant()) || originalReq == null) {
+    public synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant())) {
 
 //            activity.goToLogin(); //לבדוק אם יש כמה בקשות במקביל
             return;
@@ -217,14 +217,17 @@ public class ServerRequestsService {
                             this.accessesToken = newToken;
                             SharedPreferenceHandler.getInstance().saveJwtAccessToken(newToken);
 
-                            Request newRequest = new Request.Builder()
-                                    .url(originalReq.url())
-                                    .addHeader(TOKEN_HEADER_KEY, accessesToken)
-                                    .headers(originalReq.headers())
-                                    .method(originalReq.method(), originalReq.body())
-                                    .build();
+                            if (originalReq != null) {
+                                Request newRequest = new Request.Builder()
+                                        .url(originalReq.url())
+                                        .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                                        .headers(originalReq.headers())
+                                        .method(originalReq.method(), originalReq.body())
+                                        .build();
 
-                            client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
+                                client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
