@@ -72,10 +72,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/go_to_profile_btn"
-                android:layout_width="125dp"
-                android:layout_height="0dp"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
+                style="@style/squareButton"
                 app:layout_constraintEnd_toStartOf="@+id/go_to_tasks_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -141,10 +138,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/go_to_tasks_btn"
-                android:layout_width="125dp"
-                android:layout_height="0dp"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
+                style="@style/squareButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
@@ -180,11 +174,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/go_to_messages_btn"
-                android:layout_width="125dp"
-                android:layout_height="0dp"
+                style="@style/squareButton"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toStartOf="@+id/go_to_wallet_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -220,11 +211,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/go_to_wallet_btn"
-                android:layout_width="125dp"
-                android:layout_height="0dp"
+                style="@style/squareButton"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/go_to_messages_btn"

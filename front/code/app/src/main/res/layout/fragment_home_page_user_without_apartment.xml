@@ -18,7 +18,6 @@
             android:background="@color/background">
 
 
-
             <ImageView
                 android:id="@+id/menu_btn"
                 android:layout_width="0dp"
@@ -49,14 +48,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/go_to_profile_btn"
-                android:layout_width="140dp"
-                android:layout_height="0dp"
+                style="@style/squareButton"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="160dp"
                 android:layout_marginEnd="20dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toStartOf="@+id/create_apartment_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,14 +87,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/create_apartment_btn"
-                android:layout_width="140dp"
-                android:layout_height="0dp"
+                style="@style/squareButton"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="160dp"
                 android:layout_marginEnd="60dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/style_home_page_btns"
-                app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/go_to_profile_btn"
@@ -133,8 +124,6 @@
                     app:layout_constraintStart_toStartOf="@+id/imageView3"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

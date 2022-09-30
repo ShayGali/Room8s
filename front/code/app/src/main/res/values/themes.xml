@@ -33,6 +33,19 @@
         <item name="maxImageSize">20dp</item>
         <item name="srcCompat">@drawable/ic_baseline_close_24</item>
     </style>
+    
+    <style name="squareButton">
+        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@drawable/style_home_page_btns</item>
+        <item name="layout_constraintDimensionRatio">h,1:1</item>
+    </style>
+
+    <style name="squareButtonText" parent="squareButton">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
 
 
     <style name="MyDropDownListView" parent="@android:style/Widget.ListView.DropDown">
