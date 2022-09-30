@@ -8,17 +8,9 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/close_dialog_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#dc3545"
-        android:clickable="true"
-        app:fabCustomSize="24dp"
-        app:fabSize="mini"
-        app:layout_constraintDimensionRatio="w,1:1"
+        style="@style/closeBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_close_24" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

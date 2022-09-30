@@ -20,6 +20,18 @@
         <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
         <item name="android:editTextColor">@color/white</item>
         <item name="android:textColorHint">@color/hint_text</item>
+
+    </style>
+
+    <style name="closeBtn" parent="ShapeAppearanceOverlay.Material3.FloatingActionButton">
+        <item name="android:clickable">true</item>
+        <item name="backgroundTint">@color/close_button</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fabCustomSize">24dp</item>
+        <item name="layout_constraintDimensionRatio">w,1:1</item>
+        <item name="maxImageSize">20dp</item>
+        <item name="srcCompat">@drawable/ic_baseline_close_24</item>
     </style>
 
 
