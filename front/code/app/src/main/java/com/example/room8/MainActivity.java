@@ -1,9 +1,6 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
@@ -16,13 +13,8 @@ import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
-import com.example.room8.fragments.home_page_fragments.HomePageFragment;
-import com.example.room8.fragments.open_app_fragments.LoginFragment;
-import com.example.room8.fragments.open_app_fragments.SignUpFragment;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connectionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
-                ServerRequestsService.getInstance().refreshToken(null, "", i -> goToLogin(), i -> goToLogin());
+                ServerRequestsService.getInstance().refreshToken(null, "", i -> forceLogout(), i -> forceLogout());
 
                 if (SharedPreferenceHandler.getInstance().isInApartment())
                     this.navigateFragment(R.id.action_loginFragment_to_homePageFragment);
@@ -160,7 +152,12 @@ public class MainActivity extends AppCompatActivity {
         databaseService.removeRoom8(id);
     }
 
-    public void goToLogin() {
+    /**
+     * logout the user when cant refresh his token
+     */
+    public void forceLogout() {
+        SharedPreferenceHandler.getInstance().deleteSaveData();
+
         try {
             runOnUiThread(() -> {
                         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
@@ -173,34 +170,61 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            logout(R.id.action_homePageFragment_to_loginFragment);
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_homePageFragment_to_loginFragment);
+                    }
+            );
             return;
         } catch (IllegalArgumentException ignored) {
         }
 
         try {
-            logout(R.id.action_profileFragment_to_loginFragment);
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_profileFragment_to_loginFragment);
+                    }
+            );
             return;
         } catch (IllegalArgumentException ignored) {
         }
 
         try {
-            logout(R.id.action_tasksFragment_to_loginFragment);
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_tasksFragment_to_loginFragment);
+                    }
+            );
             return;
         } catch (IllegalArgumentException ignored) {
         }
 
         try {
-            logout(R.id.action_message_Fragment_to_loginFragment);
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_message_Fragment_to_loginFragment);
+                    }
+            );
             return;
         } catch (IllegalArgumentException ignored) {
         }
 
         try {
-            logout(R.id.action_walletFragment_to_loginFragment);
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_walletFragment_to_loginFragment);
+                    }
+            );
             return;
         } catch (IllegalArgumentException ignored) {
         }
+
+        // if we cant navigate him to login we close the app
         this.finish();
     }
 }

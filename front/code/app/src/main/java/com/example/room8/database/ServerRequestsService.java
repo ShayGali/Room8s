@@ -1,7 +1,6 @@
 package com.example.room8.database;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
@@ -198,9 +198,14 @@ public class ServerRequestsService {
     public synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant())) {
             if (originalReq != null) {
+                if (Objects.equals(originalReq.header(TOKEN_HEADER_KEY), this.accessesToken)) {
+                    activity.forceLogout();
+                    return;
+                }
+
                 Request newRequest = new Request.Builder()
                         .url(originalReq.url())
-                        .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                        .addHeader(TOKEN_HEADER_KEY, this.accessesToken)
                         .headers(originalReq.headers())
                         .method(originalReq.method(), originalReq.body())
                         .build();
@@ -243,7 +248,7 @@ public class ServerRequestsService {
                 },
                 jsonObject -> {
                     System.out.println(jsonObject);
-                    activity.goToLogin();
+                    activity.forceLogout();
                 }));
     }
 
