@@ -197,8 +197,16 @@ public class ServerRequestsService {
 
     public synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant())) {
+            if (originalReq != null) {
+                Request newRequest = new Request.Builder()
+                        .url(originalReq.url())
+                        .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                        .headers(originalReq.headers())
+                        .method(originalReq.method(), originalReq.body())
+                        .build();
 
-//            activity.goToLogin(); //לבדוק אם יש כמה בקשות במקביל
+                client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
+            }
             return;
         }
         refreshTimeOut = new Date(Calendar.getInstance().getTimeInMillis() + ((10 * 60 * 5))); // expired in 5 minutes
