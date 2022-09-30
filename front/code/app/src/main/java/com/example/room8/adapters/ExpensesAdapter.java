@@ -3,6 +3,7 @@ package com.example.room8.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -59,22 +60,23 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Expense expense = expenses.get(position);
         ExpenseHolder expenseHolder = (ExpenseHolder) holder;
 
-        expenseHolder.title.setText(expense.getTitle());
-        expenseHolder.creatorName.setText(Apartment.getInstance().getRoom8NameById(expense.getUserId()));
-        expenseHolder.amount.setText(String.valueOf(expense.getAmount()));
+        expenseHolder.titleEditText.setText(expense.getTitle());
+        expenseHolder.creatorNameTextView.setText(Apartment.getInstance().getRoom8NameById(expense.getUserId()));
+        expenseHolder.amountEditText.setText(String.valueOf(expense.getAmount()));
         if (expense.getUploadDate() != null)
-            expenseHolder.uploadDate.setText(ServerRequestsService.DATE_FORMAT.format(expense.getUploadDate()));
+            expenseHolder.uploadDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(expense.getUploadDate()));
         if (expense.getPaymentDate() != null)
-            expenseHolder.paymentDate.setText(ServerRequestsService.DATE_FORMAT.format(expense.getPaymentDate()));
-        expenseHolder.note.setText(expense.getNote());
+            expenseHolder.paymentDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(expense.getPaymentDate()));
+        expenseHolder.noteEditText.setText(expense.getNote());
 
-        expenseHolder.type.setEnabled(false);
-        expenseHolder.type.setClickable(false);
+        // set the
+        expenseHolder.typeSpinner.setEnabled(false);
+        expenseHolder.typeSpinner.setClickable(false);
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(inflater.getContext(), R.layout.view_drop_down_item, Expense.EXPENSE_TYPES);
-        expenseHolder.type.setAdapter(typesAdapter);
+        expenseHolder.typeSpinner.setAdapter(typesAdapter);
         for (int i = 0; i < Expense.EXPENSE_TYPES.length; i++) {
             if (Expense.EXPENSE_TYPES[i].equals(expense.getType())) {
-                expenseHolder.type.setSelection(i);
+                expenseHolder.typeSpinner.setSelection(i);
                 break;
             }
         }
@@ -112,9 +114,9 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.saveChangesBtn.setVisibility(View.VISIBLE);
         holder.dismissChangesBtn.setVisibility(View.VISIBLE);
 
-        setOnClick(holder.title, holder.editTitleBtn, holder.temp.getBackground());
-        setOnClick(holder.amount, holder.editAmountBtn, holder.temp.getBackground());
-        setOnClick(holder.note, holder.editNoteBtn, holder.temp.getBackground());
+        setOnClick(holder.titleEditText, holder.editTitleBtn, holder.defaultEditTextForBackground.getBackground());
+        setOnClick(holder.amountEditText, holder.editAmountBtn, holder.defaultEditTextForBackground.getBackground());
+        setOnClick(holder.noteEditText, holder.editNoteBtn, holder.defaultEditTextForBackground.getBackground());
 
         holder.editPaymentDateBtn.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -125,7 +127,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 temp.setPaymentDate(calendar.getTime());
-                holder.paymentDate.setText(ServerRequestsService.DATE_FORMAT.format(temp.getPaymentDate()));
+                holder.paymentDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(temp.getPaymentDate()));
             };
             new DatePickerDialog(inflater.getContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
         });
@@ -135,14 +137,16 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (!isTypeClicked.get()) {
                 isTypeClicked.set(true);
                 holder.editTypeBtn.setImageResource(R.drawable.ic_baseline_close_24);
-                holder.type.setEnabled(true);
-                holder.type.setClickable(true);
-                holder.type.performClick();
+                holder.editTypeBtn.setBackgroundTintList(ColorStateList.valueOf(activity.getColor(R.color.close_button)));
+                holder.typeSpinner.setEnabled(true);
+                holder.typeSpinner.setClickable(true);
+                holder.typeSpinner.performClick();
             } else {
                 isTypeClicked.set(false);
                 holder.editTypeBtn.setImageResource(R.drawable.ic_baseline_edit_24);
-                holder.type.setEnabled(false);
-                holder.type.setClickable(false);
+                holder.editTypeBtn.setBackgroundTintList(ColorStateList.valueOf(activity.getColor(R.color.done_button)));
+                holder.typeSpinner.setEnabled(false);
+                holder.typeSpinner.setClickable(false);
             }
         });
 
@@ -150,6 +154,13 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.dismissChangesBtn.setOnClickListener(v -> exitEditMode(holder, expense, null, false, position));
     }
 
+    /**
+     * set the fab button click listener for get in edit the field
+     *
+     * @param editText     the edit text for focus on him
+     * @param fab          the button
+     * @param defaultColor default background for rhe edit text
+     */
     @SuppressLint("ResourceAsColor")
     void setOnClick(EditText editText, FloatingActionButton fab, Drawable defaultColor) {
         AtomicBoolean isClicked = new AtomicBoolean(false);
@@ -157,6 +168,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (!isClicked.get()) {
                 isClicked.set(true);
                 fab.setImageResource(R.drawable.ic_baseline_close_24);
+                fab.setBackgroundTintList(ColorStateList.valueOf(activity.getColor(R.color.close_button)));
                 editText.setFocusable(true);
                 editText.setFocusableInTouchMode(true);
                 editText.setClickable(true);
@@ -168,6 +180,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 isClicked.set(false);
                 editText.setBackgroundColor(Color.TRANSPARENT);
                 fab.setImageResource(R.drawable.ic_baseline_edit_24);
+                fab.setBackgroundTintList(ColorStateList.valueOf(activity.getColor(R.color.done_button)));
                 editText.setFocusable(false);
                 editText.setFocusableInTouchMode(false);
                 editText.setClickable(false);
@@ -179,10 +192,10 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     void exitEditMode(@NonNull ExpenseHolder holder, Expense originalExpense, Expense tempExpense, boolean shouldUpdate, int position) {
 
         if (shouldUpdate) {
-            tempExpense.setType(holder.type.getSelectedItem().toString());
-            tempExpense.setTitle(holder.title.getText().toString());
-            tempExpense.setAmount(Double.parseDouble(holder.amount.getText().toString()));
-            tempExpense.setNote(holder.note.getText().toString());
+            tempExpense.setType(holder.typeSpinner.getSelectedItem().toString());
+            tempExpense.setTitle(holder.titleEditText.getText().toString());
+            tempExpense.setAmount(Double.parseDouble(holder.amountEditText.getText().toString()));
+            tempExpense.setNote(holder.noteEditText.getText().toString());
 
             originalExpense.update(tempExpense);
             ServerRequestsService.getInstance().updateExpense(originalExpense);
@@ -190,15 +203,15 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 this.expenses.removeIf(expense -> originalExpense.getId() == expense.getId());
             }
         } else {
-            holder.amount.setText(String.valueOf(originalExpense.getAmount()));
+            holder.amountEditText.setText(String.valueOf(originalExpense.getAmount()));
             for (int i = 0; i < Expense.EXPENSE_TYPES.length; i++) {
                 if (Expense.EXPENSE_TYPES[i].equals(originalExpense.getType())) {
-                    holder.type.setSelection(i);
+                    holder.typeSpinner.setSelection(i);
                     break;
                 }
             }
-            holder.paymentDate.setText(ServerRequestsService.DATE_FORMAT.format(originalExpense.getPaymentDate()));
-            holder.note.setText(originalExpense.getNote());
+            holder.paymentDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(originalExpense.getPaymentDate()));
+            holder.noteEditText.setText(originalExpense.getNote());
         }
         notifyItemChanged(position);
 
@@ -213,23 +226,23 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder.saveChangesBtn.setVisibility(View.INVISIBLE);
         holder.dismissChangesBtn.setVisibility(View.INVISIBLE);
 
-        holder.title.setBackgroundColor(Color.TRANSPARENT);
+        holder.titleEditText.setBackgroundColor(Color.TRANSPARENT);
         holder.editTitleBtn.setImageResource(R.drawable.ic_baseline_edit_24);
-        holder.amount.setBackgroundColor(Color.TRANSPARENT);
+        holder.amountEditText.setBackgroundColor(Color.TRANSPARENT);
         holder.editAmountBtn.setImageResource(R.drawable.ic_baseline_edit_24);
-        holder.note.setBackgroundColor(Color.TRANSPARENT);
+        holder.noteEditText.setBackgroundColor(Color.TRANSPARENT);
         holder.editNoteBtn.setImageResource(R.drawable.ic_baseline_edit_24);
 
     }
 
     private static class ExpenseHolder extends RecyclerView.ViewHolder {
-        EditText title;
-        TextView creatorName;
-        Spinner type;
-        EditText amount;
-        TextView uploadDate;
-        TextView paymentDate;
-        EditText note;
+        EditText titleEditText;
+        TextView creatorNameTextView;
+        Spinner typeSpinner;
+        EditText amountEditText;
+        TextView uploadDateTextView;
+        TextView paymentDateTextView;
+        EditText noteEditText;
 
         FloatingActionButton enterEditModeBtn;
         FloatingActionButton deleteExpenseBtn;
@@ -242,17 +255,17 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FloatingActionButton saveChangesBtn;
         FloatingActionButton dismissChangesBtn;
 
-        EditText temp;
+        EditText defaultEditTextForBackground; // for getting the background
 
         public ExpenseHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.expense_title);
-            creatorName = itemView.findViewById(R.id.expense_creator);
-            type = itemView.findViewById(R.id.expense_type);
-            amount = itemView.findViewById(R.id.expense_amount);
-            uploadDate = itemView.findViewById(R.id.expense_uplaod_date);
-            paymentDate = itemView.findViewById(R.id.expense_payment_date);
-            note = itemView.findViewById(R.id.expense_note);
+            titleEditText = itemView.findViewById(R.id.expense_title);
+            creatorNameTextView = itemView.findViewById(R.id.expense_creator);
+            typeSpinner = itemView.findViewById(R.id.expense_type);
+            amountEditText = itemView.findViewById(R.id.expense_amount);
+            uploadDateTextView = itemView.findViewById(R.id.expense_uplaod_date);
+            paymentDateTextView = itemView.findViewById(R.id.expense_payment_date);
+            noteEditText = itemView.findViewById(R.id.expense_note);
 
             enterEditModeBtn = itemView.findViewById(R.id.edit_expense_btn);
             deleteExpenseBtn = itemView.findViewById(R.id.delete_expense_btn);
@@ -265,7 +278,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             saveChangesBtn = itemView.findViewById(R.id.save_changes_btn);
             dismissChangesBtn = itemView.findViewById(R.id.dismiss_changes_btn);
 
-            temp = itemView.findViewById(R.id.temp);
+            defaultEditTextForBackground = itemView.findViewById(R.id.for_background);
 
         }
 
