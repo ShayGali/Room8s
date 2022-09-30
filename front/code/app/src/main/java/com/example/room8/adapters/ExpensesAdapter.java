@@ -221,7 +221,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
                 }
             }
-            holder.paymentDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(originalExpense.getPaymentDate()));
+            if (originalExpense.getPaymentDate() != null)
+                holder.paymentDateTextView.setText(ServerRequestsService.DATE_FORMAT.format(originalExpense.getPaymentDate()));
             holder.noteEditText.setText(originalExpense.getNote());
         }
 
