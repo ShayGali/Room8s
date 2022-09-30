@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        try {
-//            Thread.sleep(4000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
         sharedPreferenceHandler = SharedPreferenceHandler.getInstance();
         sharedPreferenceHandler.setActivity(this);
 
@@ -111,13 +106,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * delete the save data and navigate to the login screen
+     *
+     * @param actionId navigate to login screen
+     */
     public void logout(int actionId) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
         navigateFragment(actionId);
     }
 
 
-    // get the Jwt token from the database, save it to the SharedPreferences
+    /**
+     * get the Jwt token from the database, save it to the SharedPreferences
+     */
     public void login(String email, String password) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
         databaseService.login(email, password, isInApartment -> {
@@ -136,10 +138,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void fetchTasks(Runnable notifyFunction) {
-        databaseService.getAllTask(notifyFunction);
-    }
-
     public void createApartment(String name) {
         databaseService.createApartment(name, () -> navigateFragment(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment));
     }
@@ -148,9 +146,6 @@ public class MainActivity extends AppCompatActivity {
         databaseService.leave(() -> navigateFragment(R.id.action_profileFragment_to_homePageUserWithoutApartmentFragment));
     }
 
-    public void removeRoom8s(Integer id) {
-        databaseService.removeRoom8(id);
-    }
 
     /**
      * logout the user when cant refresh his token
