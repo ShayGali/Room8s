@@ -63,7 +63,6 @@ public class ChangeProfileImgAdapter extends RecyclerView.Adapter<ChangeProfileI
         ConstraintLayout layout;
         ImageView imageView;
 
-
         public ProfileImgHolder(@NonNull View itemView) {
             super(itemView);
             layout = itemView.findViewById(R.id.layout);

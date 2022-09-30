@@ -39,7 +39,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        switch (viewType) {
+        switch (viewType) { // which layout need to be render
             case TYPE_MESSAGE_SENT:
                 view = inflater.inflate(R.layout.view_message_sent, parent, false);
                 return new SentMessageHolder(view);
@@ -47,6 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 view = inflater.inflate(R.layout.view_message_received, parent, false);
                 return new ReceivedMessageHolder(view);
         }
+        // default case
         view = inflater.inflate(R.layout.view_message_received, parent, false);
         return new ReceivedMessageHolder(view);
     }
@@ -112,6 +113,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    /**
+     * set the id of the message that save in the DB
+     * @param insertedId the id of the message from the DB
+     * @param uuidAsStr the UUID that we sent
+     */
     public void setMessageIdByUUID(int insertedId, String uuidAsStr) {
         UUID uuid = UUID.fromString(uuidAsStr);
         for (Message m : messages) {
