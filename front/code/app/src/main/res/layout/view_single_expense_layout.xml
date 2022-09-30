@@ -28,6 +28,7 @@
         android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:gravity="center"
         android:text="title"
         android:textSize="20sp"
@@ -160,7 +161,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_payment_date"/>
+        app:layout_constraintTop_toTopOf="@+id/expense_payment_date" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_note_btn"
@@ -231,6 +232,7 @@
         android:layout_marginTop="32dp"
         android:background="@android:color/transparent"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:inputType="numberDecimal"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText"
@@ -246,6 +248,7 @@
         android:background="@android:color/transparent"
         android:ems="10"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText2"
