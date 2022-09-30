@@ -210,7 +210,6 @@ exports.refreshToken = async (req, res, next) => {
   delete tokenData["exp"];
 
   const newAccessToken = generateAccessToken(tokenData);
-  console.log("da");
   return res.status(200).json({
     success: true,
     msg: "success",
