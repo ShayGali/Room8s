@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
         if (SharedPreferenceHandler.getInstance().isInApartment()) {
 
             openRoom8sDialogBtn.setOnClickListener(v -> {
-                RoommatesDialog dialog = new RoommatesDialog(id -> activity.removeRoom8s(id));
+                RoommatesDialog dialog = new RoommatesDialog(id -> ServerRequestsService.getInstance().removeRoom8(id));
                 dialog.show(getParentFragmentManager(), "Room8s");
             });
 
