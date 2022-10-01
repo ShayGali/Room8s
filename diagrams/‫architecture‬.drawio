@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" modified="2022-10-01T17:06:11.503Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="miF6V3jEkrDbB24X1yzF" version="20.4.0" type="github">
+  <diagram id="CaNH6JlhKty08d_ahgAv" name="‫עמוד-1‬">
+    <mxGraphModel dx="1038" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" parent="1" source="U36Yhe53MJ0Q-xMoMPm6-1" target="U36Yhe53MJ0Q-xMoMPm6-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="410" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="460" y="120" />
+              <mxPoint x="460" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-14" value="stocks connction" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="U36Yhe53MJ0Q-xMoMPm6-5" vertex="1" connectable="0">
+          <mxGeometry x="0.2149" relative="1" as="geometry">
+            <mxPoint x="35" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" parent="1" source="U36Yhe53MJ0Q-xMoMPm6-1" target="U36Yhe53MJ0Q-xMoMPm6-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="160" />
+              <mxPoint x="600" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-16" value="HTTP&amp;nbsp;requests" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="U36Yhe53MJ0Q-xMoMPm6-6" vertex="1" connectable="0">
+          <mxGeometry x="-0.1004" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="U36Yhe53MJ0Q-xMoMPm6-1" target="U36Yhe53MJ0Q-xMoMPm6-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-1" value="" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.android_phone" parent="1" vertex="1">
+          <mxGeometry x="680" y="85" width="60" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=15;startArrow=none;startFill=0;endArrow=classic;endFill=1;" parent="1" source="U36Yhe53MJ0Q-xMoMPm6-4" target="U36Yhe53MJ0Q-xMoMPm6-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="127" />
+              <mxPoint x="270" y="127" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-13" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="490" y="310" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-3" value="&lt;br&gt;&lt;div style=&quot;text-align: start;&quot;&gt;&lt;font face=&quot;Android Euclid, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif&quot;&gt;&lt;span style=&quot;font-size: 15px; letter-spacing: -0.5px; background-color: rgb(255, 255, 255);&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="U36Yhe53MJ0Q-xMoMPm6-13" vertex="1">
+          <mxGeometry x="45" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-12" value="&lt;span style=&quot;font-family: &amp;quot;Android Euclid&amp;quot;, &amp;quot;Noto Sans&amp;quot;, &amp;quot;Noto Sans JP&amp;quot;, &amp;quot;Noto Sans KR&amp;quot;, &amp;quot;Noto Naskh Arabic&amp;quot;, &amp;quot;Noto Sans Thai&amp;quot;, &amp;quot;Noto Sans Hebrew&amp;quot;, &amp;quot;Noto Sans Bengali&amp;quot;, sans-serif; font-weight: 600; letter-spacing: -0.5px; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;SharedPreferences&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=15;" parent="U36Yhe53MJ0Q-xMoMPm6-13" vertex="1">
+          <mxGeometry y="60" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8Gn_fm2TY30TdErxLkWQ-6" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="302" y="77.86" width="120" height="146.14" as="geometry" />
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-4" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/generic_server.svg;" parent="8Gn_fm2TY30TdErxLkWQ-6" vertex="1">
+          <mxGeometry x="28" width="64" height="114.28" as="geometry" />
+        </mxCell>
+        <mxCell id="8Gn_fm2TY30TdErxLkWQ-4" value="&lt;div style=&quot;text-align: start;&quot;&gt;&lt;font face=&quot;Android Euclid, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif&quot;&gt;&lt;span style=&quot;font-size: 15px; letter-spacing: -0.5px; background-color: rgb(255, 255, 255);&quot;&gt;&lt;b&gt;Node.js server&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;" parent="8Gn_fm2TY30TdErxLkWQ-6" vertex="1">
+          <mxGeometry y="116.14" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8Gn_fm2TY30TdErxLkWQ-8" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="10" y="97" width="80" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="U36Yhe53MJ0Q-xMoMPm6-2" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" parent="8Gn_fm2TY30TdErxLkWQ-8" vertex="1">
+          <mxGeometry x="10" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8Gn_fm2TY30TdErxLkWQ-7" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: &amp;quot;Android Euclid&amp;quot;, &amp;quot;Noto Sans&amp;quot;, &amp;quot;Noto Sans JP&amp;quot;, &amp;quot;Noto Sans KR&amp;quot;, &amp;quot;Noto Naskh Arabic&amp;quot;, &amp;quot;Noto Sans Thai&amp;quot;, &amp;quot;Noto Sans Hebrew&amp;quot;, &amp;quot;Noto Sans Bengali&amp;quot;, sans-serif; font-size: 15px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 600; letter-spacing: -0.5px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;MySQL DB&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=13;" parent="8Gn_fm2TY30TdErxLkWQ-8" vertex="1">
+          <mxGeometry y="68" width="80" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
