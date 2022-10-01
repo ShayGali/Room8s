@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-10-01T17:00:47.362Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="wY6Dz61CjxAYILOmwDVV" version="20.4.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-10-01T17:01:31.030Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="VYnQlbzCyGs5o3mlryKr" version="20.4.0" type="github">
   <diagram id="CaNH6JlhKty08d_ahgAv" name="‫עמוד-1‬">
     <mxGraphModel dx="1038" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -39,7 +39,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="U36Yhe53MJ0Q-xMoMPm6-1" value="" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.android_phone" vertex="1" parent="1">
-          <mxGeometry x="670" y="70" width="60" height="100" as="geometry" />
+          <mxGeometry x="680" y="85" width="60" height="100" as="geometry" />
         </mxCell>
         <mxCell id="U36Yhe53MJ0Q-xMoMPm6-2" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="20" y="97" width="60" height="60" as="geometry" />
