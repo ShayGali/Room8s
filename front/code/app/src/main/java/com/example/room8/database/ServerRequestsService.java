@@ -65,7 +65,7 @@ public class ServerRequestsService {
 
     // formatters for the date and time
     public static final FastDateFormat DATE_TIME_PARSER = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"));
-    public static final FastDateFormat DATE_TIME_FORMAT  = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
+    public static final FastDateFormat DATE_TIME_FORMAT  = FastDateFormat.getInstance("dd-MM-yy HH:mm:ss", TimeZone.getDefault());
     public static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd/MM/yyyy", TimeZone.getDefault());
     public static final FastDateFormat DATE_FORMAT_FOR_REQUEST = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getDefault());
     public static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("HH:mm", TimeZone.getDefault());
