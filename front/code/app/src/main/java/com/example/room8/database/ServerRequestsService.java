@@ -12,6 +12,7 @@ import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,25 +61,14 @@ public class ServerRequestsService {
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String ACCESS_TOKEN_KEY = "jwtToken";
     public static final String REFRESH_TOKEN_KEY = "refreshJwtToken";
-    // formatters for the date and time
-    @SuppressLint("SimpleDateFormat") // for format date time from the server
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    @SuppressLint("SimpleDateFormat") // for parse date time from the server
-    public static final SimpleDateFormat DATE_TIME_PARSER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    @SuppressLint("SimpleDateFormat") // for format date object to time string
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat DATE_FORMAT_FOR_REQUEST = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressLint("SimpleDateFormat") // for format date object to date string
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
-    static { // for initial the timezone
-        DATE_TIME_PARSER.setTimeZone(TimeZone.getTimeZone("UTC"));
-        DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
-        DATE_FORMAT.setTimeZone(TimeZone.getDefault());
-        DATE_FORMAT_FOR_REQUEST.setTimeZone(TimeZone.getDefault());
-        TIME_FORMAT.setTimeZone(TimeZone.getDefault());
-    }
+
+    // formatters for the date and time
+    public static final FastDateFormat DATE_TIME_PARSER = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"));
+    public static final FastDateFormat DATE_TIME_FORMAT  = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault());
+    public static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd/MM/yyyy", TimeZone.getDefault());
+    public static final FastDateFormat DATE_FORMAT_FOR_REQUEST = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getDefault());
+    public static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("HH:mm", TimeZone.getDefault());
 
 
     @SuppressLint("StaticFieldLeak")
