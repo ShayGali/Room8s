@@ -63,6 +63,8 @@ public class HomePageFragment extends Fragment {
         refreshBtn = view.findViewById(R.id.refreshBtn);
         refreshStatus = view.findViewById(R.id.refresh_status);
 
+        this.refreshData();
+
         menuBtn.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), v);
             popupMenu.getMenuInflater().inflate(R.menu.home_page_menu, popupMenu.getMenu());
@@ -109,7 +111,10 @@ public class HomePageFragment extends Fragment {
                 ServerRequestsService.getInstance().getApartmentData();
 
             } else {
+                try {
+
                 Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+                }catch (IllegalArgumentException ignored){}
             }
             swipeRefreshLayout.setRefreshing(false);
             requireActivity().runOnUiThread(() -> refreshStatus.setText("Refresh Data"));

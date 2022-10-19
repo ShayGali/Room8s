@@ -40,14 +40,15 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
 
         view.findViewById(R.id.go_to_profile_btn).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment));
 
-        initMenuBtn();
-        initCreateApartmentButton();
-        getJoinReq();
-        disableBackPress();
-
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         refreshBtn = view.findViewById(R.id.refreshBtn);
         refreshStatus = view.findViewById(R.id.refresh_status);
+
+        this.initMenuBtn();
+        this.initCreateApartmentButton();
+        this.getJoinReq();
+        this.disableBackPress();
+        this.refreshData();
 
         swipeRefreshLayout.setOnRefreshListener(this::refreshData);
         refreshBtn.setOnClickListener(v -> {
@@ -108,13 +109,13 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    public void refreshData(){
+    public void refreshData() {
         refreshStatus.setText("Refreshing...");
-        ServerRequestsService.getInstance().getApartmentId(()->{
+        ServerRequestsService.getInstance().getApartmentId(() -> {
             ServerRequestsService.getInstance().getUserData();
-            if(SharedPreferenceHandler.getInstance().isInApartment()){
+            if (SharedPreferenceHandler.getInstance().isInApartment()) {
                 Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_homePageFragment);
-            }else{
+            } else {
                 this.getJoinReq();
             }
             swipeRefreshLayout.setRefreshing(false);
