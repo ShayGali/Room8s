@@ -73,14 +73,10 @@ public class JoinReqDialog extends AppCompatDialogFragment {
                         requireActivity().getLayoutInflater(),
                         jsonArray,
                         (apartmentId, join) -> ServerRequestsService.getInstance().handleJoinReq(apartmentId, join, navigateFunction),
-                        length -> {
+                        length -> requireActivity().runOnUiThread(() -> {
                             if (length == 0) dismiss();
-                            requireActivity().runOnUiThread(() -> {
-                                ((TextView) view.findViewById(R.id.recycler_title)).setText("You have " + jsonArray.length() + " invite requests");
-
-
-                            });
-                        }
+                            ((TextView) view.findViewById(R.id.recycler_title)).setText("You have " + jsonArray.length() + " invite requests");
+                        })
                 );
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
