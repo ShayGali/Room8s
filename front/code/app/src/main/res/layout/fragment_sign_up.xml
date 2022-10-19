@@ -20,10 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
             android:text="@string/sign_up"
             android:textSize="60sp"
-            app:layout_constraintBottom_toTopOf="@+id/register_username_EditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +30,7 @@
             android:id="@+id/register_username_EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="10dp"
             android:autofillHints="username"
             android:backgroundTint="@color/edit_text_under_line"
@@ -45,7 +43,7 @@
             app:layout_constraintBottom_toTopOf="@+id/register_email_EditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_TextView" />
+            app:layout_constraintTop_toBottomOf="@id/error_msg_sign_up" />
 
         <EditText
             android:id="@+id/register_email_EditText"
@@ -116,6 +114,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/submit_register_btn"
             tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/error_msg_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/close_button"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_TextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -15,6 +15,7 @@ import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,10 +132,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void register(String username, String email, String password) {
+    public void register(String username, String email, String password, Consumer<String> displayError) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
-        databaseService.register(username, email, password, () ->
-                navigateFragment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment)
+        databaseService.register(
+                username, email, password,
+                () -> navigateFragment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment),
+                displayError
         );
     }
 

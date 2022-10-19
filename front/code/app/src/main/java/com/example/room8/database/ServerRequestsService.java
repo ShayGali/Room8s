@@ -65,7 +65,7 @@ public class ServerRequestsService {
 
     // formatters for the date and time
     public static final FastDateFormat DATE_TIME_PARSER = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"));
-    public static final FastDateFormat DATE_TIME_FORMAT  = FastDateFormat.getInstance("dd-MM-yy HH:mm:ss", TimeZone.getDefault());
+    public static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("dd-MM-yy HH:mm:ss", TimeZone.getDefault());
     public static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd/MM/yyyy", TimeZone.getDefault());
     public static final FastDateFormat DATE_FORMAT_FOR_REQUEST = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getDefault());
     public static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("HH:mm", TimeZone.getDefault());
@@ -125,8 +125,6 @@ public class ServerRequestsService {
                 String stringBody = responseBody != null ? responseBody.string() : null;
 
                 if (stringBody == null) {
-                    showToast(failMsg);
-                    showToast("responseBody is null");
                     System.err.println(failMsg);
                     System.err.println("responseBody is null");
                     return;
@@ -139,7 +137,6 @@ public class ServerRequestsService {
                             if (successAction != null) successAction.accept(responseJOSN);
 
                         } else if (responseJOSN.has(TOKEN_EXPIRED_KEY) && responseJOSN.getBoolean(TOKEN_EXPIRED_KEY)) {
-                            System.out.println("here");
                             refreshToken(originalReq, failMsg, successAction, failAction);
                         } else {
                             if (failAction != null) {
@@ -281,7 +278,7 @@ public class ServerRequestsService {
         }));
     }
 
-    public void register(String username, String email, String password, Runnable navigateFunction) {
+    public void register(String username, String email, String password, Runnable navigateFunction, Consumer<String> displayError) {
         RequestBody formBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)
@@ -293,22 +290,33 @@ public class ServerRequestsService {
                 .post(formBody)
                 .build();
 
-        client.newCall(request).enqueue(createCallback("register failed", jsonObject -> {
-            try {
-                SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
+        client.newCall(request).enqueue(createCallback(
+                "register failed",
+                jsonObject -> {
+                    try {
+                        SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
 
-                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
-                sp.saveJwtAccessToken(token);
-                this.accessesToken = token;
+                        String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                        sp.saveJwtAccessToken(token);
+                        this.accessesToken = token;
 
-                sp.setIsInApartment(false);
+                        sp.setIsInApartment(false);
 
-                navigateFunction.run();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                handleUnsuccessfulReq("register failed when parsing the data", 0, jsonObject);
-            }
-        }));
+                        navigateFunction.run();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handleUnsuccessfulReq("register failed when parsing the data", 0, jsonObject);
+                    }
+                },
+                jsonObject -> {
+                    try {
+                        String msg = jsonObject.getString(MESSAGE_KEY);
+                        displayError.accept(msg);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                ));
     }
 
     public boolean isServerUp() {
