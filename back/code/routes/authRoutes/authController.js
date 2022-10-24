@@ -3,21 +3,25 @@ const { v4: uuidv4 } = require("uuid");
 const authService = require("./authService");
 const userService = require("../../routes/userRoutes/userService");
 
-const bcrypt = require("bcrypt");
-
 const {
+  authenticateRefreshToken,
   generateAccessToken,
   generateRefreshToken,
 } = require("../../utilities/jwtHandler");
+
 const {
   isStrongPassword,
   hashPassword,
-  compareHashPassword
+  compareHashPassword,
 } = require("../../utilities/passwordHandler");
+
 const valuesValidate = require("../../utilities/valuesValidate");
 
 const resetTokenMap = new Map();
 
+/**
+ * handler for create new user request
+ */
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -27,13 +31,15 @@ exports.register = async (req, res, next) => {
   if (!valuesValidate.validateEmail(email)) {
     return res.status(400).json({ success: false, msg: "email not valid" });
   }
+
   if (!isStrongPassword(password)) {
-    return res.status(400).json({ success: false, msg: "password not valid" });
+    return res
+      .status(400)
+      .json({ success: false, msg: "password not strong enough" });
   }
 
   try {
-    const salt = await bcrypt.genSalt();
-    const hashPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await hashPassword(password);
 
     if ((await userService.findByEmailOrUsername(email)) !== undefined) {
       return res
@@ -50,7 +56,7 @@ exports.register = async (req, res, next) => {
     const result = await authService.register({
       username,
       email,
-      password: hashPassword,
+      password: hashedPassword,
     });
 
     jwtToken = generateAccessToken({
@@ -74,12 +80,24 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const findUser = await userService.findByEmailOrUsername(email);
-    if (!findUser) {
-      return res.status(401).json({ success: false, msg: "Invalid credentials" });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "send email and password" });
     }
+
+    const findUser = await userService.findByEmailOrUsername(email);
+
+    if (!findUser) {
+      return res
+        .status(401)
+        .json({ success: false, msg: "Invalid credentials" });
+    }
+
     if (!(await compareHashPassword(password, findUser.user_password))) {
-      return res.status(401).json({ success: false, msg: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, msg: "Invalid credentials" });
     }
 
     const apartmentId = await userService.findUserApartmentId(findUser.ID);
@@ -88,7 +106,7 @@ exports.login = async (req, res, next) => {
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
     });
-    
+
     const refreshJwtToken = generateRefreshToken({
       userId: findUser.ID,
       apartmentId: apartmentId !== undefined ? apartmentId : null,
@@ -107,10 +125,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.hello = async (req, res, next) => {
-  return res.send({ success: true, msg: "hello", jwtToken: req.tokenData });
-};
-
+//TODO
 exports.forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
@@ -133,13 +148,20 @@ exports.forgotPassword = async (req, res, next) => {
   return res.send({ success: true, msg: "reset token send to ypur email" });
 };
 
-// genrate a expirtion time
+/**
+ * genrate a expirtion time
+ * @returns {number}
+ */
 function generateExprityTime() {
   const EXPIRATION_TIME_IN_MINUTES = 15;
   return new Date().getTime() + EXPIRATION_TIME_IN_MINUTES * 60000;
 }
 
-// check if the token of the email expired
+/**
+ * check if the time is expired
+ * @param {number} time
+ * @returns {boolean}
+ */
 function checkIfExpired(time) {
   return time - Date.now() < 0;
 }
@@ -165,4 +187,32 @@ exports.resetPassword = async (req, res, next) => {
   userService.updatePassword(email, hashedPassword); // TODO
 
   return res.json({ success: true, msg: "password changed" });
+};
+
+exports.refreshToken = async (req, res, next) => {
+  const token = req.header("x-auth-token");
+  if (!token)
+    return res
+      .status(401)
+      .send({ success: false, msg: "Send JWT token to make this request" });
+
+  const tokenData = authenticateRefreshToken(token);
+
+  if (tokenData === undefined)
+    return res.status(403).send({ success: false, msg: "Token is Invalid" });
+
+  if (tokenData.expired)
+    return res
+      .status(401)
+      .send({ success: false, msg: "Token is expired", expired: true });
+
+  delete tokenData["iat"];
+  delete tokenData["exp"];
+
+  const newAccessToken = generateAccessToken(tokenData);
+  return res.status(200).json({
+    success: true,
+    msg: "success",
+    jwtToken: newAccessToken,
+  });
 };

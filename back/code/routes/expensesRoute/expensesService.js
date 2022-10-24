@@ -4,6 +4,18 @@ const expensesTypeTable = "expense_type";
 
 const { formatDateTime } = require("../../utilities/dateValidate");
 
+/**
+ *
+ * @param {number} apartmentId
+ * @param {number} UserThatUploadId
+ * @param {string} title
+ * @param {string | number | null} expensesType
+ * @param {string | null} paymentDate
+ * @param {number | null} amount
+ * @param {string | null} uploadDate
+ * @param {string | null} note
+ * @returns
+ */
 exports.addExpenses = async (
   apartmentId,
   UserThatUploadId,
@@ -15,6 +27,7 @@ exports.addExpenses = async (
   note = null
 ) => {
   if (isNaN(expensesType)) {
+    // if the expensesType is not number , and its the name of the type, I convert it to the id by the type name
     let [res, _] = await db.execute(
       `SELECT ID FROM ${expensesTypeTable} WHERE expense_type = ?`,
       [expensesType]
@@ -36,9 +49,14 @@ exports.addExpenses = async (
     uploadDate,
     note,
   ]);
+
   return result[0].insertId;
 };
 
+/**
+ * find all the expenses of the apartemnt
+ * @param {number} apartmentId
+ */
 exports.findAllOfApartment = async (apartmentId) => {
   const query = `
   SELECT ${expensesTable}.*, ${expensesTypeTable}.expense_type
@@ -50,12 +68,18 @@ exports.findAllOfApartment = async (apartmentId) => {
   `;
   const [expenses, _] = await db.execute(query, [apartmentId]);
   return expenses.map((expense) => {
+    //format the dates
     expense.upload_date = formatDateTime(expense.upload_date);
     expense.payment_date = formatDateTime(expense.payment_date);
     return expense;
   });
 };
 
+/**
+ * find the expense by his ID
+ * @param {number} expenseId
+ * @returns {Promise}
+ */
 exports.findById = async (expenseId) => {
   const query = `
   SELECT ${expensesTable}.*, ${expensesTypeTable}.expense_type
@@ -72,8 +96,15 @@ exports.findById = async (expenseId) => {
   return expense[0];
 };
 
+/**
+ * get an expense and update it in the DB
+ * @param {{}} expense //TODO
+ * @returns {Promise}
+ */
+
 exports.update = async (expense) => {
   if (isNaN(expense.expense_type)) {
+    // if the expensesType is not number , and its the name of the type, I convert it to the id by the type name
     let [res, _] = await db.execute(
       `SELECT ID FROM ${expensesTypeTable} WHERE expense_type = ?`,
       [expense.expense_type]
@@ -91,7 +122,7 @@ exports.update = async (expense) => {
   const result = await db.execute(query, [
     expense.title,
     expense.expense_type,
-    expense.payment_date,
+    expense.payment_date || null,
     expense.amount,
     expense.note,
     expense.ID,
@@ -99,6 +130,11 @@ exports.update = async (expense) => {
   return result;
 };
 
+/**
+ * delete the expense by the ID
+ * @param {number} expenseId
+ * @returns {Promise}
+ */
 exports.delete = async (expenseId) => {
   const query = `DELETE FROM ${expensesTable} WHERE ID = ?`;
   const result = await db.execute(query, [expenseId]);

@@ -62,16 +62,17 @@ public class JoinReqAdapter extends RecyclerView.Adapter<JoinReqAdapter.JoinReqH
             int apartmentId = req.getInt(APARTMENT_ID_KEY);
 
             holder.acceptBtn.setOnClickListener(v -> {
+                joinReqJsonArray.remove(position);
+                notifyItemRemoved(position);
+                titleUpdate.accept(joinReqJsonArray.length());
                 action.accept(apartmentId, true);
-                joinReqJsonArray.remove(position);
-                notifyItemRemoved(position);
-                titleUpdate.accept(joinReqJsonArray.length());
             });
+
             holder.rejectBtn.setOnClickListener(v -> {
-                action.accept(apartmentId, false);
                 joinReqJsonArray.remove(position);
                 notifyItemRemoved(position);
                 titleUpdate.accept(joinReqJsonArray.length());
+                action.accept(apartmentId, false);
             });
         } catch (JSONException e) {
             e.printStackTrace();

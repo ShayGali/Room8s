@@ -36,24 +36,28 @@ exports.addTask = async (
   title = null,
   note = null
 ) => {
-  if (isNaN(taskType)) {
+  if (isNaN(taskType) && taskType !== null) {
+    // if the user send the task type na eand not the ID, we convert it to the ID
     let [res, _] = await db.execute(
       `SELECT ID FROM ${tasksTypeTable} WHERE task_type = ?`,
       [taskType]
     );
-    taskType = res[0]?.ID;
+
+    if (res[0] === undefined) return; // if it's not in the tasksTypeTable we end the function
+
+    taskType = res[0].ID;
   }
-  if(taskType === undefined) return;
+
   let query = `
   INSERT INTO ${tasksTable}(
-    apartment_ID, creator_ID, task_type,create_time, expiration_date, title, note
+    apartment_ID, creator_ID, task_type, create_time, expiration_date, title, note
   ) VALUES(?,?,?,?,?,?,?);
   `;
   let result = await db.execute(query, [
     apartmentID,
     creatorID,
     taskType,
-    new Date().toISOString().slice(0, 19).replace("T", " "),
+    new Date().toISOString().slice(0, 19).replace("T", " "), // create_time
     expirationDate,
     title,
     note,
@@ -68,7 +72,7 @@ exports.findById = async (taskId) => {
   WHERE ID = ?;
   `;
   const [result, _] = await db.execute(query, [taskId]);
-  if (result[0] !== undefined) {
+  if (result[0] !== undefined) { // format the dates
     result[0].create_time = formatDateTime(result[0].create_time);
     result[0].expiration_date = formatDateTime(result[0].expiration_date);
     return result[0];
@@ -76,6 +80,12 @@ exports.findById = async (taskId) => {
   return undefined;
 };
 
+/**
+ * creare the relationship between the user and the task
+ * @param {number} taskId 
+ * @param {number} userId 
+ * @returns {Promise<number>} the id of the relationship
+ */
 exports.associateTaskToUser = async (taskId, userId) => {
   const query = `
   INSERT INTO ${tasksPerUserTable}(
@@ -86,6 +96,11 @@ exports.associateTaskToUser = async (taskId, userId) => {
   return result[0].insertId;
 };
 
+/**
+ * remove the relationship between the user and the task
+ * @param {number} taskId 
+ * @param {number} userId 
+ */
 exports.removeAssociateFromUser = async (taskId, userId) => {
   const query = `
   DELETE FROM ${tasksPerUserTable}
@@ -156,6 +171,10 @@ exports.updateTask = async (
   return result;
 };
 
+/**
+ * return the taks types that save in the DB
+ * @returns {Promise<{}>}
+ */
 exports.getTypes = async () => {
   const [result, _] = await db.execute(`SELECT * FROM ${tasksTypeTable}`);
   return result;

@@ -13,10 +13,8 @@ import android.view.ViewGroup;
 import com.example.room8.MainActivity;
 import com.example.room8.R;
 import com.example.room8.adapters.TasksAdapter;
+import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.AddTaskDialog;
-import com.example.room8.model.Apartment;
-
-import java.lang.ref.WeakReference;
 
 public class TasksFragment extends Fragment {
 
@@ -33,12 +31,12 @@ public class TasksFragment extends Fragment {
         TasksAdapter adapter = new TasksAdapter(getLayoutInflater(), (MainActivity) requireActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        activity.fetchTasks(adapter::notifyDataSetChanged);
+        ServerRequestsService.getInstance().getAllTask(adapter::notifyDataSetChanged);
 
         View addTaskButton = view.findViewById(R.id.add_task_btn);
         
         addTaskButton.setOnClickListener(v -> {
-            AddTaskDialog addTaskDialog = new AddTaskDialog(adapter);
+            AddTaskDialog addTaskDialog = new AddTaskDialog(activity, adapter);
             addTaskDialog.show(activity.getSupportFragmentManager(), "Add New Task");
         });
         return view;

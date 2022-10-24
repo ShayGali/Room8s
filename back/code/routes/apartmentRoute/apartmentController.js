@@ -2,6 +2,7 @@ const apartmentService = require("./apartmentService");
 const userService = require("../userRoutes/userService");
 
 const { generateAccessToken } = require("../../utilities/jwtHandler");
+
 /**
  * get the data of the apartment of the user
  * if the dont have apartment it will return message
@@ -34,21 +35,22 @@ exports.createApartment = async (req, res, next) => {
       .send({ success: false, msg: "need to send a apartment name" });
   }
 
-  if (await userService.findUserApartmentId(userId)) {
+  if (await userService.findUserApartmentId(userId) !== undefined) { // check if the user already in apartment
     return res
       .status(200)
       .send({ success: false, msg: "user are already in apartment" });
   }
+
   try {
     const apartmentId = await apartmentService.createApartment(userId, name);
-    userService.changeRole(userId, 2);
+    userService.changeRole(userId, 2); // cahnge his role to apartemnt owner
 
     res.status(201).send({
       success: true,
       msg: "success",
       data: {
         apartmentId,
-        jwtToken: generateAccessToken({ userId, apartmentId }),
+        jwtToken: generateAccessToken({ userId, apartmentId }), // create new token
       },
     });
   } catch (err) {
@@ -56,55 +58,15 @@ exports.createApartment = async (req, res, next) => {
   }
 };
 
+
 /**
- * add new user to the apartment of the user that send the request
- *
- * we check:
- *  if the sender dont send the new user id, we will return 400
- *  if we dont find the new user we will return 200 with message
- *  if the user that send the request is not in a apartment
- *  if the new user that we try to add is already in apartment
- *
- * else we will return 201
+ * handler for user that request to leave his apartment
  */
-
-exports.addUserToApartment = async (req, res, next) => {
-  const { apartmentId } = req.tokenData;
-
-  const { newUserId } = req.body;
-
-  if (!newUserId) {
-    return res
-      .status(400)
-      .send({ success: false, msg: "new user id is required" });
-  }
-
-  try {
-    if (await userService.findUserApartmentId(newUserId)) {
-      return res
-        .status(200)
-        .send({ success: false, msg: "user are already in apartment" });
-    }
-
-    const result = await apartmentService.addUserToApartment(
-      apartmentId,
-      newUserId
-    );
-    if (result)
-      return res.status(201).send({
-        success: true,
-        msg: `user with the id ${newUserId} add to apartment ${apartmentId}`,
-      });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.leave = async (req, res, next) => {
   const { userId, apartmentId } = req.tokenData;
   try {
     await apartmentService.removeUserFromApartment(apartmentId, userId);
-    const newToken = generateAccessToken({ userId, apartmentId: null });
+    const newToken = generateAccessToken({ userId, apartmentId: null }); // the user need new token without the apartmentId
     res.json({
       success: true,
       msg: `user ${userId} has deleted from apartment ${apartmentId}`,
@@ -123,6 +85,13 @@ exports.removeUserFromApartment = async (req, res, next) => {
     return res.status(400).json({
       success: false,
       msg: "you need to send userId in the request params",
+    });
+  }
+
+  if(isNaN(userId)){
+    return res.status(400).json({
+      success: false,
+      msg: "userId need to be number",
     });
   }
 
@@ -209,7 +178,6 @@ exports.handleJoinReq = async (req, res, next) => {
     }
 
     if (join === "true") {
-      // `=== true` because i what to be sure its boolean
       let newToken = undefined;
       if (apartmentService.removeJoinReq(apartmentId, userId)) {
         if (

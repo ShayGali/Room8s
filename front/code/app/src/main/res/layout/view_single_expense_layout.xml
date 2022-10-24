@@ -10,7 +10,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/temp"
+        android:id="@+id/for_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -28,6 +28,7 @@
         android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:gravity="center"
         android:text="title"
         android:textSize="20sp"
@@ -101,6 +102,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_expense_btn"
+        style="@style/editFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -124,103 +126,52 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_title_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/editFabSmallInvisible"
         android:layout_marginStart="24dp"
-        android:clickable="true"
-        android:foregroundGravity="center"
-        android:visibility="invisible"
-        app:backgroundTint="@color/done_button"
-        app:backgroundTintMode="add"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/expense_title"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_title"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintTop_toTopOf="@+id/expense_title" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_type_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/editFabSmallInvisible"
         android:layout_marginStart="24dp"
-        android:backgroundTint="#2196F3"
-        android:clickable="true"
-        android:foregroundGravity="center"
-        android:visibility="invisible"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/expense_type"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_type"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintTop_toTopOf="@+id/expense_type" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_amount_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/editFabSmallInvisible"
         android:layout_marginStart="24dp"
-        android:backgroundTint="#2196F3"
-        android:clickable="true"
-        android:foregroundGravity="center"
-        android:visibility="invisible"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/expense_amount"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_amount"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintTop_toTopOf="@+id/expense_amount" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_payment_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/editFabSmallInvisible"
         android:layout_marginStart="24dp"
-        android:backgroundTint="#2196F3"
-        android:clickable="true"
-        android:foregroundGravity="center"
-        android:visibility="invisible"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/expense_payment_date"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_payment_date"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintTop_toTopOf="@+id/expense_payment_date" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_note_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/editFabSmallInvisible"
         android:layout_marginStart="24dp"
-        android:backgroundTint="#2196F3"
-        android:clickable="true"
-        android:foregroundGravity="center"
-        android:visibility="invisible"
-        app:fabCustomSize="40dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/expense_note"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/expense_note"
-        app:maxImageSize="20dp"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
+        app:layout_constraintTop_toTopOf="@+id/expense_note" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/save_changes_btn"
@@ -281,6 +232,7 @@
         android:layout_marginTop="32dp"
         android:background="@android:color/transparent"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:inputType="numberDecimal"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText"
@@ -296,6 +248,7 @@
         android:background="@android:color/transparent"
         android:ems="10"
         android:focusable="false"
+        android:focusableInTouchMode="true"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText2"

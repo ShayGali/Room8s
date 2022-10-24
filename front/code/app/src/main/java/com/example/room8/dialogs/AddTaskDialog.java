@@ -1,11 +1,11 @@
 package com.example.room8.dialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,20 +31,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AddTaskDialog extends AppCompatDialogFragment {
-    private TaskDialogListener listener;
+    private final Activity activity;
     private final Task tempTask;
-
     private TextView executorsTextView;
     private Spinner taskTypesSpinner;
     private TextView expirationTimeTextView;
     private TextView titleTextView;
     private TextView noteTextView;
 
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+    private final RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
     ArrayList<String> names;
 
-    public AddTaskDialog(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    public AddTaskDialog(Activity activity, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+        this.activity = activity;
         this.adapter = adapter;
         tempTask = new Task();
     }
@@ -66,8 +66,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
                 })
                 .setPositiveButton("Add", (dialog, which) -> {
                     getValuesFromFields();
-                    ServerRequestsService.getInstance().addTask(tempTask); //TODO notifyFunction
-                    // listener.addTask(tempTask); // TODO - delete this line 
+                    ServerRequestsService.getInstance().addTask(tempTask, () -> activity.runOnUiThread(adapter::notifyDataSetChanged));
                     adapter.notifyDataSetChanged();
                 });
 
@@ -117,7 +116,7 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         if (!noteTextView.getText().toString().trim().equals(""))
             tempTask.setNote(noteTextView.getText().toString());
 
-        if (names!=null){
+        if (names != null) {
             ArrayList<Roommate> room8 = Apartment.getInstance().getRoommates();
             List<Integer> executorsIds = names.stream().map(name -> {
                 if (User.getInstance().getUserName().equals(name))
@@ -132,12 +131,6 @@ public class AddTaskDialog extends AppCompatDialogFragment {
         }
     }
 
-// TODO - delete
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (TaskDialogListener) context;
-    }
 
     private void showDateTimeDialogs(View v) {
         Calendar calendar = Calendar.getInstance();

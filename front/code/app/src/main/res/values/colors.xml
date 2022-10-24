@@ -17,4 +17,6 @@
 
     <color name="close_button">#dc3545</color>
     <color name="done_button">#2196F3</color>
+    <color name="blue_button">#007aff</color>
+    <color name="success_button">#28a745</color>
 </resources>

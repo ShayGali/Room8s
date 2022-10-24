@@ -12,11 +12,14 @@ import com.example.room8.R;
 
 import java.util.ArrayList;
 
+/**
+adapter for check box recycler view
+*/
 public class CheckBoxRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final LayoutInflater inflater;
-    private ArrayList<String> list;
-    private ArrayList<Boolean> isCheckedList;
+    private final ArrayList<String> list;
+    private final ArrayList<Boolean> isCheckedList;
 
     public CheckBoxRecyclerAdapter(LayoutInflater inflater, ArrayList<String> list, ArrayList<Boolean> checked) {
         this.inflater = inflater;
@@ -36,7 +39,7 @@ public class CheckBoxRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         viewHolder.checkBox.setText(list.get(position));
         viewHolder.checkBox.setChecked(isCheckedList.get(position));
         viewHolder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            buttonView.setChecked(isChecked);
+            buttonView.setChecked(isChecked); // set the view
             isCheckedList.set(position,isChecked);
         });
     }

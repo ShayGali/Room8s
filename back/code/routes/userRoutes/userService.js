@@ -6,9 +6,9 @@ const userLevelTable = "user_level";
 exports.findUserApartmentId = async (userID) => {
   if (userID === undefined) return;
   const query = `
-  select apartment_ID as apartmentId
-  from user_in_apartment
-  where user_ID = ?`;
+  SELECT apartment_ID AS apartmentId
+  FROM user_in_apartment
+  WHERE user_ID = ?`;
 
   const [id, _] = await db.execute(query, [userID]);
   return id[0]?.apartmentId;
@@ -70,6 +70,7 @@ exports.delete = async (userId) => {
 };
 
 exports.getRoommatesData = async (apartmentId, userId) => {
+  // get the user level name and then join with the apartmentsUserTable
   const query = `SELECT user_with_level.* FROM 
     (SELECT ${usersTable}.ID, user_name, user_level,level_name, profile_icon_id
     FROM ${usersTable}
@@ -83,12 +84,26 @@ exports.getRoommatesData = async (apartmentId, userId) => {
   return result;
 };
 
-exports.changeRole = (userId, roleId) => {
+/**
+ * 
+ * @param {number} userId 
+ * @param {number} roleId 
+ * @returns 
+ */
+exports.changeRole = async (userId, roleId) => {
+
+  // check if the role is exists
+  const [rool, _] = await db.execute(
+    `SELECT * FROM ${userLevelTable} WHERE ID = ?`,
+    [roleId]
+  );
+  if (rool[0] === undefined) return;
   const query = `UPDATE ${usersTable}
    SET user_level = ?
    WHERE ID = ?
    `;
-  db.execute(query, [roleId, userId]);
+  const res = await db.execute(query, [roleId, userId]);
+  return res;
 };
 
 /**
@@ -102,4 +117,12 @@ exports.changePassword = (userId, password) => {
    WHERE ID = ?
    `;
   db.execute(query, [password, userId]);
+};
+
+exports.changeProfileImg = (userId, iconId) => {
+  const query = `UPDATE ${usersTable}
+   SET profile_icon_id = ?
+   WHERE ID = ?
+   `;
+  db.execute(query, [iconId, userId]);
 };

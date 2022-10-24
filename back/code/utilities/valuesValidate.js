@@ -6,5 +6,7 @@ const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
  * @returns {boolean}
  */
 exports.validateEmail = (email) => {
-  return email !== undefined && emailRegex.test(email);
+  return (
+    email !== undefined && typeof email == "string" && emailRegex.test(email)
+  );
 };

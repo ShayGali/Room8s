@@ -20,8 +20,50 @@
         <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
         <item name="android:editTextColor">@color/white</item>
         <item name="android:textColorHint">@color/hint_text</item>
+
     </style>
 
+    <style name="closeBtn" parent="ShapeAppearanceOverlay.Material3.FloatingActionButton">
+        <item name="android:clickable">true</item>
+        <item name="backgroundTint">@color/close_button</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fabCustomSize">24dp</item>
+        <item name="layout_constraintDimensionRatio">w,1:1</item>
+        <item name="maxImageSize">20dp</item>
+        <item name="srcCompat">@drawable/ic_baseline_close_24</item>
+    </style>
+
+    <style name="squareButton">
+        <item name="android:layout_width">145dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@drawable/style_home_page_btns</item>
+        <item name="layout_constraintDimensionRatio">h,1:1</item>
+    </style>
+
+    <style name="squareButtonText" parent="squareButton">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+
+    <style name="editFab" parent="ShapeAppearanceOverlay.Material3.FloatingActionButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">@color/done_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foregroundGravity">center</item>
+        <item name="android:visibility">invisible</item>
+        <item name="layout_constraintDimensionRatio">w,1:1</item>
+        <item name="srcCompat">@drawable/ic_baseline_edit_24</item>
+    </style>
+
+    <style name="editFabSmallInvisible" parent="editFab">
+        <item name="fabCustomSize">40dp</item>
+        <item name="fabSize">mini</item>
+        <item name="android:visibility">invisible</item>
+        <item name="maxImageSize">20dp</item>
+    </style>
 
     <style name="MyDropDownListView" parent="@android:style/Widget.ListView.DropDown">
         <item name="android:dividerHeight">1dp</item>

@@ -1,5 +1,5 @@
-# Database diagram
+# Database
 
-<img src="database diagram.png"
-     alt="database diagram"
-     style="float: left; margin-right: 10px;" />
+## Database diagram
+
+![database diagram](./room8s.png)

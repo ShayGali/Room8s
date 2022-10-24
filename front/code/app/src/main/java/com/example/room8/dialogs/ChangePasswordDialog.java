@@ -16,15 +16,15 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
+import com.example.room8.database.ServerRequestsService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ChangePasswordDialog extends AppCompatDialogFragment {
-    Consumer<String> action;
 
-    public ChangePasswordDialog(Consumer<String> action) {
-        this.action = action;
+    public ChangePasswordDialog() {
     }
 
     @SuppressLint("SetTextI18n")
@@ -40,27 +40,32 @@ public class ChangePasswordDialog extends AppCompatDialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.background);
 
         TextView errorMsgTextView = view.findViewById(R.id.error_msg_password);
+        EditText prevPasswordEditText = view.findViewById(R.id.prev_password_editText);
         EditText passwordEditText = view.findViewById(R.id.new_password_editText);
         EditText confirmPasswordNameEditText = view.findViewById(R.id.confirm_new_password_editText);
-        FloatingActionButton submitBtn= view.findViewById(R.id.submit_change_password_btn);
+        FloatingActionButton submitBtn = view.findViewById(R.id.submit_change_password_btn);
         FloatingActionButton closeDialogBtn = view.findViewById(R.id.close_dialog_btn);
 
         errorMsgTextView.setVisibility(View.GONE);
         errorMsgTextView.setText("");
 
         submitBtn.setOnClickListener(v -> {
+            String prevPassword = prevPasswordEditText.getText().toString();
             String password1 = passwordEditText.getText().toString();
             String password2 = confirmPasswordNameEditText.getText().toString();
-            if (!MainActivity.isStrongPassword(password1)){
+            if (!MainActivity.isStrongPassword(password1)) {
                 errorMsgTextView.setVisibility(View.VISIBLE);
                 errorMsgTextView.setText("Password not strong enough");
-            }
-            else if (!password1.equals(password2)){
+            } else if (!password1.equals(password2)) {
                 errorMsgTextView.setVisibility(View.VISIBLE);
                 errorMsgTextView.setText("Passwords don't match");
-            }else {
-                action.accept(password1);
-                dismiss();
+            } else {
+                ServerRequestsService.getInstance().changePassword(prevPassword, password1, this::dismiss, errMsg -> {
+                    requireActivity().runOnUiThread(() -> {
+                        errorMsgTextView.setVisibility(View.VISIBLE);
+                        errorMsgTextView.setText(errMsg);
+                    });
+                });
             }
         });
 

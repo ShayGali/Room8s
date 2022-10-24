@@ -13,7 +13,7 @@ exports.findAllTasksOfApartment = async (req, res, next) => {
   try {
     const result = await tasksService.findAllTasksOfApartment(apartmentId);
 
-    for (task of result) {
+    for (task of result) { // get the task executors
       const executorsIds = await tasksService.findTaskExecutors(task.ID);
       task.executors_ids = executorsIds;
     }
@@ -136,10 +136,12 @@ exports.associateTaskToUser = async (req, res, next) => {
     }
 
     const result = await tasksService.associateTaskToUser(taskId, userId);
+
     if (!result)
       return res
         .status(500)
         .send({ success: false, msg: "associate task to user failed" });
+
     return res.status(200).send({ success: true, msg: "success" });
   } catch (error) {
     next(error);
@@ -282,12 +284,13 @@ exports.updateTask = async (req, res, next) => {
       const room8Ids = await apartmentService.getRoom8Ids(apartmentId);
       const executors = await tasksService.findTaskExecutors(taskId);
 
+      // remove if not includes
       executors.forEach((executorId) => {
         if (!executorsIds.includes(executorId)) {
           tasksService.removeAssociateFromUser(taskId, executorId);
         }
       });
-
+      // add
       executorsIds.forEach((executorId) => {
         if (room8Ids.includes(executorId) && !executors.includes(executorId)) {
           tasksService.associateTaskToUser(taskId, executorId);

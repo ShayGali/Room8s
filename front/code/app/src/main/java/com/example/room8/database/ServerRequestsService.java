@@ -1,17 +1,18 @@
 package com.example.room8.database;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.room8.MainActivity;
 import com.example.room8.model.Apartment;
 import com.example.room8.model.Expense;
 import com.example.room8.model.Roommate;
 import com.example.room8.model.Task;
 import com.example.room8.model.User;
 
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +20,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
@@ -33,7 +36,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
-For handle HTTP requests to the server useing the okhttp3 lib
+ * For handle HTTP requests to the server using the okhttp3 lib
  */
 public class ServerRequestsService {
 
@@ -52,28 +55,20 @@ public class ServerRequestsService {
 
     //JSON keys
     public static final String SUCCESS_KEY = "success"; // if the request succeeded
+    public static final String TOKEN_EXPIRED_KEY = "expired"; // if the request succeeded
     public static final String MESSAGE_KEY = "msg"; // response message
     public static final String DATA_KEY = "data"; // the data
     public static final String TOKEN_HEADER_KEY = "x-auth-token";
     public static final String ACCESS_TOKEN_KEY = "jwtToken";
     public static final String REFRESH_TOKEN_KEY = "refreshJwtToken";
 
-    // formatters for the date and time
-    @SuppressLint("SimpleDateFormat") // for parse date time from the server
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    @SuppressLint("SimpleDateFormat") // for format date object to time string
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    @SuppressLint("SimpleDateFormat")
-    public static final SimpleDateFormat DATE_FORMAT_FOR_REQUEST = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressLint("SimpleDateFormat") // for format date object to date string
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
-    static { // for initial the timezone
-        DATE_TIME_FORMAT.setTimeZone(TimeZone.getDefault());
-        DATE_FORMAT.setTimeZone(TimeZone.getDefault());
-        DATE_FORMAT_FOR_REQUEST.setTimeZone(TimeZone.getDefault());
-        TIME_FORMAT.setTimeZone(TimeZone.getDefault());
-    }
+    // formatters for the date and time
+    public static final FastDateFormat DATE_TIME_PARSER = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("UTC"));
+    public static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("dd-MM-yy HH:mm:ss", TimeZone.getDefault());
+    public static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd/MM/yyyy", TimeZone.getDefault());
+    public static final FastDateFormat DATE_FORMAT_FOR_REQUEST = FastDateFormat.getInstance("yyyy-MM-dd", TimeZone.getDefault());
+    public static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("HH:mm", TimeZone.getDefault());
 
 
     @SuppressLint("StaticFieldLeak")
@@ -97,14 +92,16 @@ public class ServerRequestsService {
     private ServerRequestsService() {
         client = new OkHttpClient();
         accessesToken = SharedPreferenceHandler.getInstance().getAccessJwt();
+        refreshToken = SharedPreferenceHandler.getInstance().getRefreshJwt();
     }
 
     private final OkHttpClient client;
-    private Activity activity;
+    private MainActivity activity;
     private String accessesToken;
     private String refreshToken;
+    private Date refreshTimeOut;
 
-    public void setActivity(Activity activity) {
+    public void setActivity(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -113,7 +110,7 @@ public class ServerRequestsService {
     }
 
 
-    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+    private Callback createCallback(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
         return new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -128,27 +125,27 @@ public class ServerRequestsService {
                 String stringBody = responseBody != null ? responseBody.string() : null;
 
                 if (stringBody == null) {
-                    showToast(failMsg);
-                    showToast("responseBody is null");
                     System.err.println(failMsg);
                     System.err.println("responseBody is null");
                     return;
                 }
                 try {
                     JSONObject responseJOSN = new JSONObject(stringBody);
-
+                    System.out.println(responseJOSN);
                     if (responseJOSN.has(SUCCESS_KEY)) {
                         if (responseJOSN.getBoolean(SUCCESS_KEY)) {
                             if (successAction != null) successAction.accept(responseJOSN);
+
+                        } else if (responseJOSN.has(TOKEN_EXPIRED_KEY) && responseJOSN.getBoolean(TOKEN_EXPIRED_KEY)) {
+                            refreshToken(originalReq, failMsg, successAction, failAction);
                         } else {
                             if (failAction != null) {
                                 failAction.accept(responseJOSN);
                                 return;
                             }
                         }
-
+                        return;
                     }
-
                     if (!response.isSuccessful()) {
                         handleUnsuccessfulReq(failMsg, response.code(), responseJOSN);
                     }
@@ -159,10 +156,17 @@ public class ServerRequestsService {
         };
     }
 
+    private Callback createCallback(Request originalReq, String failMsg, Consumer<JSONObject> successAction) {
+        return this.createCallback(originalReq, failMsg, successAction, null);
+    }
+
+    private Callback createCallback(String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        return this.createCallback(null, failMsg, successAction, failAction);
+    }
+
     private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
         return this.createCallback(failMsg, successAction, null);
     }
-
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
         showToast(failMsg);
@@ -176,6 +180,63 @@ public class ServerRequestsService {
         System.err.println(failMsg);
         System.err.println("response code: " + responseCode);
         System.err.println("msg: " + responseJOSN);
+    }
+
+    public synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant())) {
+            if (originalReq != null) {
+                if (Objects.equals(originalReq.header(TOKEN_HEADER_KEY), this.accessesToken)) {
+                    activity.forceLogout();
+                    return;
+                }
+
+                Request newRequest = new Request.Builder()
+                        .url(originalReq.url())
+                        .addHeader(TOKEN_HEADER_KEY, this.accessesToken)
+                        .headers(originalReq.headers())
+                        .method(originalReq.method(), originalReq.body())
+                        .build();
+
+                client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
+            }
+            return;
+        }
+        refreshTimeOut = new Date(Calendar.getInstance().getTimeInMillis() + ((10 * 60 * 5))); // expired in 5 minutes
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + AUTH_PATH + "/refresh")
+                .addHeader(TOKEN_HEADER_KEY, refreshToken)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(createCallback("",
+                jsonObject -> {
+                    if (jsonObject.has(ACCESS_TOKEN_KEY) && !jsonObject.isNull(ACCESS_TOKEN_KEY)) {
+                        try {
+                            String newToken = jsonObject.getString(ACCESS_TOKEN_KEY);
+                            this.accessesToken = newToken;
+                            SharedPreferenceHandler.getInstance().saveJwtAccessToken(newToken);
+
+                            if (originalReq != null) {
+                                Request newRequest = new Request.Builder()
+                                        .url(originalReq.url())
+                                        .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                                        .headers(originalReq.headers())
+                                        .method(originalReq.method(), originalReq.body())
+                                        .build();
+
+                                client.newCall(newRequest).enqueue(createCallback(failMsg, successAction, failAction));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                jsonObject -> {
+                    System.out.println(jsonObject);
+                    activity.forceLogout();
+                }));
     }
 
 
@@ -217,7 +278,7 @@ public class ServerRequestsService {
         }));
     }
 
-    public void register(String username, String email, String password, Runnable navigateFunction) {
+    public void register(String username, String email, String password, Runnable navigateFunction, Consumer<String> displayError) {
         RequestBody formBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)
@@ -229,22 +290,33 @@ public class ServerRequestsService {
                 .post(formBody)
                 .build();
 
-        client.newCall(request).enqueue(createCallback("register failed", jsonObject -> {
-            try {
-                SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
+        client.newCall(request).enqueue(createCallback(
+                "register failed",
+                jsonObject -> {
+                    try {
+                        SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
 
-                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
-                sp.saveJwtAccessToken(token);
-                this.accessesToken = token;
+                        String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                        sp.saveJwtAccessToken(token);
+                        this.accessesToken = token;
 
-                sp.setIsInApartment(false);
+                        sp.setIsInApartment(false);
 
-                navigateFunction.run();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                handleUnsuccessfulReq("register failed when parsing the data", 0, jsonObject);
-            }
-        }));
+                        navigateFunction.run();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handleUnsuccessfulReq("register failed when parsing the data", 0, jsonObject);
+                    }
+                },
+                jsonObject -> {
+                    try {
+                        String msg = jsonObject.getString(MESSAGE_KEY);
+                        displayError.accept(msg);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                ));
     }
 
     public boolean isServerUp() {
@@ -271,7 +343,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("create apartment failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "create apartment failed", jsonObject -> {
             try {
                 if (jsonObject.has(DATA_KEY)) {
                     JSONObject data = jsonObject.getJSONObject(DATA_KEY);
@@ -301,7 +373,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             try {
                 User.parseDataFromJson(jsonObject.getJSONObject(DATA_KEY));
             } catch (JSONException e) {
@@ -318,7 +390,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch tasks failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch tasks failed", jsonObject -> {
             try {
                 JSONArray tasks = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < tasks.length(); i++) {
@@ -341,7 +413,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
-        client.newCall(request).enqueue(createCallback("fetch room8s data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch room8s data failed", jsonObject -> {
             try {
                 JSONArray room8 = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < room8.length(); i++) {
@@ -356,12 +428,12 @@ public class ServerRequestsService {
         }));
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, Runnable notifyFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
         if (task.getTaskType() != null)
             formBody.add("taskType", task.getTaskType());
         if (task.getExpirationDate() != null)
-            formBody.add("expirationDate", DATE_TIME_FORMAT.format(task.getExpirationDate()));
+            formBody.add("expirationDate", DATE_TIME_PARSER.format(task.getExpirationDate()));
         if (task.getTitle() != null)
             formBody.add("title", task.getTitle());
         if (task.getNote() != null)
@@ -377,7 +449,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("add task failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "add task failed", jsonObject -> {
             try {
                 if (jsonObject.getJSONObject(DATA_KEY).has("insertedID") && !jsonObject.getJSONObject(DATA_KEY).isNull("insertedID"))
                     task.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
@@ -386,6 +458,7 @@ public class ServerRequestsService {
                 task.setCreatorId(User.getInstance().getId());
                 task.setApartmentId(Apartment.getInstance().getId());
                 Apartment.getInstance().getTasks().add(task);
+                notifyFunction.run();
                 showToast("The task has been add successfully");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -414,12 +487,12 @@ public class ServerRequestsService {
                 .build();
 
         String failMsg = "update task " + task.getId() + " failed";
-        client.newCall(request).enqueue(createCallback(failMsg, jsonObject ->
+        client.newCall(request).enqueue(createCallback(request, failMsg, jsonObject ->
                 showToast("The task has been updated successfully")
         ));
     }
 
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId, Runnable notifyFunction) {
         Request request = new Request.Builder()
                 .url(HTTP_URL + TASKS_PATH + "/" + taskId)
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
@@ -427,13 +500,15 @@ public class ServerRequestsService {
                 .build();
 
         String failMsg = "delete task " + taskId + " failed";
-        client.newCall(request).enqueue(createCallback(failMsg, jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, failMsg, jsonObject -> {
             showToast("The task has been delete successfully");
+            notifyFunction.run();
         }));
     }
 
-    public void changePassword(String password) {
+    public void changePassword(String prevPassword, String password, Runnable successAction, Consumer<String> showError) {
         FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("prevPassword", prevPassword);
         formBody.add("password", password);
 
 
@@ -443,7 +518,18 @@ public class ServerRequestsService {
                 .put(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("change password failed", jsonObject -> showToast("change password successfully")));
+        client.newCall(request).enqueue(createCallback(request, "change password failed", jsonObject -> {
+            showToast("change password successfully");
+            successAction.run();
+        }, jsonObject -> {
+            if (jsonObject.has(MESSAGE_KEY)) {
+                try {
+                    showError.accept(jsonObject.getString(MESSAGE_KEY));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
     }
 
 
@@ -454,7 +540,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "remove user failed", jsonObject -> {
             Apartment.getInstance().getRoommates().removeIf(r -> id == r.getId());
             showToast("remove room8 successfully");
         }));
@@ -467,7 +553,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("remove user failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "remove user failed", jsonObject -> {
             SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
             sp.setIsInApartment(false);
             try {
@@ -487,7 +573,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .get()
                 .build();
-        client.newCall(request).enqueue(createCallback("fetch expenses failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch expenses failed", jsonObject -> {
             try {
                 JSONArray expenses = jsonObject.getJSONArray(DATA_KEY);
                 for (int i = 0; i < expenses.length(); i++) {
@@ -507,7 +593,8 @@ public class ServerRequestsService {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("title", expense.getTitle());
         formBody.add("expensesType", expense.getType());
-        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
+        if ((expense.getPaymentDate() != null))
+            formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
         formBody.add("amount", String.valueOf(expense.getAmount()));
         formBody.add("note", expense.getNote());
 
@@ -516,7 +603,7 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .put(formBody.build())
                 .build();
-        client.newCall(request).enqueue(createCallback("update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
+        client.newCall(request).enqueue(createCallback(request, "update expense failed", jsonObject -> showToast("The expense has been updated successfully")));
     }
 
     public void createExpense(Expense expense) {
@@ -525,7 +612,8 @@ public class ServerRequestsService {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("title", expense.getTitle());
         formBody.add("expensesType", expense.getType());
-        formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
+        if (expense.getPaymentDate() != null)
+            formBody.add("paymentDate", DATE_FORMAT_FOR_REQUEST.format(expense.getPaymentDate()));
         formBody.add("amount", String.valueOf(expense.getAmount()));
         formBody.add("uploadDate", DATE_FORMAT_FOR_REQUEST.format(expense.getUploadDate()));
         formBody.add("note", expense.getNote());
@@ -537,20 +625,21 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("create expense went wrong", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "create expense went wrong", jsonObject -> {
             showToast("create expense successfully");
-            if (jsonObject.has(DATA_KEY)) {
-                try {
-                    expense.setId(jsonObject.getInt(DATA_KEY));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                if (jsonObject.has(DATA_KEY) && jsonObject.getJSONObject(DATA_KEY).has("insertedID")) {
+                    expense.setId(jsonObject.getJSONObject(DATA_KEY).getInt("insertedID"));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
             Apartment.getInstance().addExpense(expense);
         }));
     }
 
-    public void deleteExpense(int expenseId) {
+    public void deleteExpense(int expenseId, Runnable notifyFunction) {
 
         Request request = new Request.Builder()
                 .url(HTTP_URL + EXPENSES_PATH + "/" + expenseId)
@@ -558,8 +647,9 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("delete expense failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "delete expense failed", jsonObject -> {
             Apartment.getInstance().getExpenses().removeIf(e -> e.getId() == expenseId);
+            notifyFunction.run();
             showToast("The expense has been deleted successfully");
         }));
     }
@@ -585,7 +675,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch join request went wrong", jsonObject -> {
             if (!jsonObject.has(DATA_KEY)) return;
 
             try {
@@ -609,7 +699,7 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("send join request went wrong",
+        client.newCall(request).enqueue(createCallback(request, "send join request went wrong",
                 jsonObject -> showToast("send request successfully"),
                 jsonObject -> {
                     try {
@@ -635,7 +725,7 @@ public class ServerRequestsService {
                 .build();
 
         SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
-        client.newCall(request).enqueue(createCallback("fetch join request went wrong",
+        client.newCall(request).enqueue(createCallback(request, "fetch join request went wrong",
                 jsonObject -> {
                     if (join) {
                         try {
@@ -676,7 +766,7 @@ public class ServerRequestsService {
     }
 
 
-    public void setRole(int userId, int roleNum, Consumer<String> displayErrorFunction) {
+    public void setRole(int userId, int roleNum, Runnable displayChangeFunction, Consumer<String> displayErrorFunction) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("roleNum", String.valueOf(roleNum));
         formBody.add("userId", String.valueOf(userId));
@@ -686,10 +776,14 @@ public class ServerRequestsService {
                 .addHeader(TOKEN_HEADER_KEY, accessesToken)
                 .put(formBody.build())
                 .build();
-                client.newCall(request).enqueue(createCallback(
-                    "fetch join request went wrong",
-                    jsonObject -> showToast("change role successfully"),
-                    jsonObject -> {
+        client.newCall(request).enqueue(createCallback(
+                request,
+                "fetch join request went wrong",
+                jsonObject -> {
+                    displayChangeFunction.run();
+                    showToast("change role successfully");
+                },
+                jsonObject -> {
                     try {
                         if (displayErrorFunction != null && jsonObject.has(MESSAGE_KEY)) {
                             displayErrorFunction.accept(jsonObject.getString(MESSAGE_KEY));
@@ -709,7 +803,7 @@ public class ServerRequestsService {
                 .delete()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("delete data failed", jsonObject -> navigateFunction.run()));
+        client.newCall(request).enqueue(createCallback(request, "delete data failed", jsonObject -> navigateFunction.run()));
     }
 
     public void getApartmentId(Runnable onFinish) {
@@ -719,7 +813,7 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             try {
                 SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
                 if (jsonObject.has("apartmentId")) {
@@ -752,11 +846,11 @@ public class ServerRequestsService {
                 .get()
                 .build();
 
-        client.newCall(request).enqueue(createCallback("fetch data failed", jsonObject -> {
+        client.newCall(request).enqueue(createCallback(request, "fetch data failed", jsonObject -> {
             Apartment a = Apartment.getInstance();
 
             try {
-                if (!jsonObject.has(DATA_KEY) || jsonObject.isNull(DATA_KEY))return;
+                if (!jsonObject.has(DATA_KEY) || jsonObject.isNull(DATA_KEY)) return;
                 jsonObject = jsonObject.getJSONObject(DATA_KEY);
 
                 if (jsonObject.has("ID") && !jsonObject.isNull("ID"))
@@ -776,6 +870,18 @@ public class ServerRequestsService {
             }
         }));
     }
+
+
+    public void ChangeProfileImg(int iconId, Runnable onSuccess, Runnable onFailure) {
+        FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("iconId", String.valueOf(iconId));
+
+        Request request = new Request.Builder()
+                .url(HTTP_URL + USERS_PATH + "/changeProfileImg")
+                .addHeader(TOKEN_HEADER_KEY, accessesToken)
+                .put(formBody.build())
+                .build();
+
+        client.newCall(request).enqueue(createCallback(request, "change profile icon failed", jsonObject -> onSuccess.run(), jsonObject -> onFailure.run()));
+    }
 }
-
-

@@ -9,6 +9,7 @@ const {
 const {
   hashPassword,
   isStrongPassword,
+  compareHashPassword,
 } = require("../../utilities/passwordHandler");
 
 /**
@@ -97,8 +98,31 @@ exports.getRoommatesData = async (req, res, next) => {
 
 exports.changeRole = async (req, res, next) => {
   try {
-    const { userId, apartmentId } = req.tokenData;
-    const { userLevel } = req;
+    const { userId: senderId, apartmentId } = req.tokenData;
+    const { userId, roleNum } = req.body;
+    const [user, sender] = await Promise.all([
+      userService.findById(userId),
+      userService.findById(senderId),
+    ]);
+
+    if (sender.user_level < user.user_level) {
+      return res
+        .status(403)
+        .json({ success: false, msg: "you have less role than him" });
+    }
+
+    if (roleNum > sender.user_level) {
+      return res
+        .status(403)
+        .json({ success: false, msg: "you cant give that role" });
+    }
+
+    if ((await userService.changeRole(userId, roleNum)) == undefined) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "role id not in range" });
+    }
+
     return res.status(200).json({ success: true, msg: "role changed" });
   } catch (error) {
     next(error);
@@ -106,7 +130,20 @@ exports.changeRole = async (req, res, next) => {
 };
 exports.changePassword = async (req, res, next) => {
   const { userId } = req.tokenData;
-  const { password } = req.body;
+  const { prevPassword, password } = req.body;
+  if (prevPassword === undefined) {
+    return res.status(400).json({ success: false, msg: "send prev password" });
+  }
+
+  try {
+    const user = await userService.findById(userId);
+    if (!(await compareHashPassword(prevPassword, user.user_password))) {
+      return res.status(401).json({ success: false, msg: "Wrong password" });
+    }
+  } catch (error) {
+    next(error);
+  }
+
   if (password === undefined) {
     return res.status(400).json({ success: false, msg: "send new password" });
   }
@@ -127,6 +164,25 @@ exports.changePassword = async (req, res, next) => {
     return res
       .status(200)
       .json({ success: true, msg: "password change successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.changeProfileImg = async (req, res, next) => {
+  const { userId } = req.tokenData;
+  const { iconId } = req.body;
+
+  if (iconId == undefined)
+    return res.status(400).json({ success: false, msg: "send icodId" });
+
+  if (isNaN(iconId))
+    return res
+      .status(400)
+      .json({ success: false, msg: "icodId need to be number" });
+  try {
+    userService.changeProfileImg(userId, iconId);
+    return res.json({ success: true, msg: "iconId changed successfuly" });
   } catch (error) {
     next(error);
   }

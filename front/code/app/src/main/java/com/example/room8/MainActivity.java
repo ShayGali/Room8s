@@ -1,7 +1,6 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.annotation.SuppressLint;
@@ -14,19 +13,11 @@ import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
-import com.example.room8.dialogs.TaskDialogListener;
-import com.example.room8.model.Apartment;
-import com.example.room8.model.Task;
-import com.example.room8.model.User;
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
-public class MainActivity extends AppCompatActivity implements TaskDialogListener {
-
-    public static final String SHARED_PREFERENCE = "shared preference";
-    public static final String JWT_TOKEN = "jwt token";
-
+public class MainActivity extends AppCompatActivity {
 
     public ServerRequestsService databaseService;
     public SharedPreferenceHandler sharedPreferenceHandler;
@@ -54,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
             startActivity(new Intent(this, NoConnectionActivity.class).putExtra("cause", connectionFailCause));
         } else {
             if (SharedPreferenceHandler.getInstance().checkIfJwtAccessTokenExists()) {
+                ServerRequestsService.getInstance().refreshToken(null, "", i -> forceLogout(), i -> forceLogout());
+
                 if (SharedPreferenceHandler.getInstance().isInApartment())
                     this.navigateFragment(R.id.action_loginFragment_to_homePageFragment);
                 else
@@ -63,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
     String checkConnections() {
-        if(!isNetworkAvailable()){
+        if (!isNetworkAvailable()) {
             return "You don't have network connection";
         }
 
@@ -83,10 +76,10 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
             e.printStackTrace();
         }
 
-        if(!isUp.get())
+        if (!isUp.get())
             return "server is down";
-        
-        return  null;
+
+        return null;
     }
 
 
@@ -106,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     public void navigateFragment(int actionID) {
         runOnUiThread(() -> {
                     NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
-                    if(navHostFragment!=null)
+                    if (navHostFragment != null)
                         navHostFragment.getNavController().navigate(actionID);
                 }
 
@@ -114,13 +107,20 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
     }
 
 
+    /**
+     * delete the save data and navigate to the login screen
+     *
+     * @param actionId navigate to login screen
+     */
     public void logout(int actionId) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
         navigateFragment(actionId);
     }
 
 
-    // get the Jwt token from the database, save it to the SharedPreferences
+    /**
+     * get the Jwt token from the database, save it to the SharedPreferences
+     */
     public void login(String email, String password) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
         databaseService.login(email, password, isInApartment -> {
@@ -132,38 +132,13 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         });
     }
 
-    public void register(String username, String email, String password) {
+    public void register(String username, String email, String password, Consumer<String> displayError) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
-        databaseService.register(username, email, password, () ->
-                navigateFragment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment)
+        databaseService.register(
+                username, email, password,
+                () -> navigateFragment(R.id.action_signupFragment_to_homePageUserWithoutApartmentFragment),
+                displayError
         );
-    }
-
-    public void fetchUserData() {
-        databaseService.getUserData();
-    }
-
-    public void fetchTasks(Runnable notifyFunction) {
-        databaseService.getAllTask(notifyFunction);
-    }
-
-    public void fetchRoom8() {
-        databaseService.getRoom8s();
-    }
-
-    @Override
-    public void updateTask(Task t) {
-        databaseService.updateTask(t);
-    }
-
-    @Override
-    public void deleteTask(int taskId) { // TODO delete
-        databaseService.deleteTask(taskId);
-    }
-
-    @Override
-    public void addTask(Task task) { //TODO notifyFunction
-        databaseService.addTask(task);
     }
 
     public void createApartment(String name) {
@@ -174,11 +149,80 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
         databaseService.leave(() -> navigateFragment(R.id.action_profileFragment_to_homePageUserWithoutApartmentFragment));
     }
 
-    public void changePassword(String password) {
-        databaseService.changePassword(password);
-    }
 
-    public void removeRoom8s(Integer id) {
-        databaseService.removeRoom8(id);
+    /**
+     * logout the user when cant refresh his token
+     */
+    public void forceLogout() {
+        SharedPreferenceHandler.getInstance().deleteSaveData();
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_homePageUserWithoutApartmentFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_homePageFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_profileFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_tasksFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_message_Fragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        try {
+            runOnUiThread(() -> {
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                        if (navHostFragment != null)
+                            navHostFragment.getNavController().navigate(R.id.action_walletFragment_to_loginFragment);
+                    }
+            );
+            return;
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        // if we cant navigate him to login we close the app
+        this.finish();
     }
 }
