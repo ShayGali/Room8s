@@ -41,7 +41,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "10.0.0.4";
+    public static final String SERVER_IP_ADDRESS = "10.113.4.117";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -184,6 +184,8 @@ public class ServerRequestsService {
     }
 
     public synchronized void refreshToken(Request originalReq, String failMsg, Consumer<JSONObject> successAction, Consumer<JSONObject> failAction) {
+        if (refreshToken == null)
+            return;
         if (refreshTimeOut != null && Calendar.getInstance().toInstant().isBefore(refreshTimeOut.toInstant())) {
             if (originalReq != null) {
                 if (Objects.equals(originalReq.header(TOKEN_HEADER_KEY), this.accessesToken)) {

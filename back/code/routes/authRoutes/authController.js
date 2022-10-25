@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const authService = require("./authService");
 const userService = require("../../routes/userRoutes/userService");
-const transporter = require("../../config/nodeMailer")
+const transporter = require("../../config/nodeMailer");
 
 const {
   authenticateRefreshToken,
@@ -139,14 +139,14 @@ exports.forgotPassword = async (req, res, next) => {
       .json({ success: false, msg: `user with the email ${email} not found` });
 
   const resetTokenUUID = uuidv4();
-  const expirityDate = "21-10-2025"; //TODO: generateExpirationDate() 
+  const expirityDate = generateExprityTime();
 
   resetTokenMap.set(resetTokenUUID, { expirityDate, email });
 
   sendEmail(email, resetTokenUUID);
   const hashedPassword = await hashPassword(resetTokenUUID);
 
-  authService.resetPassword(email,hashedPassword);
+  authService.resetPassword(email, hashedPassword);
 
   return res.send({ success: true, msg: "reset token send to your email" });
 };

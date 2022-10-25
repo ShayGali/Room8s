@@ -13,7 +13,7 @@ exports.matchUserToApartment = async (req, res, next) => {
     return res
       .status(403)
       .send({ success: false, msg: "user not in apartment" });
-      
+
   try {
     const userApartmentId = await userService.findUserApartmentId(userId);
 

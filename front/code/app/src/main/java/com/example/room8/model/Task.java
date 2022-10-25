@@ -183,6 +183,7 @@ public class Task implements Comparable<Task> {
     }
 
     public void updateTask(Task o) {
+        System.out.println(o.toString());
         this.taskType = o.taskType;
         this.expirationDate = o.getExpirationDate();
         this.title = o.title;

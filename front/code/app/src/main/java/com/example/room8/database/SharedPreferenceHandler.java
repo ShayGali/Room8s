@@ -85,6 +85,7 @@ public class SharedPreferenceHandler {
     public void deleteSaveData() {
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(JWT_ACCESS_TOKEN).apply();
+        editor.remove(JWT_REFRESH_TOKEN).apply();
         editor.remove(IS_IN_APARTMENT).apply();
         User.resetData();
         Apartment.resetData();
