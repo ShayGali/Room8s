@@ -1,10 +1,12 @@
 const db = require("../../config/db");
 const usersTable = "users";
+const emailCol = "email";
+const passCol = "user_password";
 
 /**
- * 
- * @param {*} user 
- * @returns 
+ *
+ * @param {*} user
+ * @returns
  */
 exports.register = async (user) => {
   const query = `INSERT INTO ${usersTable} (
@@ -18,4 +20,12 @@ exports.register = async (user) => {
     user.password,
   ]);
   return newUser;
+};
+
+exports.resetPassword = async (email, password) => {
+  const query = `UPDATE ${usersTable}
+                 SET ${passCol} = '${password}'
+                 WHERE ${emailCol} = '${email}';`;
+  const [updatedPass,_] = await db.execute(query);
+  return updatedPass;
 };

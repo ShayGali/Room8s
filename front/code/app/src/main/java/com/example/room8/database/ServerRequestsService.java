@@ -41,7 +41,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "192.168.1.158";
+    public static final String SERVER_IP_ADDRESS = "10.0.0.4";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -167,6 +167,7 @@ public class ServerRequestsService {
     private Callback createCallback(String failMsg, Consumer<JSONObject> successAction) {
         return this.createCallback(failMsg, successAction, null);
     }
+
 
     private void handleUnsuccessfulReq(String failMsg, int responseCode, JSONObject responseJOSN) {
         showToast(failMsg);
@@ -654,7 +655,7 @@ public class ServerRequestsService {
         }));
     }
 
-    public void forgotPassword(String email) {
+    public void forgotPassword(String email,Runnable navigateToLogin) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("email", email);
 
@@ -663,8 +664,10 @@ public class ServerRequestsService {
                 .post(formBody.build())
                 .build();
 
-        client.newCall(request).enqueue(createCallback("reset password went wrong", jsonObject -> showToast("Check your email")));
-
+        client.newCall(request).enqueue(createCallback("reset password went wrong", jsonObject -> {
+            showToast("Check your email");
+            navigateToLogin.run();
+        }));
     }
 
 

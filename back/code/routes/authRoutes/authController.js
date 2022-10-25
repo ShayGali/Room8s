@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const authService = require("./authService");
 const userService = require("../../routes/userRoutes/userService");
+const transporter = require("../../config/nodeMailer")
 
 const {
   authenticateRefreshToken,
@@ -125,7 +126,6 @@ exports.login = async (req, res, next) => {
   }
 };
 
-//TODO
 exports.forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
@@ -139,14 +139,32 @@ exports.forgotPassword = async (req, res, next) => {
       .json({ success: false, msg: `user with the email ${email} not found` });
 
   const resetTokenUUID = uuidv4();
-  const expirityDate = generateExprityDate();
+  const expirityDate = "21-10-2025"; //TODO: generateExpirationDate() 
 
   resetTokenMap.set(resetTokenUUID, { expirityDate, email });
 
   sendEmail(email, resetTokenUUID);
+  const hashedPassword = await hashPassword(resetTokenUUID);
 
-  return res.send({ success: true, msg: "reset token send to ypur email" });
+  authService.resetPassword(email,hashedPassword);
+
+  return res.send({ success: true, msg: "reset token send to your email" });
 };
+
+function sendEmail(email, token) {
+  const mailOptions = {
+    from: process.env.ADMIN_MAIL,
+    to: email,
+    subject: "Reset Password",
+    text: `${token}\n Here is your new Password, please don't lose it again...`,
+  };
+  transporter.sendMail(mailOptions, (err, success) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.send("Email sent successfully");
+  });
+}
 
 /**
  * genrate a expirtion time
@@ -165,9 +183,6 @@ function generateExprityTime() {
 function checkIfExpired(time) {
   return time - Date.now() < 0;
 }
-
-// TODO
-function sendEmail(email, token) {}
 
 exports.resetPassword = async (req, res, next) => {
   const { token, password } = req.body;
