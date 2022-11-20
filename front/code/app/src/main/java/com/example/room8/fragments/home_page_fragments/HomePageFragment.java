@@ -27,8 +27,6 @@ public class HomePageFragment extends Fragment {
 
     View view;
     SwipeRefreshLayout swipeRefreshLayout;
-    FloatingActionButton refreshBtn;
-    TextView refreshStatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +58,6 @@ public class HomePageFragment extends Fragment {
         View menuBtn = view.findViewById(R.id.menu_btn);
 
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
-        refreshBtn = view.findViewById(R.id.refreshBtn);
-        refreshStatus = view.findViewById(R.id.refresh_status);
 
         this.refreshData();
 
@@ -92,16 +88,12 @@ public class HomePageFragment extends Fragment {
         walletBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment));
 
         swipeRefreshLayout.setOnRefreshListener(this::refreshData);
-        refreshBtn.setOnClickListener(v -> {
-            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-            this.refreshData();
-        });
+
         return view;
     }
 
     @SuppressLint("SetTextI18n")
     public void refreshData() {
-        refreshStatus.setText("Refreshing...");
         ServerRequestsService.getInstance().getApartmentId(() -> {
             ServerRequestsService.getInstance().getUserData();
             if (SharedPreferenceHandler.getInstance().isInApartment()) {
@@ -112,12 +104,10 @@ public class HomePageFragment extends Fragment {
 
             } else {
                 try {
-
                 Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
                 }catch (IllegalArgumentException ignored){}
             }
             swipeRefreshLayout.setRefreshing(false);
-            requireActivity().runOnUiThread(() -> refreshStatus.setText("Refresh Data"));
         });
     }
 }

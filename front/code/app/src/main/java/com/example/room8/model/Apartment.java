@@ -50,6 +50,7 @@ public final class Apartment {
         this.roommates = new ArrayList<>();
         this.tasks = new ArrayList<>();
         this.expenses = new ArrayList<>();
+        double sum = expenses.stream().mapToDouble(Expense::getAmount).reduce(0, Double::sum); //TODO - sum of the expense
     }
 
     public static void resetData() {

@@ -28,8 +28,6 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
     MainActivity activity;
     View view;
     SwipeRefreshLayout swipeRefreshLayout;
-    FloatingActionButton refreshBtn;
-    TextView refreshStatus;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -41,8 +39,6 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         view.findViewById(R.id.go_to_profile_btn).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment));
 
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh);
-        refreshBtn = view.findViewById(R.id.refreshBtn);
-        refreshStatus = view.findViewById(R.id.refresh_status);
 
         this.initMenuBtn();
         this.initCreateApartmentButton();
@@ -51,10 +47,6 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
         this.refreshData();
 
         swipeRefreshLayout.setOnRefreshListener(this::refreshData);
-        refreshBtn.setOnClickListener(v -> {
-            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-            this.refreshData();
-        });
 
         return view;
     }
@@ -110,7 +102,6 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void refreshData() {
-        refreshStatus.setText("Refreshing...");
         ServerRequestsService.getInstance().getApartmentId(() -> {
             ServerRequestsService.getInstance().getUserData();
             if (SharedPreferenceHandler.getInstance().isInApartment()) {
@@ -119,7 +110,6 @@ public class HomePageUserWithoutApartmentFragment extends Fragment {
                 this.getJoinReq();
             }
             swipeRefreshLayout.setRefreshing(false);
-            requireActivity().runOnUiThread(() -> refreshStatus.setText("Refresh Data"));
         });
     }
 
