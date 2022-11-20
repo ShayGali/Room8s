@@ -22,6 +22,8 @@ import com.example.room8.model.Apartment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomePageFragment extends Fragment {
 
@@ -94,20 +96,29 @@ public class HomePageFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void refreshData() {
-        ServerRequestsService.getInstance().getApartmentId(() -> {
-            ServerRequestsService.getInstance().getUserData();
-            if (SharedPreferenceHandler.getInstance().isInApartment()) {
-                ServerRequestsService.getInstance().getAllTask(null);
-                ServerRequestsService.getInstance().getRoom8s();
-                ServerRequestsService.getInstance().getExpenses();
-                ServerRequestsService.getInstance().getApartmentData();
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
 
-            } else {
-                try {
-                Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
-                }catch (IllegalArgumentException ignored){}
+                ServerRequestsService.getInstance().getApartmentId(() -> {
+                    ServerRequestsService.getInstance().getUserData();
+                    if (SharedPreferenceHandler.getInstance().isInApartment()) {
+                        ServerRequestsService.getInstance().getAllTask(null);
+                        ServerRequestsService.getInstance().getRoom8s();
+                        ServerRequestsService.getInstance().getExpenses();
+                        ServerRequestsService.getInstance().getApartmentData();
+
+                    } else {
+                        try {
+                            Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+                        } catch (IllegalArgumentException ignored) {
+                        }
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                });
+
             }
-            swipeRefreshLayout.setRefreshing(false);
-        });
+        }, 0, 5000);
+
     }
 }

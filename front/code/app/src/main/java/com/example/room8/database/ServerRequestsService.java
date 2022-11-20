@@ -41,7 +41,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "10.113.5.82";
+    public static final String SERVER_IP_ADDRESS = "10.0.0.3";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
