@@ -141,7 +141,8 @@ VALUES (1, 'general task'),
        (4, 'laundry'),
        (5, 'hang laundry'),
        (6, 'iron'),
-       (7, 'leash');
+       (7, 'leash'),
+       (8,'groceries');
 
 INSERT INTO expense_type
 VALUES (1, 'general expense'),

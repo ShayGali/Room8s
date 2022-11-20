@@ -26,7 +26,7 @@ public class Task implements Comparable<Task> {
     public static final String EXECUTORS_IDS = "executors_ids";
     public static final String ICON_PATH_KEY = "icon_path";
 
-    public static final String[] TASK_TYPES = {"general task", "cleaning","dish","laundry","hang laundry","iron","leash"};
+    public static final String[] TASK_TYPES = {"general task", "cleaning","dish","laundry","hang laundry","iron","leash", "groceries"};
 
 
     int id;
