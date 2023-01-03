@@ -74,10 +74,11 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
 
     private void getBarChart() {
         barChart = view.findViewById(R.id.expenses_bar_chart);
-//        if (barDataSet == null) {
-//            setBarDataSet(getRoom8tsExpensesData(), "rom");
-//            barChart.invalidate();
-//        }
+        if (barDataSet == null) {
+            HashMap<String, Object> hashMap = getRoom8tsExpensesData();
+            setBarDataSet((ArrayList) hashMap.get("expensesBarArrayList"),(String[])hashMap.get("stackLabels"));
+            barChart.invalidate();
+        }
 
         chip_dates.setOnClickListener(new View.OnClickListener() {
             @Override
