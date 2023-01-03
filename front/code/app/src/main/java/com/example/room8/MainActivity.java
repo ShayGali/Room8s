@@ -149,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
      * @param actionId navigate to login screen
      */
     public void logout(int actionId) {
+        getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+            }
+        });
         SharedPreferenceHandler.getInstance().deleteSaveData();
         navigateFragment(actionId);
     }
