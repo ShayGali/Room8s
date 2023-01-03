@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutHOR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/total_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:text="@string/total_expenses_txt_view"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/total_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="12dp"
+            android:text="@string/total_expenses_num"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/LinearLayoutVER"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/expenses_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="36dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chipGroup"
+            android:layout_width="409dp"
+            android:layout_height="36dp"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteX="1dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_room8ts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/chip_types"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/room8ts"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_types"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/chip_dates"
+                app:layout_constraintStart_toEndOf="@+id/chip_room8ts"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/types"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_dates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/chip_types"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/dates"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

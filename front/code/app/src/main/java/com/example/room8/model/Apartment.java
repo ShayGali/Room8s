@@ -1,7 +1,6 @@
 package com.example.room8.model;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 public final class Apartment {
 
     private static volatile Apartment instance;
+
 
     public static Apartment getInstance() {
         if (instance == null) {
@@ -50,7 +50,6 @@ public final class Apartment {
         this.roommates = new ArrayList<>();
         this.tasks = new ArrayList<>();
         this.expenses = new ArrayList<>();
-        double sum = expenses.stream().mapToDouble(Expense::getAmount).reduce(0, Double::sum); //TODO - sum of the expense
     }
 
     public static void resetData() {
@@ -127,6 +126,10 @@ public final class Apartment {
         return expenses;
     }
 
+    public double getSumExpenses() {
+        return this.expenses.stream().mapToDouble(Expense::getAmount).reduce(0, Double::sum);
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -136,6 +139,7 @@ public final class Apartment {
                 ", numberOfPeople=" + numberOfPeople +
                 ", roommates=" + roommates +
                 ", tasks=" + tasks +
+                ", expenses=" + expenses +
                 '}';
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.room8.R;
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.dialogs.CreateExpenseDialog;
+import com.example.room8.dialogs.ExpensesBarChartDialog;
 import com.example.room8.dialogs.ExpensesDialog;
 import com.example.room8.model.User;
 
@@ -43,6 +44,13 @@ public class WalletFragment extends Fragment {
             return today.get(Calendar.YEAR) == expenseDate.get(Calendar.YEAR) && today.get(Calendar.MONTH) == expenseDate.get(Calendar.MONTH);
 
         }, "monthly expenses").show(getParentFragmentManager(), "monthly_expenses"));
+
+        View ExpensesBarChartBtn = view.findViewById(R.id.bar_chart_fab);
+        ExpensesBarChartBtn.setOnClickListener(v ->{
+            new ExpensesBarChartDialog().show(getParentFragmentManager(),"expenses_char");
+        });
+
+
         return view;
     }
 

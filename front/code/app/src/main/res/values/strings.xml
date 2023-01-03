@@ -51,4 +51,10 @@
     <string name="message">message</string>
     <string name="user_icon">User Icon</string>
     <string name="login_button">login button</string>
+    <string name="char_bar_btn">char_bar_fab</string>
+    <string name="total_expenses_num">sum</string>
+    <string name="room8ts">Room8ts</string>
+    <string name="types">types</string>
+    <string name="dates">dates</string>
+
 </resources>

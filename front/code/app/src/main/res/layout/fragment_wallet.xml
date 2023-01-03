@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toStartOf="@+id/previous_expenses_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton"
+        app:layout_constraintTop_toBottomOf="@+id/bar_chart_fab"
         app:layout_constraintVertical_chainStyle="spread" />
 
 
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/create_expense_btn"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton" />
+        app:layout_constraintTop_toBottomOf="@+id/bar_chart_fab" />
 
 
     <TextView
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/previous_expenses_btn" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/bar_chart_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -77,6 +77,7 @@
         android:src="@drawable/ic_baseline_bar_chart_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

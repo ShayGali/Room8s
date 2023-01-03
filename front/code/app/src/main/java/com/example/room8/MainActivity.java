@@ -1,7 +1,9 @@
 package com.example.room8;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,11 +11,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -52,6 +57,38 @@ public class MainActivity extends AppCompatActivity {
                     this.navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
             }
         }
+//        this.refreshData();
+//        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
+
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    public void refreshData() {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                ServerRequestsService.getInstance().getApartmentId(() -> {
+                    ServerRequestsService.getInstance().getUserData();
+                    if (SharedPreferenceHandler.getInstance().isInApartment()) {
+                        ServerRequestsService.getInstance().getAllTask(null);
+                        ServerRequestsService.getInstance().getRoom8s();
+                        ServerRequestsService.getInstance().getExpenses();
+                        ServerRequestsService.getInstance().getApartmentData();
+
+                    }
+//                    else {
+//                        try {
+//                            Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+//                        } catch (IllegalArgumentException ignored) {
+//                        }
+//                    }
+//                    swipeRefreshLayout.setRefreshing(false);
+                });
+
+            }
+        }, 0, 5000);
+
     }
 
     String checkConnections() {

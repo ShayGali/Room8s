@@ -405,7 +405,6 @@ public class ServerRequestsService {
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
                 handleUnsuccessfulReq("fetch tasks failed when try to parse the data", 0, jsonObject);
-
             }
         }));
     }
