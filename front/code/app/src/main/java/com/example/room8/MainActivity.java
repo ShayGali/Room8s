@@ -1,5 +1,6 @@
 package com.example.room8;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -169,10 +170,9 @@ public class MainActivity extends AppCompatActivity {
                         navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
                     }
                 },
-                failMsg -> {
-                    runOnUiThread(() -> errorMsgWeakReference.get().setText(failMsg));
-                });
+                failMsg -> runOnUiThread(() -> errorMsgWeakReference.get().setText(failMsg)));
     }
+
 
     public void register(String username, String email, String
             password, Consumer<String> displayError) {

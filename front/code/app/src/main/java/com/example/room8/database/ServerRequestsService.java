@@ -41,7 +41,7 @@ import okhttp3.ResponseBody;
 public class ServerRequestsService {
 
     // Address
-    public static final String SERVER_IP_ADDRESS = "10.113.5.37";
+    public static final String SERVER_IP_ADDRESS = "10.0.0.3";
     public static final int PORT = 3000;
     public static final String SERVER_BASE_URL = SERVER_IP_ADDRESS + ":" + PORT;
     public static final String HTTP_URL = "http://" + SERVER_BASE_URL;
@@ -243,7 +243,7 @@ public class ServerRequestsService {
     }
 
 
-    public void login(String email, String password, Consumer<Boolean> navigateFunction, Consumer<String> failAction) {
+    public void login(String email, String password, Consumer<Boolean> navigateFunction) {
         RequestBody formBody = new FormBody.Builder()
                 .add("email", email)
                 .add("password", password)
@@ -254,41 +254,31 @@ public class ServerRequestsService {
                 .post(formBody)
                 .build();
 
-        client.newCall(request).enqueue(createCallback("login failed",
-                jsonObject -> {
-                    try {
-                        SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
+        client.newCall(request).enqueue(createCallback("login failed", jsonObject -> {
+            try {
+                SharedPreferenceHandler sp = SharedPreferenceHandler.getInstance();
 
-                        String token = jsonObject.getString(ACCESS_TOKEN_KEY);
-                        String refToken = jsonObject.getString(REFRESH_TOKEN_KEY);
-                        sp.saveJwtAccessToken(token);
-                        sp.saveJwtRefreshToken(refToken);
-                        this.accessesToken = token;
-                        this.refreshToken = refToken;
+                String token = jsonObject.getString(ACCESS_TOKEN_KEY);
+                String refToken = jsonObject.getString(REFRESH_TOKEN_KEY);
+                sp.saveJwtAccessToken(token);
+                sp.saveJwtRefreshToken(refToken);
+                this.accessesToken = token;
+                this.refreshToken = refToken;
 
-                        User.getInstance().setId(jsonObject.getInt("userId"));
-                        if (jsonObject.has("apartmentId") && !jsonObject.isNull("apartmentId")) {
-                            User.getInstance().setApartmentId(jsonObject.getInt("apartmentId"));
-                            sp.setIsInApartment(true);
-                            navigateFunction.accept(true);
-                        } else {
-                            sp.setIsInApartment(false);
-                            navigateFunction.accept(false);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        handleUnsuccessfulReq("failed when try to parse", 0, jsonObject);
-                    }
-                },
-                jsonObject -> {
-                    try {
-                        failAction.accept(jsonObject.getString(MESSAGE_KEY));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                User.getInstance().setId(jsonObject.getInt("userId"));
+                if (jsonObject.has("apartmentId") && !jsonObject.isNull("apartmentId")) {
+                    User.getInstance().setApartmentId(jsonObject.getInt("apartmentId"));
+                    sp.setIsInApartment(true);
+                    navigateFunction.accept(true);
+                } else {
+                    sp.setIsInApartment(false);
+                    navigateFunction.accept(false);
                 }
-
-        ));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                handleUnsuccessfulReq("failed when try to parse", 0, jsonObject);
+            }
+        }));
     }
 
     public void register(String username, String email, String password, Runnable navigateFunction, Consumer<String> displayError) {
@@ -329,7 +319,7 @@ public class ServerRequestsService {
                         e.printStackTrace();
                     }
                 }
-        ));
+                ));
     }
 
     public boolean isServerUp() {
@@ -666,7 +656,7 @@ public class ServerRequestsService {
         }));
     }
 
-    public void forgotPassword(String email, Runnable navigateToLogin) {
+    public void forgotPassword(String email,Runnable navigateToLogin) {
         FormBody.Builder formBody = new FormBody.Builder();
         formBody.add("email", email);
 
