@@ -245,6 +245,7 @@
         android:id="@+id/dialog_task_associate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Task is not associated"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline15"
