@@ -142,28 +142,26 @@ exports.forgotPassword = async (req, res, next) => {
   const expirityDate = generateExprityTime();
 
   resetTokenMap.set(resetTokenUUID, { expirityDate, email });
+  try {
+    sendEmail(email, resetTokenUUID);
+    const hashedPassword = await hashPassword(resetTokenUUID);
 
-  sendEmail(email, resetTokenUUID);
-  const hashedPassword = await hashPassword(resetTokenUUID);
+    authService.resetPassword(email, hashedPassword);
 
-  authService.resetPassword(email, hashedPassword);
-
-  return res.send({ success: true, msg: "reset token send to your email" });
+    return res.send({ success: true, msg: "reset token send to your email" });
+  } catch (error) {
+    return res.status(500).json({ success: false, msg: "send email failed" });
+  }
 };
 
-function sendEmail(email, token) {
+async function sendEmail(email, token) {
   const mailOptions = {
     from: process.env.ADMIN_MAIL,
     to: email,
     subject: "Reset Password",
     text: `${token}\n Here is your new Password, please don't lose it again...`,
   };
-  transporter.sendMail(mailOptions, (err, success) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.send("Email sent successfully");
-  });
+  return await transporter.sendMail(mailOptions);
 }
 
 /**

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.room8.MainActivity;
 import com.example.room8.R;
@@ -30,7 +31,7 @@ public class LoginFragment extends Fragment {
 
             }
         });
-        
+
         MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
 
@@ -40,9 +41,9 @@ public class LoginFragment extends Fragment {
 
         EditText emailInput = view.findViewById(R.id.login_email_EditText);
         EditText passwordInput = view.findViewById(R.id.login_password_EditText);
+        TextView errorMsg = view.findViewById(R.id.error_msg_login);
 
-
-        loginButton.setOnClickListener(v -> activity.login(emailInput.getText().toString(), passwordInput.getText().toString()));
+        loginButton.setOnClickListener(v -> activity.login(emailInput.getText().toString(), passwordInput.getText().toString(), new WeakReference<>(errorMsg)));
 
 
         registerButton.setOnClickListener(v ->

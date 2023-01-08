@@ -12,11 +12,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.room8.database.ServerRequestsService;
 import com.example.room8.database.SharedPreferenceHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -157,18 +159,23 @@ public class MainActivity extends AppCompatActivity {
     /**
      * get the Jwt token from the database, save it to the SharedPreferences
      */
-    public void login(String email, String password) {
+    public void login(String email, String password, WeakReference<TextView> errorMsgWeakReference) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
-        databaseService.login(email, password, isInApartment -> {
-            if (isInApartment) {
-                navigateFragment(R.id.action_loginFragment_to_homePageFragment);
-            } else {
-                navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
-            }
-        });
+        databaseService.login(email, password,
+                isInApartment -> {
+                    if (isInApartment) {
+                        navigateFragment(R.id.action_loginFragment_to_homePageFragment);
+                    } else {
+                        navigateFragment(R.id.action_loginFragment_to_homePageUserWithoutApartmentFragment);
+                    }
+                },
+                failMsg -> {
+                    runOnUiThread(() -> errorMsgWeakReference.get().setText(failMsg));
+                });
     }
 
-    public void register(String username, String email, String password, Consumer<String> displayError) {
+    public void register(String username, String email, String
+            password, Consumer<String> displayError) {
         SharedPreferenceHandler.getInstance().deleteSaveData();
         databaseService.register(
                 username, email, password,
