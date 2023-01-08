@@ -75,6 +75,7 @@
         android:layout_marginTop="100dp"
         android:clickable="true"
         android:src="@drawable/ic_baseline_bar_chart_24"
+        app:backgroundTint="@color/blue_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"

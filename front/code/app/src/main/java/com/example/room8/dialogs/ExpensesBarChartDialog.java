@@ -29,7 +29,6 @@ import com.google.android.material.chip.Chip;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -70,13 +69,14 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
         return dialog;
     }
 
-    public ExpensesBarChartDialog(){}
+    public ExpensesBarChartDialog() {
+    }
 
     private void getBarChart() {
         barChart = view.findViewById(R.id.expenses_bar_chart);
         if (barDataSet == null) {
             HashMap<String, Object> hashMap = getRoom8tsExpensesData();
-            setBarDataSet((ArrayList) hashMap.get("expensesBarArrayList"),(String[])hashMap.get("stackLabels"));
+            setBarDataSet((ArrayList) hashMap.get("expensesBarArrayList"), (String[]) hashMap.get("stackLabels"));
             barChart.invalidate();
         }
 
@@ -167,7 +167,7 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
                 if (!checkedDatesMap.isEmpty())
                     if (checkedDatesMap.containsKey(expenses.get(i).getPaymentDate() + ""))
                         break;
-                if (expenses.get(i).getPaymentDate().equals(expenses.get(j).getPaymentDate()))
+                if (expenses.get(i).getPaymentDate() != null && expenses.get(i).getPaymentDate().equals(expenses.get(j).getPaymentDate()))
                     sum += expenses.get(j).getAmount();
             }
             if (checkedDatesMap.containsKey(expenses.get(i).getPaymentDate() + ""))
@@ -178,7 +178,7 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
 
             if (sum != 0) {
                 expensesBarArrayList.add(new BarEntry(barIndex++, (float) sum));
-                stackLabelsTemp.add(dateBarChartHandler(expenses.get(i).getPaymentDate()+""));
+                stackLabelsTemp.add(dateBarChartHandler(expenses.get(i).getPaymentDate() + ""));
             }
         }
 
@@ -186,8 +186,8 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
         String[] stackLabels = stackLabelsTemp.toArray(new String[stackLabelsTemp.size()]);
 
 
-        retHashMap.put("stackLabels",stackLabels);
-        retHashMap.put("expensesBarArrayList",expensesBarArrayList);
+        retHashMap.put("stackLabels", stackLabels);
+        retHashMap.put("expensesBarArrayList", expensesBarArrayList);
 
         return retHashMap;
     }
@@ -264,11 +264,11 @@ public class ExpensesBarChartDialog extends AppCompatDialogFragment {
         return retHashMap;
     }
 
-    private String dateBarChartHandler(@NotNull String dateToFix){
+    private String dateBarChartHandler(@NotNull String dateToFix) {
         String fixedDate = "";
         String[] splitArr = dateToFix.split(" ");
 
-        fixedDate += splitArr[0] +" "+ splitArr[2]+" "+ splitArr[1]+" "+ splitArr[5];
+        fixedDate += splitArr[0] + " " + splitArr[2] + " " + splitArr[1] + " " + splitArr[5];
 
         return fixedDate;
     }
