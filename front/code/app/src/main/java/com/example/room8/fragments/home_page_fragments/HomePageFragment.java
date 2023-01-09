@@ -89,35 +89,30 @@ public class HomePageFragment extends Fragment {
         messagesBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_message_Fragment));
         walletBtn.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_walletFragment));
 
-//        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
+        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
 
         return view;
     }
 
-//    @SuppressLint("SetTextI18n")
-//    public void refreshData() {
-//        new Timer().scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                ServerRequestsService.getInstance().getApartmentId(() -> {
-//                    ServerRequestsService.getInstance().getUserData();
-//                    if (SharedPreferenceHandler.getInstance().isInApartment()) {
-//                        ServerRequestsService.getInstance().getAllTask(null);
-//                        ServerRequestsService.getInstance().getRoom8s();
-//                        ServerRequestsService.getInstance().getExpenses();
-//                        ServerRequestsService.getInstance().getApartmentData();
-//
-//                    } else {
-//                        try {
-//                            Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
-//                        } catch (IllegalArgumentException ignored) {
-//                        }
-//                    }
-//                    swipeRefreshLayout.setRefreshing(false);
-//                });
-//
-//            }
-//        }, 0, 5000);
-//
-//    }
+    @SuppressLint("SetTextI18n")
+    public void refreshData() {
+        ServerRequestsService.getInstance().getApartmentId(() -> {
+            ServerRequestsService.getInstance().getUserData();
+            if (SharedPreferenceHandler.getInstance().isInApartment()) {
+                ServerRequestsService.getInstance().getAllTask(null);
+                ServerRequestsService.getInstance().getRoom8s();
+                ServerRequestsService.getInstance().getExpenses();
+                ServerRequestsService.getInstance().getApartmentData();
+
+            } else {
+                try {
+                    Navigation.findNavController(view).navigate(R.id.action_homePageUserWithoutApartmentFragment_to_profileFragment);
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+
+    }
 }
